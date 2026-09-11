@@ -803,6 +803,3337 @@ button.secondary{
 ========================================================== */
 
 const API_URL =
+"https://script.google.com/macros/s/AKfycbzTchEMvfgTyhY18UWuRn9Pfj0HrkiWvIpOqY-NuUeMdIizVuFGdR142424bEY-tnwXyQ/exec";
+
+
+/* ==========================================================
+   2. DATOS SOCIODEMOGRÁFICOS
+========================================================== */
+
+const DEMO_FIELDS = [
+
+  {
+    id:"initials",
+    label:"SIGLAS DE SUS NOMBRES Y APELLIDOS",
+    type:"text",
+    required:true
+  },
+
+  {
+    id:"estadoCivil",
+    label:"Estado Civil",
+    type:"single",
+    options:[
+      "Soltero",
+      "Casado",
+      "Conviviente",
+      "Viudo",
+      "Divorciado"
+    ],
+    required:true
+  },
+
+  {
+    id:"procedencia",
+    label:"Lugar de Procedencia",
+    type:"single",
+    options:[
+      "Capital - Lima",
+      "Provincia"
+    ],
+    required:true
+  },
+
+  {
+    id:"ocupacion",
+    label:"Ocupación",
+    type:"single",
+    options:[
+      "Solo Estudia",
+      "Trabaja y Estudia",
+      "Otros"
+    ],
+    required:true
+  },
+
+  {
+    id:"genero",
+    label:"Género",
+    type:"single",
+    options:[
+      "Masculino",
+      "Femenino"
+    ],
+    required:true
+  },
+
+  {
+    id:"edad",
+    label:"Edad",
+    type:"single",
+    options:[
+      "18 – 25 años",
+      "25 – 30 años",
+      "30 a más"
+    ],
+    required:true
+  },
+
+  {
+    id:"ciclo",
+    label:"Ciclo en curso",
+    type:"single",
+    options:[
+      "3 CICLO – 4 CICLO",
+      "5 CICLO – 6 CICLO",
+      "7 CICLO – 10 CICLO"
+    ],
+    required:true
+  }
+
+];
+
+
+/* ==========================================================
+   3. RECUPERACIÓN LOCAL
+========================================================== */
+
+let demographics =
+JSON.parse(
+  localStorage.getItem(
+    "lcu_demographics_v2"
+  ) || "{}"
+);
+
+let answers =
+JSON.parse(
+  localStorage.getItem(
+    "lcu_answers_v2"
+  ) || "{}"
+);
+
+
+/* ==========================================================
+   4. PREGUNTAS
+========================================================== */
+
+const SECTIONS = [
+
+/* ==========================================================
+   SECCIÓN 1
+========================================================== */
+
+{
+  id:"s1",
+
+  title:
+  "Sección 1 — Conocimiento sobre LCUs y ciencia de los materiales",
+
+  questions:[
+
+    {
+      id:"q1",
+      type:"single",
+
+      prompt:
+      "¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?",
+
+      options:[
+        "Sí",
+        "No"
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q2",
+      type:"single",
+
+      prompt:
+      "¿Sabe si su unidad de fotocurado (LCU) tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?",
+
+      options:[
+        "Sí",
+        "No"
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q3",
+      type:"single",
+
+      prompt:
+      "¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?",
+
+      options:[
+        "Sí",
+        "No"
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q4",
+      type:"single",
+
+      prompt:
+      "¿Con qué frecuencia utiliza la LCU y materiales activados por luz en su práctica clínica?",
+
+      options:[
+        "Diariamente",
+        "Semanalmente",
+        "Raramente",
+        "Nunca"
+      ],
+
+      scored:false
+    },
+
+
+    /* ======================================================
+       PREGUNTA 5
+       TODAS LAS ALTERNATIVAS ORIGINALES SE CONSERVAN
+    ====================================================== */
+
+    {
+      id:"q5",
+
+      type:"multi",
+
+      prompt:
+      "¿Cuál de los siguientes puede asociarse con una exposición radiante insuficiente (polimerización inadecuada)?",
+
+      hint:
+      "Seleccione todas las que correspondan. Para obtener 1 punto, debe marcar las nueve alternativas individuales correctas o, en su defecto, únicamente la alternativa «TODAS LAS ANTERIORES». Si no marca todas las respuestas correctas, la puntuación será 0. Si marca «TODAS LAS ANTERIORES» junto con cualquier otra alternativa, la puntuación también será 0.",
+
+      options:[
+
+        "Bajas propiedades mecánicas",
+
+        "Baja estabilidad de color",
+
+        "Mayor colonización bacteriana",
+
+        "Reacciones tóxicas",
+
+        "Reacciones alérgicas",
+
+        "Caries secundaria",
+
+        "Filtración marginal",
+
+        "Alteración de color marginal",
+
+        "Sensibilidad dental",
+
+        "TODAS LAS ANTERIORES"
+
+      ],
+
+      scored:true
+    },
+
+
+    {
+      id:"q6",
+      type:"single",
+
+      prompt:
+      "¿Cuál es la irradiancia mínima requerida para una polimerización adecuada de compuestos de 2 mm de espesor en 40 segundos?",
+
+      options:[
+        "100-300 mW/cm²",
+        "300-500 mW/cm²",
+        ">500 mW/cm²",
+        "No estoy seguro"
+      ],
+
+      correct:1,
+      scored:true
+    },
+
+
+    {
+      id:"q7",
+      type:"single",
+
+      prompt:
+      "¿Cuál es la técnica de control de infecciones que tiene el menor efecto negativo en las puntas de fotocurado?",
+
+      options:[
+        "Autoclave",
+        "Solución desinfectante",
+        "Barrera transparente",
+        "No estoy seguro"
+      ],
+
+      correct:2,
+      scored:true
+    },
+
+
+    {
+      id:"q8",
+      type:"multi",
+
+      prompt:
+      "¿Cuál(es) es/son su(s) fuente(s) de información sobre las LCU y los materiales activados por luz?",
+
+      hint:
+      "Seleccione todas las que correspondan",
+
+      options:[
+
+        "Libros de texto",
+
+        "Revistas científicas",
+
+        "Conferencias en el currículo de pregrado",
+
+        "Conferencias en el currículo de posgrado",
+
+        "Conferencias de educación continua (incluyendo congresos)",
+
+        "Folletos de fabricantes",
+
+        "Internet y redes sociales"
+
+      ],
+
+      scored:false
+    }
+
+  ]
+},
+
+
+/* ==========================================================
+   SECCIÓN 2
+========================================================== */
+
+{
+  id:"s2",
+
+  title:
+  "Sección 2 — Práctica clínica relacionada con LCUs (competencia clínica)",
+
+  questions:[
+
+    {
+      id:"q9",
+      type:"single",
+
+      prompt:
+      "¿Qué tipo de LCU está utilizando?",
+
+      options:[
+
+        "Luces de cuarzo-tungsteno-halógeno (QTH)",
+
+        "Luces de arco de plasma (PAC)",
+
+        "Láseres de iones de argón",
+
+        "Diodos emisores de luz (LED)",
+
+        "No estoy seguro"
+
+      ],
+
+      scored:false
+    },
+
+
+    {
+      id:"q10",
+      type:"single",
+
+      prompt:
+      "¿Qué modo de curado utiliza para polimerizar su restauración?",
+
+      options:[
+
+        "Inicio suave (Soft start)",
+
+        "Curado rápido (Fast cure)",
+
+        "Modo convencional",
+
+        "No reviso el modo de curado en mi dispositivo"
+
+      ],
+
+      scored:false
+    },
+
+
+    {
+      id:"q11",
+      type:"single",
+
+      prompt:
+      "¿Cuánto tiempo fotocura una restauración de resina compuesta?",
+
+      options:[
+
+        "10 segundos por cada incremento de 2 mm",
+
+        "20 segundos por cada incremento de 2 mm",
+
+        "40 segundos por cada incremento de 2 mm",
+
+        "60 segundos para la restauración completa"
+
+      ],
+
+      correct:1,
+      scored:true
+    },
+
+
+    {
+      id:"q12",
+      type:"single",
+
+      prompt:
+      "La ubicación y morfología del diente pueden afectar la posición entre la punta de la LCU y la superficie de la resina. El dentista siempre debe aspirar a:",
+
+      options:[
+
+        "Mantener la punta lo más cerca posible de la superficie de la restauración",
+
+        "Mantener la punta hasta a 10 mm",
+
+        "Posicionar la punta a un ángulo de 45 grados",
+
+        "Posicionar la punta a un ángulo de 90 grados"
+
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q13",
+      type:"single",
+
+      prompt:
+      "Para aumentar la exposición radiante total durante el curado de su restauración, podría necesitar:",
+
+      options:[
+
+        "Almacenar el material de resina en un refrigerador antes de la aplicación clínica",
+
+        "Aumentar el tiempo de curado más allá de la recomendación del fabricante",
+
+        "Elegir un tono de resina más oscuro"
+
+      ],
+
+      correct:1,
+      scored:true
+    },
+
+
+    {
+      id:"q14",
+      type:"single",
+
+      prompt:
+      "¿Qué utiliza principalmente para proteger sus ojos de los riesgos de la «luz azul»?",
+
+      options:[
+
+        "Escudo de luz montado en la LCU",
+
+        "Escudo de luz manual",
+
+        "Gafas protectoras naranjas",
+
+        "Mi asistente realiza el curado",
+
+        "Miro hacia otro lado"
+
+      ],
+
+      correct:2,
+      scored:true
+    }
+
+  ]
+},
+
+
+/* ==========================================================
+   SECCIÓN 3
+========================================================== */
+
+{
+  id:"s3",
+
+  title:
+  "Sección 3 — Mantenimiento y control de la unidad de fotocurado (LCU)",
+
+  questions:[
+
+    {
+      id:"q15",
+      type:"single",
+
+      prompt:
+      "¿Conoce la vida útil esperada de su unidad de fotocurado?",
+
+      options:[
+        "Sí",
+        "No"
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q16",
+      type:"single",
+
+      prompt:
+      "¿Inspecciona, limpia y revisa su LCU antes de usarla para asegurarse de que esté libre de defectos y residuos y que esté en la configuración correcta?",
+
+      options:[
+        "Sí",
+        "No"
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q17",
+      type:"single",
+
+      prompt:
+      "¿Controla el mantenimiento de su unidad de fotocurado y sigue las recomendaciones de mantenimiento del fabricante?",
+
+      options:[
+        "Sí",
+        "No"
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q18",
+      type:"single",
+
+      prompt:
+      "¿Con qué frecuencia realiza el mantenimiento de su dispositivo?",
+
+      options:[
+
+        "1–3 meses",
+
+        "3–6 meses",
+
+        "6–12 meses",
+
+        "12 meses",
+
+        "No realizo mantenimiento a mi dispositivo"
+
+      ],
+
+      scored:false
+    },
+
+
+    {
+      id:"q19",
+      type:"single",
+
+      prompt:
+      "¿Utiliza un radiómetro dental para controlar la irradiancia de su LCU?",
+
+      options:[
+
+        "Sí",
+
+        "No",
+
+        "No estoy familiarizado con este dispositivo"
+
+      ],
+
+      correct:0,
+      scored:true
+    },
+
+
+    {
+      id:"q20",
+      type:"single",
+
+      prompt:
+      "¿Con qué frecuencia revisa el nivel de irradiancia (potencia de salida) de su dispositivo?",
+
+      options:[
+
+        "1–3 meses",
+
+        "3–6 meses",
+
+        "6–12 meses",
+
+        "12 meses",
+
+        "No realizo mantenimiento a mi dispositivo"
+
+      ],
+
+      scored:false
+    }
+
+  ]
+},
+
+
+/* ==========================================================
+   SECCIÓN 4
+========================================================== */
+
+{
+  id:"s4",
+
+  title:
+  "Sección 4 — Nivel de satisfacción con la LCU y la ciencia de los materiales",
+
+  questions:[
+
+    {
+      id:"q21",
+      type:"single",
+
+      prompt:
+      "¿Está satisfecho(a) con su unidad de fotocurado?",
+
+      options:[
+        "Satisfecho(a)",
+        "Moderadamente satisfecho(a)",
+        "Insatisfecho(a)"
+      ],
+
+      likertWeights:[
+        3,
+        2,
+        1
+      ],
+
+      scored:"likert"
+    },
+
+
+    {
+      id:"q22",
+      type:"single",
+
+      prompt:
+      "¿Está satisfecho(a) con su nivel de conocimiento sobre las LCU y los materiales activados por luz?",
+
+      options:[
+        "Satisfecho(a)",
+        "Moderadamente satisfecho(a)",
+        "Insatisfecho(a)"
+      ],
+
+      likertWeights:[
+        3,
+        2,
+        1
+      ],
+
+      scored:"likert"
+    },
+
+
+    {
+      id:"q23",
+      type:"single",
+
+      prompt:
+      "¿Está satisfecho(a) con su práctica clínica respecto a la aplicación de la LCU y los materiales activados por luz?",
+
+      options:[
+        "Satisfecho(a)",
+        "Moderadamente satisfecho(a)",
+        "Insatisfecho(a)"
+      ],
+
+      likertWeights:[
+        3,
+        2,
+        1
+      ],
+
+      scored:"likert"
+    },
+
+
+    {
+      id:"q24",
+      type:"single",
+
+      prompt:
+      "¿Está satisfecho(a) con el nivel de formación en los programas de odontología respecto a la práctica clínica de las LCU?",
+
+      options:[
+        "Satisfecho(a)",
+        "Moderadamente satisfecho(a)",
+        "Insatisfecho(a)"
+      ],
+
+      likertWeights:[
+        3,
+        2,
+        1
+      ],
+
+      scored:"likert"
+    },
+
+
+    {
+      id:"q25",
+      type:"single",
+
+      prompt:
+      "¿Está satisfecho(a) con los cursos de educación continua ofrecidos relacionados con la LCU y su práctica clínica?",
+
+      options:[
+        "Satisfecho(a)",
+        "Moderadamente satisfecho(a)",
+        "Insatisfecho(a)"
+      ],
+
+      likertWeights:[
+        3,
+        2,
+        1
+      ],
+
+      scored:"likert"
+    }
+
+  ]
+}];
+
+
+/* ==========================================================
+   5. FUNCIONES GENERALES
+========================================================== */
+
+const form =
+document.getElementById("surveyForm");
+
+
+function esc(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* ==========================================================
+   6. RENDERIZAR FORMULARIO
+========================================================== */
+
+function render(){
+
+  form.innerHTML = "";
+
+
+  /* =========================
+     DATOS SOCIODEMOGRÁFICOS
+  ========================= */
+
+  const demoSection =
+  document.createElement("section");
+
+  demoSection.className =
+  "block";
+
+
+  let demoHTML = `
+    <h2>
+      Datos sociodemográficos
+    </h2>
+
+    <div class="q">
+
+      <div class="demo-grid">
+  `;
+
+
+  demoHTML += `
+
+    <div class="demo-item">
+
+      <label
+        class="demo-label"
+        for="initials">
+
+        SIGLAS DE SUS NOMBRES Y APELLIDOS
+        <span class="required">*</span>
+
+      </label>
+
+      <input
+        class="text-input"
+        id="initials"
+        maxlength="10"
+        autocomplete="off"
+        placeholder="Ejemplo: GGRP"
+        value="${esc(demographics.initials || "")}">
+
+      <div class="small-note">
+        Ejemplo: GGRP
+      </div>
+
+    </div>
+
+  `;
+
+
+  for(
+    const field
+    of DEMO_FIELDS.slice(1)
+  ){
+
+    demoHTML += `
+
+      <div class="demo-item">
+
+        <label class="demo-label">
+
+          ${esc(field.label)}
+
+          <span class="required">*</span>
+
+        </label>
+
+        <div class="inline-options">
+
+    `;
+
+
+    field.options.forEach(
+      (opt,i)=>{
+
+        const checked =
+        demographics[field.id] === opt;
+
+
+        demoHTML += `
+
+          <label
+            class="opt ${checked ? "checked" : ""}">
+
+            <input
+              type="radio"
+              name="demo_${field.id}"
+              value="${esc(opt)}"
+              ${checked ? "checked" : ""}>
+
+            <span>
+              ${esc(opt)}
+            </span>
+
+          </label>
+
+        `;
+
+      }
+    );
+
+
+    demoHTML += `
+        </div>
+    `;
+
+
+    if(
+      field.id === "ocupacion"
+    ){
+
+      demoHTML += `
+
+        <div
+          id="otherOccupationWrap"
+          style="
+          display:
+          ${demographics.ocupacion === "Otros"
+            ? "block"
+            : "none"};
+          margin-top:.55rem;">
+
+          <input
+            class="text-input"
+            id="otherOccupation"
+            maxlength="100"
+            placeholder="Especifique otra ocupación"
+            value="${esc(
+              demographics.otherOccupation || ""
+            )}">
+
+        </div>
+
+      `;
+
+    }
+
+
+    demoHTML += `
+      </div>
+    `;
+
+  }
+
+
+  demoHTML += `
+      </div>
+    </div>
+  `;
+
+
+  demoSection.innerHTML =
+  demoHTML;
+
+  form.appendChild(
+    demoSection
+  );
+
+
+  /* =========================
+     PREGUNTAS
+  ========================= */
+
+  SECTIONS.forEach(
+    section=>{
+
+      const sectionElement =
+      document.createElement("section");
+
+      sectionElement.className =
+      "block";
+
+
+      sectionElement.innerHTML =
+      `<h2>
+        ${esc(section.title)}
+      </h2>`;
+
+
+      section.questions.forEach(
+        question=>{
+
+          const questionElement =
+          document.createElement("div");
+
+          questionElement.className =
+          "q";
+
+
+          let html = `
+
+            <div class="q-number">
+
+              ${esc(
+                question.id.toUpperCase()
+              )}
+
+            </div>
+
+            <p class="prompt">
+
+              ${esc(
+                question.prompt
+              )}
+
+            </p>
+
+          `;
+
+
+          if(question.hint){
+
+            html += `
+
+              <p class="hint">
+
+                ${esc(
+                  question.hint
+                )}
+
+              </p>
+
+            `;
+
+          }
+
+
+          question.options.forEach(
+            (option,index)=>{
+
+              const inputType =
+              question.type === "multi"
+                ? "checkbox"
+                : "radio";
+
+
+              const checked =
+              question.type === "multi"
+
+              ? Array.isArray(
+                  answers[question.id]
+                )
+                &&
+                answers[
+                  question.id
+                ].includes(index)
+
+              : answers[
+                  question.id
+                ] === index;
+
+
+              html += `
+
+                <label
+                  class="opt ${
+                    checked
+                      ? "checked"
+                      : ""
+                  }">
+
+                  <input
+                    type="${inputType}"
+                    name="${question.id}"
+                    value="${index}"
+                    ${
+                      checked
+                        ? "checked"
+                        : ""
+                    }>
+
+                  <span>
+                    ${esc(option)}
+                  </span>
+
+                </label>
+
+              `;
+
+            }
+          );
+
+
+          questionElement.innerHTML =
+          html;
+
+          sectionElement.appendChild(
+            questionElement
+          );
+
+        }
+      );
+
+
+      form.appendChild(
+        sectionElement
+      );
+
+    }
+  );
+
+
+  attachListeners();
+
+  updateProgress();
+
+}
+
+
+/* ==========================================================
+   7. EVENTOS
+========================================================== */
+
+function attachListeners(){
+
+  const initials =
+  document.getElementById(
+    "initials"
+  );
+
+
+  initials.addEventListener(
+    "input",
+    ()=>{
+
+      demographics.initials =
+      initials.value
+        .trim()
+        .toUpperCase();
+
+      saveDemographics();
+
+      updateProgress();
+
+    }
+  );
+
+
+  document
+    .querySelectorAll(
+      'input[name^="demo_"]'
+    )
+    .forEach(
+      input=>{
+
+        input.addEventListener(
+          "change",
+          ()=>{
+
+            const id =
+            input.name.replace(
+              "demo_",
+              ""
+            );
+
+
+            demographics[id] =
+            input.value;
+
+
+            if(
+              id === "ocupacion"
+              &&
+              input.value !== "Otros"
+            ){
+
+              demographics.otherOccupation =
+              "";
+
+            }
+
+
+            saveDemographics();
+
+            render();
+
+          }
+        );
+
+      }
+    );
+
+
+  const otherOccupation =
+  document.getElementById(
+    "otherOccupation"
+  );
+
+
+  if(otherOccupation){
+
+    otherOccupation.addEventListener(
+      "input",
+      ()=>{
+
+        demographics.otherOccupation =
+        otherOccupation.value.trim();
+
+        saveDemographics();
+
+        updateProgress();
+
+      }
+    );
+
+  }
+
+
+  form
+    .querySelectorAll(
+      ".opt input[name^='q']"
+    )
+    .forEach(
+      input=>{
+
+        input.addEventListener(
+          "change",
+          onAnswerChange
+        );
+
+      }
+    );
+
+}
+
+
+/* ==========================================================
+   8. GUARDAR DATOS LOCALES
+========================================================== */
+
+function saveDemographics(){
+
+  localStorage.setItem(
+    "lcu_demographics_v2",
+    JSON.stringify(
+      demographics
+    )
+  );
+
+}
+
+
+/* ==========================================================
+   9. CAMBIO DE RESPUESTAS
+========================================================== */
+
+function onAnswerChange(event){
+
+  const questionId =
+  event.target.name;
+
+  const value =
+  Number(
+    event.target.value
+  );
+
+
+  const question =
+  findQuestion(
+    questionId
+  );
+
+
+  if(
+    question.type === "multi"
+  ){
+
+    let array =
+    Array.isArray(
+      answers[questionId]
+    )
+
+    ? answers[questionId].slice()
+
+    : [];
+
+
+    if(event.target.checked){
+
+      if(
+        !array.includes(value)
+      ){
+
+        array.push(value);
+
+      }
+
+    }else{
+
+      array =
+      array.filter(
+        item =>
+        item !== value
+      );
+
+    }
+
+
+    answers[questionId] =
+    array;
+
+  }else{
+
+    answers[questionId] =
+    value;
+
+  }
+
+
+  localStorage.setItem(
+    "lcu_answers_v2",
+    JSON.stringify(
+      answers
+    )
+  );
+
+
+  render();
+
+
+  document
+    .getElementById(
+      "results"
+    )
+    .classList.remove(
+      "show"
+    );
+
+
+  document
+    .getElementById(
+      "submitStatus"
+    )
+    .innerHTML = "";
+
+}
+
+
+/* ==========================================================
+   10. BUSCAR PREGUNTA
+========================================================== */
+
+function findQuestion(id){
+
+  for(
+    const section
+    of SECTIONS
+  ){
+
+    for(
+      const question
+      of section.questions
+    ){
+
+      if(
+        question.id === id
+      ){
+
+        return question;
+
+      }
+
+    }
+
+  }
+
+  return null;
+
+}
+
+
+/* ==========================================================
+   11. VALIDACIÓN SOCIODEMOGRÁFICA
+========================================================== */
+
+function demographicAnswered(){
+
+  if(
+    !demographics.initials
+  ){
+
+    return false;
+
+  }
+
+
+  for(
+    const field
+    of DEMO_FIELDS.slice(1)
+  ){
+
+    if(
+      !demographics[field.id]
+    ){
+
+      return false;
+
+    }
+
+  }
+
+
+  if(
+    demographics.ocupacion ===
+    "Otros"
+    &&
+    !demographics.otherOccupation
+  ){
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* ==========================================================
+   12. CONTAR RESPUESTAS
+========================================================== */
+
+function countAnsweredQuestions(){
+
+  let count = 0;
+
+
+  SECTIONS.forEach(
+    section=>{
+
+      section.questions.forEach(
+        question=>{
+
+          const answer =
+          answers[question.id];
+
+
+          if(
+            question.type === "multi"
+          ){
+
+            if(
+              Array.isArray(answer)
+              &&
+              answer.length > 0
+            ){
+
+              count++;
+
+            }
+
+          }else{
+
+            if(
+              answer !== undefined
+              &&
+              answer !== null
+            ){
+
+              count++;
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  return count;
+
+}
+
+
+/* ==========================================================
+   13. PROGRESO
+========================================================== */
+
+function totalSurveyItems(){
+
+  return (
+
+    DEMO_FIELDS.length
+
+    +
+
+    SECTIONS.reduce(
+      (
+        total,
+        section
+      ) =>
+
+      total +
+      section.questions.length,
+
+      0
+    )
+
+  );
+
+}
+
+
+function updateProgress(){
+
+  let count =
+  demographicAnswered()
+    ? DEMO_FIELDS.length
+    : 0;
+
+
+  count +=
+  countAnsweredQuestions();
+
+
+  const total =
+  totalSurveyItems();
+
+
+  const percentage =
+  Math.min(
+    100,
+    count /
+    total *
+    100
+  );
+
+
+  document
+    .getElementById(
+      "progressText"
+    )
+    .textContent =
+    `${count} / ${total} respondidas`;
+
+
+  document
+    .getElementById(
+      "progressFill"
+    )
+    .style.width =
+    percentage + "%";
+
+}
+
+
+/* ==========================================================
+   14. VALIDACIÓN COMPLETA
+========================================================== */
+
+function validateComplete(){
+
+  if(
+    !demographicAnswered()
+  ){
+
+    return "Complete todos los datos sociodemográficos obligatorios.";
+
+  }
+
+
+  const missing = [];
+
+
+  SECTIONS.forEach(
+    section=>{
+
+      section.questions.forEach(
+        question=>{
+
+          const answer =
+          answers[question.id];
+
+
+          if(
+            question.type === "multi"
+          ){
+
+            if(
+              !Array.isArray(answer)
+              ||
+              answer.length === 0
+            ){
+
+              missing.push(
+                question.id.toUpperCase()
+              );
+
+            }
+
+          }else{
+
+            if(
+              answer === undefined
+              ||
+              answer === null
+            ){
+
+              missing.push(
+                question.id.toUpperCase()
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  if(missing.length){
+
+    return `
+      Faltan ${missing.length}
+      pregunta(s) por responder:
+      ${missing.join(", ")}.
+    `;
+
+  }
+
+
+  return "";
+
+}
+
+
+/* ==========================================================
+   15. REGLA ESPECIAL PREGUNTA 5
+========================================================== */
+
+/*
+
+  PREGUNTA 5
+
+  Índices:
+
+  0 = Bajas propiedades mecánicas
+  1 = Baja estabilidad de color
+  2 = Mayor colonización bacteriana
+  3 = Reacciones tóxicas
+  4 = Reacciones alérgicas
+  5 = Caries secundaria
+  6 = Filtración marginal
+  7 = Alteración de color marginal
+  8 = Sensibilidad dental
+  9 = TODAS LAS ANTERIORES
+
+
+  SE OTORGA 1 PUNTO ÚNICAMENTE SI:
+
+  CASO A:
+  Selecciona únicamente:
+  TODAS LAS ANTERIORES
+
+  O
+
+  CASO B:
+  Selecciona exactamente las nueve
+  alternativas individuales 0–8.
+
+  CUALQUIER OTRA COMBINACIÓN = 0 PUNTOS.
+
+*/
+
+function isQ5Correct(
+  selected
+){
+
+  if(
+    !Array.isArray(selected)
+  ){
+
+    return false;
+
+  }
+
+
+  const ALL =
+  9;
+
+
+  const individualCorrect = [
+    0,1,2,3,4,5,6,7,8
+  ];
+
+
+  /* TODAS LAS ANTERIORES SOLA */
+
+  if(
+    selected.length === 1
+    &&
+    selected[0] === ALL
+  ){
+
+    return true;
+
+  }
+
+
+  /* NUEVE ALTERNATIVAS */
+
+  if(
+
+    selected.length ===
+    individualCorrect.length
+
+    &&
+
+    !selected.includes(ALL)
+
+    &&
+
+    individualCorrect.every(
+      index =>
+      selected.includes(index)
+    )
+
+  ){
+
+    return true;
+
+  }
+
+
+  return false;
+
+}
+
+
+/* ==========================================================
+   16. PUNTUACIÓN
+========================================================== */
+
+function scoreSection(
+  section
+){
+
+  let score = 0;
+
+  let max = 0;
+
+
+  section.questions.forEach(
+    question=>{
+
+
+      if(
+        question.scored === false
+      ){
+
+        return;
+
+      }
+
+
+      /* PREGUNTA 5 */
+
+      if(
+        question.id === "q5"
+      ){
+
+        max++;
+
+        if(
+          isQ5Correct(
+            answers.q5 || []
+          )
+        ){
+
+          score++;
+
+        }
+
+        return;
+
+      }
+
+
+      /* LIKERT */
+
+      if(
+        question.scored ===
+        "likert"
+      ){
+
+        max += Math.max(
+          ...question.likertWeights
+        );
+
+
+        const answer =
+        answers[
+          question.id
+        ];
+
+
+        if(
+          answer !== undefined
+        ){
+
+          score +=
+          question.likertWeights[
+            answer
+          ];
+
+        }
+
+
+        return;
+
+      }
+
+
+      /* RESPUESTA SIMPLE */
+
+      max++;
+
+
+      const answer =
+      answers[
+        question.id
+      ];
+
+
+      if(
+        answer ===
+        question.correct
+      ){
+
+        score++;
+
+      }
+
+    }
+  );
+
+
+  return {
+    score,
+    max
+  };
+
+}
+
+
+/* ==========================================================
+   17. CALCULAR RESULTADOS
+========================================================== */
+
+function calculateResults(){
+
+  const results =
+  SECTIONS.map(
+    scoreSection
+  );
+
+
+  const [
+    s1,
+    s2,
+    s3,
+    s4
+  ] = results;
+
+
+  document.getElementById(
+    "s1score"
+  ).textContent =
+  `${s1.score} / ${s1.max}`;
+
+
+  document.getElementById(
+    "s2score"
+  ).textContent =
+  `${s2.score} / ${s2.max}`;
+
+
+  document.getElementById(
+    "s3score"
+  ).textContent =
+  `${s3.score} / ${s3.max}`;
+
+
+  document.getElementById(
+    "s4score"
+  ).textContent =
+  `${s4.score} / ${s4.max}`;
+
+
+  const s1pct =
+  s1.max
+    ? s1.score /
+      s1.max *
+      100
+    : 0;
+
+
+  const s2pct =
+  s2.max
+    ? s2.score /
+      s2.max *
+      100
+    : 0;
+
+
+  const s3pct =
+  s3.max
+    ? s3.score /
+      s3.max *
+      100
+    : 0;
+
+
+  const s4pct =
+  s4.max
+    ? s4.score /
+      s4.max *
+      100
+    : 0;
+
+
+  document.getElementById(
+    "s1level"
+  ).textContent =
+
+    s1pct >= 83
+      ? "Bueno / Alto"
+      : s1pct >= 50
+        ? "Regular / Moderado"
+        : "Deficiente / Bajo";
+
+
+  document.getElementById(
+    "s2level"
+  ).textContent =
+
+    s2pct === 100
+      ? "Adecuada"
+      : s2pct >= 50
+        ? "Parcialmente adecuada"
+        : "Inadecuada";
+
+
+  document.getElementById(
+    "s3level"
+  ).textContent =
+
+    s3pct === 100
+      ? "Óptimo"
+      : s3pct >= 50
+        ? "Aceptable"
+        : "Deficiente";
+
+
+  document.getElementById(
+    "s4level"
+  ).textContent =
+
+    s4pct >= 87
+      ? "Alta"
+      : s4pct >= 53
+        ? "Moderada"
+        : "Baja";
+
+
+  const totalScore =
+    s1.score +
+    s2.score +
+    s3.score +
+    s4.score;
+
+
+  const totalMax =
+    s1.max +
+    s2.max +
+    s3.max +
+    s4.max;
+
+
+  const totalPercentage =
+    totalMax
+      ? totalScore /
+        totalMax *
+        100
+      : 0;
+
+
+  document.getElementById(
+    "totalScore"
+  ).textContent =
+
+    `${totalScore} / ${totalMax} (${totalPercentage.toFixed(0)}%)`;
+
+
+  document.getElementById(
+    "totalLevel"
+  ).textContent =
+
+    totalPercentage >= 80
+      ? "Alto"
+      : totalPercentage >= 50
+        ? "Moderado"
+        : "Bajo";
+
+
+  const summary =
+
+`RESUMEN — CUESTIONARIO LCU LED
+
+DATOS SOCIODEMOGRÁFICOS
+
+Siglas:
+${demographics.initials || ""}
+
+Estado civil:
+${demographics.estadoCivil || ""}
+
+Lugar de procedencia:
+${demographics.procedencia || ""}
+
+Ocupación:
+${
+  demographics.ocupacion === "Otros"
+  ? "Otros: " +
+    (
+      demographics.otherOccupation || ""
+    )
+  : demographics.ocupacion || ""
+}
+
+Género:
+${demographics.genero || ""}
+
+Edad:
+${demographics.edad || ""}
+
+Ciclo:
+${demographics.ciclo || ""}
+
+
+RESULTADOS
+
+Sección 1 — Conocimiento:
+${s1.score}/${s1.max}
+
+Sección 2 — Práctica clínica:
+${s2.score}/${s2.max}
+
+Sección 3 — Mantenimiento:
+${s3.score}/${s3.max}
+
+Sección 4 — Satisfacción:
+${s4.score}/${s4.max}
+
+PUNTAJE GLOBAL:
+${totalScore}/${totalMax}
+(${totalPercentage.toFixed(0)}%)`;
+
+
+  document.getElementById(
+    "printSummary"
+  ).textContent =
+  summary;
+
+
+  document.getElementById(
+    "results"
+  ).classList.add(
+    "show"
+  );
+
+
+  return {
+
+    results,
+
+    totalScore,
+
+    totalMax,
+
+    totalPercentage
+
+  };
+
+}
+
+
+/* ==========================================================
+   18. BOTÓN CALCULAR
+========================================================== */
+
+document
+  .getElementById(
+    "btnScore"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      const error =
+      validateComplete();
+
+
+      if(error){
+
+        document.getElementById(
+          "submitStatus"
+        ).innerHTML = `
+
+          <div
+            class="status-box"
+            style="
+              color:var(--danger);
+            ">
+
+            ⚠ ${esc(error)}
+
+          </div>
+
+        `;
+
+
+        document.getElementById(
+          "submitStatus"
+        ).scrollIntoView({
+          behavior:"smooth"
+        });
+
+
+        return;
+
+      }
+
+
+      calculateResults();
+
+
+      document.getElementById(
+        "results"
+      ).scrollIntoView({
+        behavior:"smooth"
+      });
+
+    }
+  );
+
+
+/* ==========================================================
+   19. IDENTIFICADOR DEL PARTICIPANTE
+========================================================== */
+
+function getParticipantId(){
+
+  let id =
+  localStorage.getItem(
+    "lcu_participant_id_v2"
+  );
+
+
+  if(!id){
+
+    if(
+      window.crypto
+      &&
+      crypto.randomUUID
+    ){
+
+      id =
+      crypto.randomUUID();
+
+    }else{
+
+      id =
+      "P-" +
+      Date.now() +
+      "-" +
+      Math.random()
+        .toString(36)
+        .slice(2);
+
+    }
+
+
+    localStorage.setItem(
+      "lcu_participant_id_v2",
+      id
+    );
+
+  }
+
+
+  return id;
+
+}
+
+
+/* ==========================================================
+   20. ENVIAR RESPUESTA
+========================================================== */
+
+document
+  .getElementById(
+    "btnSubmit"
+  )
+  .addEventListener(
+    "click",
+    async ()=>{
+
+
+      const validation =
+      validateComplete();
+
+
+      if(validation){
+
+        document.getElementById(
+          "submitStatus"
+        ).innerHTML = `
+
+          <div
+            class="status-box"
+            style="
+              color:var(--danger);
+            ">
+
+            ⚠ ${esc(validation)}
+
+          </div>
+
+        `;
+
+
+        document.getElementById(
+          "submitStatus"
+        ).scrollIntoView({
+          behavior:"smooth"
+        });
+
+
+        return;
+
+      }
+
+
+      if(
+        !API_URL
+        ||
+        API_URL.includes(
+          "PEGAR_AQUI"
+        )
+      ){
+
+        document.getElementById(
+          "submitStatus"
+        ).innerHTML = `
+
+          <div
+            class="status-box"
+            style="
+              color:var(--danger);
+            ">
+
+            ⚠ Debe configurar primero
+            la URL /exec de Google Apps Script
+            en la variable API_URL.
+
+          </div>
+
+        `;
+
+
+        return;
+
+      }
+
+
+      const calculation =
+      calculateResults();
+
+
+      const [
+        s1,
+        s2,
+        s3,
+        s4
+      ] =
+      calculation.results;
+
+
+      const record = {
+
+        participantId:
+        getParticipantId(),
+
+
+        submittedAt:
+        new Date()
+          .toISOString(),
+
+
+        demographics:{
+
+          initials:
+          demographics.initials || "",
+
+          estadoCivil:
+          demographics.estadoCivil || "",
+
+          procedencia:
+          demographics.procedencia || "",
+
+          ocupacion:
+          demographics.ocupacion || "",
+
+          otherOccupation:
+          demographics.otherOccupation || "",
+
+          genero:
+          demographics.genero || "",
+
+          edad:
+          demographics.edad || "",
+
+          ciclo:
+          demographics.ciclo || ""
+
+        },
+
+
+        answers:{
+          ...answers
+        },
+
+
+        scores:{
+
+          s1:{
+            score:s1.score,
+            max:s1.max
+          },
+
+          s2:{
+            score:s2.score,
+            max:s2.max
+          },
+
+          s3:{
+            score:s3.score,
+            max:s3.max
+          },
+
+          s4:{
+            score:s4.score,
+            max:s4.max
+          },
+
+          total:
+          calculation.totalScore,
+
+          totalMax:
+          calculation.totalMax,
+
+          totalPct:
+          Number(
+            calculation.totalPercentage
+              .toFixed(2)
+          )
+
+        }
+
+      };
+
+
+      const button =
+      document.getElementById(
+        "btnSubmit"
+      );
+
+
+      button.disabled = true;
+
+
+      document.getElementById(
+        "submitStatus"
+      ).innerHTML = `
+
+        <div class="status-box">
+
+          Enviando respuesta...
+          Espere unos segundos.
+
+        </div>
+
+      `;
+
+
+      try{
+
+        /*
+          IMPORTANTE:
+
+          Se utiliza text/plain y no application/json
+          para evitar una solicitud CORS preflight.
+
+          no-cors permite que GitHub Pages envíe
+          la información a Apps Script.
+        */
+
+        await fetch(
+          API_URL,
+          {
+
+            method:"POST",
+
+            mode:"no-cors",
+
+            cache:"no-store",
+
+            headers:{
+              "Content-Type":
+              "text/plain;charset=utf-8"
+            },
+
+            body:
+            JSON.stringify(
+              record
+            )
+
+          }
+        );
+
+
+        /*
+          Debido a no-cors el navegador no permite
+          leer la respuesta de Apps Script.
+
+          Por eso la confirmación se muestra después
+          de que la solicitud termina.
+
+          La comprobación definitiva debe hacerse
+          en Google Sheets.
+        */
+
+        document.getElementById(
+          "submitStatus"
+        ).innerHTML = `
+
+          <div
+            class="status-box"
+            style="
+              color:var(--success);
+            ">
+
+            ✓ Respuesta enviada correctamente.
+            Gracias por participar.
+
+          </div>
+
+        `;
+
+
+        localStorage.setItem(
+          "lcu_last_submission_v2",
+          JSON.stringify(record)
+        );
+
+
+      }catch(error){
+
+        console.error(
+          error
+        );
+
+
+        document.getElementById(
+          "submitStatus"
+        ).innerHTML = `
+
+          <div
+            class="status-box"
+            style="
+              color:var(--danger);
+            ">
+
+            ✕ No se pudo enviar la respuesta.
+            Revise la URL /exec de Google Apps Script
+            y la configuración de la implementación.
+
+          </div>
+
+        `;
+
+      }finally{
+
+        button.disabled =
+        false;
+
+      }
+
+    }
+  );
+
+
+/* ==========================================================
+   21. REINICIAR
+========================================================== */
+
+document
+  .getElementById(
+    "btnReset"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      if(
+        confirm(
+          "¿Está seguro de reiniciar todas las respuestas?"
+        )
+      ){
+
+        demographics =
+        {};
+
+        answers =
+        {};
+
+
+        localStorage.removeItem(
+          "lcu_demographics_v2"
+        );
+
+        localStorage.removeItem(
+          "lcu_answers_v2"
+        );
+
+
+        document.getElementById(
+          "results"
+        ).classList.remove(
+          "show"
+        );
+
+
+        document.getElementById(
+          "submitStatus"
+        ).innerHTML = "";
+
+
+        render();
+
+
+        window.scrollTo({
+          top:0,
+          behavior:"smooth"
+        });
+
+      }
+
+    }
+  );
+
+
+/* ==========================================================
+   22. PDF
+========================================================== */
+
+document
+  .getElementById(
+    "btnPrint"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      window.print();
+    }
+  );
+
+
+/* ==========================================================
+   23. GENERAR QR
+========================================================== */
+
+document
+  .getElementById(
+    "btnShowQR"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      const qrSection =
+      document.getElementById(
+        "qrSection"
+      );
+
+
+      const qrContainer =
+      document.getElementById(
+        "qrcode"
+      );
+
+
+      qrContainer.innerHTML =
+      "";
+
+
+      /*
+        window.location.href
+        será la dirección final de
+        GitHub Pages.
+
+        Ejemplo:
+
+        https://roandre1995-del.github.io/encuesta-lcu/
+      */
+
+      const questionnaireURL =
+      window.location.href;
+
+
+      new QRCode(
+        qrContainer,
+        {
+
+          text:
+          questionnaireURL,
+
+          width:256,
+
+          height:256,
+
+          correctLevel:
+          QRCode.CorrectLevel.H
+
+        }
+      );
+
+
+      document.getElementById(
+        "qrUrl"
+      ).textContent =
+      questionnaireURL;
+
+
+      qrSection.style.display =
+      "block";
+
+
+      qrSection.scrollIntoView({
+        behavior:"smooth"
+      });
+
+    }
+  );
+
+
+/* ==========================================================
+   24. INICIAR
+========================================================== */
+
+render();
+
+</script>
+
+</body>
+</html>}
+
+.progress-track{
+  flex:1;
+  height:7px;
+  background:#dfe7e3;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:var(--accent);
+  transition:width .25s ease;
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+main{
+  max-width:920px;
+  margin:auto;
+  padding:2rem 1rem 5rem;
+}
+
+section.block{
+  margin-bottom:2rem;
+}
+
+section.block > h2{
+  font-size:.85rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--accent-dark);
+  border-bottom:2px solid var(--line);
+  padding-bottom:.6rem;
+  margin:0 0 1rem;
+}
+
+.q{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1.2rem;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow);
+}
+
+.q-number{
+  font-size:.75rem;
+  font-weight:bold;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+
+.prompt{
+  margin:0 0 .8rem;
+  font-size:1rem;
+  font-weight:600;
+}
+
+.hint{
+  color:var(--muted);
+  font-size:.78rem;
+  margin:-.3rem 0 .8rem;
+}
+
+/* =========================
+   OPCIONES
+========================= */
+
+.opt{
+  display:flex;
+  align-items:flex-start;
+  gap:.65rem;
+  padding:.65rem;
+  margin:.15rem 0;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.12s;
+}
+
+.opt:hover{
+  background:#f2f6f4;
+}
+
+.opt.checked{
+  background:var(--accent-soft);
+}
+
+.opt input{
+  width:17px;
+  height:17px;
+  margin-top:.2rem;
+  accent-color:var(--accent);
+  flex-shrink:0;
+}
+
+.opt span{
+  font-size:.93rem;
+}
+
+/* =========================
+   DATOS SOCIODEMOGRÁFICOS
+========================= */
+
+.demo-grid{
+  display:grid;
+  grid-template-columns:
+  repeat(2,minmax(0,1fr));
+  gap:1rem;
+}
+
+.demo-item{
+  margin-bottom:.4rem;
+}
+
+.demo-label{
+  display:block;
+  font-size:.82rem;
+  font-weight:bold;
+  margin-bottom:.4rem;
+}
+
+.required{
+  color:var(--danger);
+}
+
+.text-input{
+  width:100%;
+  padding:.75rem;
+  border:1px solid #cbd5d1;
+  border-radius:8px;
+  background:white;
+  font:inherit;
+}
+
+.text-input:focus{
+  outline:2px solid rgba(47,107,91,.15);
+  border-color:var(--accent);
+}
+
+.inline-options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem .5rem;
+}
+
+.inline-options .opt{
+  flex:1 1 180px;
+}
+
+.small-note{
+  color:var(--muted);
+  font-size:.75rem;
+  margin-top:.3rem;
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+.actions{
+  max-width:920px;
+  margin:auto;
+  padding:0 1rem 3rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.7rem;
+}
+
+button{
+  border:1px solid var(--accent-dark);
+  border-radius:8px;
+  padding:.8rem 1.1rem;
+  background:var(--accent-dark);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  filter:brightness(1.07);
+}
+
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+button.secondary{
+  background:white;
+  color:var(--accent-dark);
+}
+
+/* =========================
+   MENSAJE ENVÍO
+========================= */
+
+#submitStatus{
+  max-width:920px;
+  margin:-1.5rem auto 1.5rem;
+  padding:0 1rem;
+  font-size:.9rem;
+  font-weight:bold;
+}
+
+.status-box{
+  padding:.9rem 1rem;
+  border-radius:8px;
+  background:white;
+  border:1px solid var(--line);
+}
+
+/* =========================
+   RESULTADOS
+========================= */
+
+#results{
+  display:none;
+  max-width:920px;
+  margin:0 auto 4rem;
+  padding:0 1rem;
+}
+
+#results.show{
+  display:block;
+}
+
+.card-result{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1.2rem;
+  margin-bottom:.8rem;
+  box-shadow:var(--shadow);
+}
+
+.card-result h3{
+  margin:0 0 .5rem;
+  font-size:.82rem;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+
+.score-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+}
+
+.score-num{
+  font-size:1.5rem;
+}
+
+.score-level{
+  font-size:.8rem;
+  padding:.25rem .65rem;
+  border-radius:20px;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+}
+
+/* =========================
+   QR
+========================= */
+
+#qrSection{
+  max-width:920px;
+  margin:0 auto 4rem;
+  padding:0 1rem;
+}
+
+.qr-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1.5rem;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+#qrcode{
+  margin:1.2rem auto;
+  width:256px;
+  height:256px;
+}
+
+#qrcode img,
+#qrcode canvas{
+  max-width:100%;
+  height:auto;
+}
+
+.qr-url{
+  word-break:break-all;
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+/* =========================
+   MÓVIL
+========================= */
+
+@media(max-width:680px){
+
+  .demo-grid{
+    grid-template-columns:1fr;
+  }
+
+  header{
+    padding:2rem .9rem;
+  }
+
+  main{
+    padding-top:1.3rem;
+  }
+
+  .progress-inner{
+    gap:.5rem;
+  }
+
+  #progressText{
+    min-width:95px;
+    font-size:.7rem;
+  }
+
+  .actions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  button{
+    width:100%;
+  }
+
+  #qrcode{
+    width:220px;
+    height:220px;
+  }
+}
+
+/* =========================
+   IMPRESIÓN
+========================= */
+
+@media print{
+
+  header,
+  .progress-bar,
+  .actions,
+  #submitStatus,
+  #qrSection{
+    display:none!important;
+  }
+
+  body{
+    background:white;
+  }
+
+  .q{
+    box-shadow:none;
+    break-inside:avoid;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     PROGRESO
+========================= -->
+
+<div class="progress-bar">
+
+  <div class="progress-inner">
+
+    <span id="progressText">
+      0 / 32 respondidas
+    </span>
+
+    <div class="progress-track">
+
+      <div
+        class="progress-fill"
+        id="progressFill">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     ENCABEZADO
+========================= -->
+
+<header>
+
+  <div class="wrap">
+
+    <h1>
+      CUESTIONARIO NIVEL DE CONOCIMIENTO Y COMPETENCIAS SOBRE LA EFICACIA DE LA LUZ EMITIDA POR UNIDADES DE FOTOCURADO LED EN ESTUDIANTES DE ESTOMATOLOGIA DE UNA UNIVERSIDAD PRIVADA DE LIMA.
+    </h1>
+
+    <p>
+      Lea cuidadosamente cada pregunta y seleccione la alternativa que corresponda.
+    </p>
+
+    <div class="notice">
+
+      <strong>Indicaciones:</strong>
+
+      Complete todos los datos sociodemográficos y todas las preguntas antes de enviar el cuestionario.
+
+      Las respuestas serán registradas en una base de datos destinada al procesamiento de la investigación.
+
+      En la pregunta 5 deberá seleccionar todas las alternativas que correspondan según las instrucciones específicas indicadas.
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     FORMULARIO
+========================= -->
+
+<main id="surveyForm"></main>
+
+
+<!-- =========================
+     BOTONES
+========================= -->
+
+<div class="actions">
+
+  <button
+    id="btnScore"
+    type="button">
+    Calcular mi resultado
+  </button>
+
+  <button
+    id="btnSubmit"
+    type="button">
+    Enviar respuesta
+  </button>
+
+  <button
+    id="btnReset"
+    class="secondary"
+    type="button">
+    Reiniciar encuesta
+  </button>
+
+  <button
+    id="btnPrint"
+    class="secondary"
+    type="button">
+    Guardar como PDF
+  </button>
+
+  <button
+    id="btnShowQR"
+    class="secondary"
+    type="button">
+    Mostrar código QR
+  </button>
+
+</div>
+
+
+<div id="submitStatus"></div>
+
+
+<!-- =========================
+     RESULTADOS
+========================= -->
+
+<div id="results">
+
+  <div class="card-result">
+
+    <h3>
+      Sección 1 · Conocimiento
+    </h3>
+
+    <div class="score-row">
+
+      <span
+        class="score-num"
+        id="s1score">
+        0 / 6
+      </span>
+
+      <span
+        class="score-level"
+        id="s1level">
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-result">
+
+    <h3>
+      Sección 2 · Práctica clínica
+    </h3>
+
+    <div class="score-row">
+
+      <span
+        class="score-num"
+        id="s2score">
+        0 / 4
+      </span>
+
+      <span
+        class="score-level"
+        id="s2level">
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-result">
+
+    <h3>
+      Sección 3 · Mantenimiento
+    </h3>
+
+    <div class="score-row">
+
+      <span
+        class="score-num"
+        id="s3score">
+        0 / 4
+      </span>
+
+      <span
+        class="score-level"
+        id="s3level">
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-result">
+
+    <h3>
+      Sección 4 · Satisfacción
+    </h3>
+
+    <div class="score-row">
+
+      <span
+        class="score-num"
+        id="s4score">
+        0 / 15
+      </span>
+
+      <span
+        class="score-level"
+        id="s4level">
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-result">
+
+    <h3>
+      Puntaje global
+    </h3>
+
+    <div class="score-row">
+
+      <span
+        class="score-num"
+        id="totalScore">
+        0 / 29 (0%)
+      </span>
+
+      <span
+        class="score-level"
+        id="totalLevel">
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-result">
+
+    <h3>
+      Resumen
+    </h3>
+
+    <div id="printSummary"></div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     QR
+========================= -->
+
+<div
+  id="qrSection"
+  style="display:none;">
+
+  <div class="qr-card">
+
+    <h3>
+      CÓDIGO QR DEL CUESTIONARIO
+    </h3>
+
+    <p>
+      Escanee este código con cualquier teléfono móvil para abrir directamente el cuestionario.
+    </p>
+
+    <div id="qrcode"></div>
+
+    <div
+      class="qr-url"
+      id="qrUrl">
+    </div>
+
+    <br>
+
+    <button
+      type="button"
+      onclick="window.print()">
+      Imprimir QR
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   1. CONFIGURACIÓN DE GOOGLE APPS SCRIPT
+   ==========================================================
+
+   IMPORTANTE:
+   Reemplace únicamente la URL que aparece dentro de las
+   comillas por la URL /exec de su aplicación web.
+
+   Ejemplo:
+
+   const API_URL =
+   "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
+
+========================================================== */
+
+const API_URL =
 "PEGAR_AQUI_URL_DE_APPS_SCRIPT_EXEC";
 
 
