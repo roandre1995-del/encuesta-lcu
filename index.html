@@ -1,6782 +1,3873 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="description"
-content="Cuestionario sobre el nivel de conocimiento y competencias sobre la eficacia de la luz emitida por unidades de fotocurado LED.">
-
-<title>Cuestionario LCU LED</title>
-
-<!-- Librería para generar QR -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-<style>
-
-:root{
-  --ink:#1c2b2d;
-  --paper:#f5f7f6;
-  --panel:#ffffff;
-  --line:#d7dfdc;
-  --accent:#2f6b5b;
-  --accent-dark:#214d41;
-  --accent-soft:#e8f1ed;
-  --muted:#65716d;
-  --danger:#a33b3b;
-  --success:#27654f;
-  --shadow:0 5px 18px rgba(0,0,0,.06);
-}
-
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:Arial,Helvetica,sans-serif;
-  line-height:1.55;
-}
-
-/* =========================
-   ENCABEZADO
-========================= */
-
-header{
-  background:linear-gradient(
-    135deg,
-    var(--accent-dark),
-    #326b5b
-  );
-  color:white;
-  padding:2.5rem 1rem 2.2rem;
-}
-
-.wrap{
-  max-width:920px;
-  margin:auto;
-}
-
-header h1{
-  margin:0 0 1rem;
-  font-size:clamp(
-    1.2rem,
-    2.5vw,
-    1.8rem
-  );
-  line-height:1.35;
-  font-weight:700;
-  text-transform:uppercase;
-}
-
-header p{
-  margin:.5rem 0;
-  color:#e6eeea;
-  font-size:.95rem;
-}
-
-.notice{
-  margin-top:1rem;
-  padding:1rem;
-  border:1px solid rgba(255,255,255,.25);
-  background:rgba(255,255,255,.08);
-  border-radius:10px;
-  font-size:.85rem;
-}
-
-/* =========================
-   BARRA DE PROGRESO
-========================= */
-
-.progress-bar{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(245,247,246,.97);
-  backdrop-filter:blur(6px);
-  border-bottom:1px solid var(--line);
-  padding:.65rem 1rem;
-}
-
-.progress-inner{
-  max-width:920px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  gap:.8rem;
-}
-
-#progressText{
-  min-width:115px;
-  font-size:.8rem;
-  color:var(--muted);
-  font-weight:bold;
-}
-
-.progress-track{
-  flex:1;
-  height:7px;
-  background:#dfe7e3;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.progress-fill{
-  height:100%;
-  width:0%;
-  background:var(--accent);
-  transition:width .25s ease;
-}
-
-/* =========================
-   CONTENIDO
-========================= */
-
-main{
-  max-width:920px;
-  margin:auto;
-  padding:2rem 1rem 5rem;
-}
-
-section.block{
-  margin-bottom:2rem;
-}
-
-section.block > h2{
-  font-size:.85rem;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  color:var(--accent-dark);
-  border-bottom:2px solid var(--line);
-  padding-bottom:.6rem;
-  margin:0 0 1rem;
-}
-
-.q{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:1.2rem;
-  margin-bottom:1rem;
-  box-shadow:var(--shadow);
-}
-
-.q-number{
-  font-size:.75rem;
-  font-weight:bold;
-  color:var(--accent);
-  text-transform:uppercase;
-  margin-bottom:.4rem;
-}
-
-.prompt{
-  margin:0 0 .8rem;
-  font-size:1rem;
-  font-weight:600;
-}
-
-.hint{
-  color:var(--muted);
-  font-size:.78rem;
-  margin:-.3rem 0 .8rem;
-}
-
-/* =========================
-   OPCIONES
-========================= */
-
-.opt{
-  display:flex;
-  align-items:flex-start;
-  gap:.65rem;
-  padding:.65rem;
-  margin:.15rem 0;
-  border-radius:8px;
-  cursor:pointer;
-  transition:.12s;
-}
-
-.opt:hover{
-  background:#f2f6f4;
-}
-
-.opt.checked{
-  background:var(--accent-soft);
-}
-
-.opt input{
-  width:17px;
-  height:17px;
-  margin-top:.2rem;
-  accent-color:var(--accent);
-  flex-shrink:0;
-}
-
-.opt span{
-  font-size:.93rem;
-}
-
-/* =========================
-   DATOS SOCIODEMOGRÁFICOS
-========================= */
-
-.demo-grid{
-  display:grid;
-  grid-template-columns:
-  repeat(2,minmax(0,1fr));
-  gap:1rem;
-}
-
-.demo-item{
-  margin-bottom:.4rem;
-}
-
-.demo-label{
-  display:block;
-  font-size:.82rem;
-  font-weight:bold;
-  margin-bottom:.4rem;
-}
-
-.required{
-  color:var(--danger);
-}
-
-.text-input{
-  width:100%;
-  padding:.75rem;
-  border:1px solid #cbd5d1;
-  border-radius:8px;
-  background:white;
-  font:inherit;
-}
-
-.text-input:focus{
-  outline:2px solid rgba(47,107,91,.15);
-  border-color:var(--accent);
-}
-
-.inline-options{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.3rem .5rem;
-}
-
-.inline-options .opt{
-  flex:1 1 180px;
-}
-
-.small-note{
-  color:var(--muted);
-  font-size:.75rem;
-  margin-top:.3rem;
-}
-
-/* =========================
-   BOTONES
-========================= */
-
-.actions{
-  max-width:920px;
-  margin:auto;
-  padding:0 1rem 3rem;
-  display:flex;
-  flex-wrap:wrap;
-  gap:.7rem;
-}
-
-button{
-  border:1px solid var(--accent-dark);
-  border-radius:8px;
-  padding:.8rem 1.1rem;
-  background:var(--accent-dark);
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{
-  filter:brightness(1.07);
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-button.secondary{
-  background:white;
-  color:var(--accent-dark);
-}
-
-/* =========================
-   MENSAJE ENVÍO
-========================= */
-
-#submitStatus{
-  max-width:920px;
-  margin:-1.5rem auto 1.5rem;
-  padding:0 1rem;
-  font-size:.9rem;
-  font-weight:bold;
-}
-
-.status-box{
-  padding:.9rem 1rem;
-  border-radius:8px;
-  background:white;
-  border:1px solid var(--line);
-}
-
-/* =========================
-   RESULTADOS
-========================= */
-
-#results{
-  display:none;
-  max-width:920px;
-  margin:0 auto 4rem;
-  padding:0 1rem;
-}
-
-#results.show{
-  display:block;
-}
-
-.card-result{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:1.2rem;
-  margin-bottom:.8rem;
-  box-shadow:var(--shadow);
-}
-
-.card-result h3{
-  margin:0 0 .5rem;
-  font-size:.82rem;
-  text-transform:uppercase;
-  color:var(--accent);
-}
-
-.score-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:1rem;
-}
-
-.score-num{
-  font-size:1.5rem;
-}
-
-.score-level{
-  font-size:.8rem;
-  padding:.25rem .65rem;
-  border-radius:20px;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-}
-
-/* =========================
-   QR
-========================= */
-
-#qrSection{
-  max-width:920px;
-  margin:0 auto 4rem;
-  padding:0 1rem;
-}
-
-.qr-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:1.5rem;
-  text-align:center;
-  box-shadow:var(--shadow);
-}
-
-#qrcode{
-  margin:1.2rem auto;
-  width:256px;
-  height:256px;
-}
-
-#qrcode img,
-#qrcode canvas{
-  max-width:100%;
-  height:auto;
-}
-
-.qr-url{
-  word-break:break-all;
-  color:var(--muted);
-  font-size:.78rem;
-}
-
-/* =========================
-   MÓVIL
-========================= */
-
-@media(max-width:680px){
-
-  .demo-grid{
-    grid-template-columns:1fr;
-  }
-
-  header{
-    padding:2rem .9rem;
-  }
-
-  main{
-    padding-top:1.3rem;
-  }
-
-  .progress-inner{
-    gap:.5rem;
-  }
-
-  #progressText{
-    min-width:95px;
-    font-size:.7rem;
-  }
-
-  .actions{
-    display:grid;
-    grid-template-columns:1fr;
-  }
-
-  button{
-    width:100%;
-  }
-
-  #qrcode{
-    width:220px;
-    height:220px;
-  }
-}
-
-/* =========================
-   IMPRESIÓN
-========================= */
-
-@media print{
-
-  header,
-  .progress-bar,
-  .actions,
-  #submitStatus,
-  #qrSection{
-    display:none!important;
-  }
-
-  body{
-    background:white;
-  }
-
-  .q{
-    box-shadow:none;
-    break-inside:avoid;
-  }
-}
-
-</style>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Cuestionario sobre el nivel de conocimiento y competencias sobre la eficacia de la luz emitida por unidades de fotocurado LED en estudiantes de Estomatología."
+  >
+
+  <title>
+    Cuestionario LCU LED - Estomatología
+  </title>
+
+  <style>
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    :root {
+      --primary: #0b5ed7;
+      --primary-dark: #084298;
+      --secondary: #198754;
+      --danger: #dc3545;
+      --warning: #ffc107;
+
+      --background: #f3f6fa;
+      --card: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --border: #dee2e6;
+
+      --shadow:
+        0 8px 25px rgba(0, 0, 0, 0.08);
+
+      --radius: 14px;
+    }
+
+    /* =========================================================
+       RESET
+    ========================================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    /* =========================================================
+       CONTENEDOR PRINCIPAL
+    ========================================================= */
+
+    .container {
+      width: min(100% - 30px, 1050px);
+      margin: 25px auto 50px;
+    }
+
+    /* =========================================================
+       ENCABEZADO
+    ========================================================= */
+
+    .header {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 20px;
+      border-top: 6px solid var(--primary);
+    }
+
+    .header h1 {
+      margin: 0;
+      text-align: center;
+      color: var(--primary-dark);
+      font-size: clamp(20px, 3vw, 30px);
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .header-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin: 15px auto 0;
+      max-width: 850px;
+      font-size: 15px;
+    }
+
+    /* =========================================================
+       BARRA DE PROGRESO
+    ========================================================= */
+
+    .progress-container {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(243, 246, 250, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 10px 0;
+      margin-bottom: 15px;
+    }
+
+    .progress-box {
+      width: min(100%, 1050px);
+      margin: auto;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 9px;
+      width: 100%;
+      background: #e9ecef;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    /* =========================================================
+       SECCIONES
+    ========================================================= */
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .section-title {
+      margin: 0;
+      padding: 17px 22px;
+      background: var(--primary);
+      color: white;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .section-description {
+      padding: 15px 22px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section-content {
+      padding: 20px 22px 25px;
+    }
+
+    /* =========================================================
+       DATOS SOCIODEMOGRÁFICOS
+    ========================================================= */
+
+    .demographic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .required {
+      color: var(--danger);
+    }
+
+    .field input[type="text"],
+    .field input[type="number"] {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      background: white;
+      transition: 0.2s;
+    }
+
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow:
+        0 0 0 3px rgba(11, 94, 215, 0.12);
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    /* =========================================================
+       RADIO / CHECKBOX
+    ========================================================= */
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background: #f8fbff;
+    }
+
+    .option input {
+      margin-top: 4px;
+      flex: 0 0 auto;
+    }
+
+    .option span {
+      font-size: 14px;
+    }
+
+    /* =========================================================
+       PREGUNTAS
+    ========================================================= */
+
+    .question {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+
+    .question:last-child {
+      margin-bottom: 0;
+    }
+
+    .question-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      padding: 0 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .question-text {
+      display: inline;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .question-instruction {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 9px 0 12px;
+      font-style: italic;
+    }
+
+    /* =========================================================
+       BOTONES
+    ========================================================= */
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 22px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-success {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-light {
+      background: #f1f3f5;
+      color: #212529;
+    }
+
+    /* =========================================================
+       RESULTADOS
+    ========================================================= */
+
+    #resultSection {
+      display: none;
+    }
+
+    .result-card {
+      text-align: center;
+      padding: 25px;
+    }
+
+    .score-circle {
+      width: 150px;
+      height: 150px;
+      margin: 10px auto 20px;
+      border-radius: 50%;
+      border: 10px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+    }
+
+    .score-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+
+    .score-total {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .classification {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .result-note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .result-breakdown {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .breakdown-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .breakdown-title {
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .breakdown-score {
+      font-size: 20px;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* =========================================================
+       QR
+    ========================================================= */
+
+    .qr-section {
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .qr-section h3 {
+      margin-top: 0;
+    }
+
+    #qrImage {
+      width: 230px;
+      height: 230px;
+      max-width: 80vw;
+      border: 10px solid white;
+      box-shadow: 0 3px 12px rgba(0,0,0,.12);
+      border-radius: 10px;
+      display: block;
+      margin: 15px auto;
+    }
+
+    .qr-url {
+      word-break: break-all;
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 700px;
+      margin: auto;
+    }
+
+    /* =========================================================
+       ALERTAS
+    ========================================================= */
+
+    .alert {
+      display: none;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+
+    .alert-success {
+      background: #d1e7dd;
+      color: #0f5132;
+      border: 1px solid #badbcc;
+    }
+
+    .alert-danger {
+      background: #f8d7da;
+      color: #842029;
+      border: 1px solid #f5c2c7;
+    }
+
+    .alert-warning {
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+    }
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 20px 10px;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 700px) {
+
+      .container {
+        width: min(100% - 16px, 1050px);
+        margin-top: 10px;
+      }
+
+      .header {
+        padding: 20px 15px;
+      }
+
+      .header h1 {
+        font-size: 19px;
+      }
+
+      .section-title {
+        font-size: 17px;
+        padding: 15px;
+      }
+
+      .section-content {
+        padding: 15px;
+      }
+
+      .demographic-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .question {
+        padding: 14px;
+      }
+
+      .question-text {
+        font-size: 14px;
+      }
+
+      .result-breakdown {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media print {
+
+      body {
+        background: white;
+      }
+
+      .progress-container,
+      .actions,
+      #questionnaire,
+      .footer {
+        display: none !important;
+      }
+
+      #resultSection {
+        display: block !important;
+        box-shadow: none;
+      }
+
+      .header {
+        box-shadow: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- =========================
-     PROGRESO
-========================= -->
+  <!-- =======================================================
+       BARRA DE PROGRESO
+  ======================================================== -->
 
-<div class="progress-bar">
+  <div class="progress-container">
+    <div class="progress-box">
 
-  <div class="progress-inner">
+      <div class="progress-label">
+        <span id="progressText">
+          Progreso: 0%
+        </span>
 
-    <span id="progressText">
-      0 / 32 respondidas
-    </span>
+        <span id="answeredText">
+          0 de 32 campos
+        </span>
+      </div>
 
-    <div class="progress-track">
-
-      <div
-        class="progress-fill"
-        id="progressFill">
+      <div class="progress-bar">
+        <div
+          id="progressFill"
+          class="progress-fill"
+        ></div>
       </div>
 
     </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     ENCABEZADO
-========================= -->
-
-<header>
-
-  <div class="wrap">
-
-    <h1>
-      CUESTIONARIO NIVEL DE CONOCIMIENTO Y COMPETENCIAS SOBRE LA EFICACIA DE LA LUZ EMITIDA POR UNIDADES DE FOTOCURADO LED EN ESTUDIANTES DE ESTOMATOLOGIA DE UNA UNIVERSIDAD PRIVADA DE LIMA.
-    </h1>
-
-    <p>
-      Lea cuidadosamente cada pregunta y seleccione la alternativa que corresponda.
-    </p>
-
-    <div class="notice">
-
-      <strong>Indicaciones:</strong>
-
-      Complete todos los datos sociodemográficos y todas las preguntas antes de enviar el cuestionario.
-
-      Las respuestas serán registradas en una base de datos destinada al procesamiento de la investigación.
-
-      En la pregunta 5 deberá seleccionar todas las alternativas que correspondan según las instrucciones específicas indicadas.
-
-    </div>
-
-  </div>
-
-</header>
-
-
-<!-- =========================
-     FORMULARIO
-========================= -->
-
-<main id="surveyForm"></main>
-
-
-<!-- =========================
-     BOTONES
-========================= -->
-
-<div class="actions">
-
-  <button
-    id="btnScore"
-    type="button">
-    Calcular mi resultado
-  </button>
-
-  <button
-    id="btnSubmit"
-    type="button">
-    Enviar respuesta
-  </button>
-
-  <button
-    id="btnReset"
-    class="secondary"
-    type="button">
-    Reiniciar encuesta
-  </button>
-
-  <button
-    id="btnPrint"
-    class="secondary"
-    type="button">
-    Guardar como PDF
-  </button>
-
-  <button
-    id="btnShowQR"
-    class="secondary"
-    type="button">
-    Mostrar código QR
-  </button>
-
-</div>
-
-
-<div id="submitStatus"></div>
-
-
-<!-- =========================
-     RESULTADOS
-========================= -->
-
-<div id="results">
-
-  <div class="card-result">
-
-    <h3>
-      Sección 1 · Conocimiento
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s1score">
-        0 / 6
-      </span>
-
-      <span
-        class="score-level"
-        id="s1level">
-        —
-      </span>
-
-    </div>
-
   </div>
 
 
-  <div class="card-result">
+  <main class="container">
 
-    <h3>
-      Sección 2 · Práctica clínica
-    </h3>
+    <!-- =====================================================
+         ENCABEZADO
+    ====================================================== -->
 
-    <div class="score-row">
+    <header class="header">
 
-      <span
-        class="score-num"
-        id="s2score">
-        0 / 4
-      </span>
+      <h1>
+        CUESTIONARIO NIVEL DE CONOCIMIENTO Y COMPETENCIAS SOBRE LA EFICACIA DE LA LUZ EMITIDA POR UNIDADES DE FOTOCURADO LED EN ESTUDIANTES DE ESTOMATOLOGIA DE UNA UNIVERSIDAD PRIVADA DE LIMA.
+      </h1>
 
-      <span
-        class="score-level"
-        id="s2level">
-        —
-      </span>
+      <p class="header-subtitle">
+        Complete todos los campos y preguntas del cuestionario.
+        La información será registrada para fines de investigación.
+      </p>
 
-    </div>
-
-  </div>
+    </header>
 
 
-  <div class="card-result">
-
-    <h3>
-      Sección 3 · Mantenimiento
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s3score">
-        0 / 4
-      </span>
-
-      <span
-        class="score-level"
-        id="s3level">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Sección 4 · Satisfacción
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s4score">
-        0 / 15
-      </span>
-
-      <span
-        class="score-level"
-        id="s4level">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Puntaje global
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="totalScore">
-        0 / 29 (0%)
-      </span>
-
-      <span
-        class="score-level"
-        id="totalLevel">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Resumen
-    </h3>
-
-    <div id="printSummary"></div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     QR
-========================= -->
-
-<div
-  id="qrSection"
-  style="display:none;">
-
-  <div class="qr-card">
-
-    <h3>
-      CÓDIGO QR DEL CUESTIONARIO
-    </h3>
-
-    <p>
-      Escanee este código con cualquier teléfono móvil para abrir directamente el cuestionario.
-    </p>
-
-    <div id="qrcode"></div>
+    <!-- =====================================================
+         ALERTAS
+    ====================================================== -->
 
     <div
-      class="qr-url"
-      id="qrUrl">
-    </div>
+      id="alertSuccess"
+      class="alert alert-success"
+    ></div>
 
-    <br>
+    <div
+      id="alertDanger"
+      class="alert alert-danger"
+    ></div>
 
-    <button
-      type="button"
-      onclick="window.print()">
-      Imprimir QR
-    </button>
+    <div
+      id="alertWarning"
+      class="alert alert-warning"
+    ></div>
 
-  </div>
 
-</div>
+    <!-- =====================================================
+         FORMULARIO
+    ====================================================== -->
 
+    <form
+      id="questionnaire"
+      novalidate
+    >
 
-<script>
+      <!-- ===================================================
+           DATOS SOCIODEMOGRÁFICOS
+      ==================================================== -->
 
-/* ==========================================================
-   1. CONFIGURACIÓN DE GOOGLE APPS SCRIPT
-   ==========================================================
+      <section class="section">
 
-   IMPORTANTE:
-   Reemplace únicamente la URL que aparece dentro de las
-   comillas por la URL /exec de su aplicación web.
+        <h2 class="section-title">
+          DATOS SOCIODEMOGRÁFICOS
+        </h2>
 
-   Ejemplo:
+        <div class="section-content">
 
-   const API_URL =
-   "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
+          <div class="demographic-grid">
 
-========================================================== */
+            <!-- SIGLAS -->
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzTchEMvfgTyhY18UWuRn9Pfj0HrkiWvIpOqY-NuUeMdIizVuFGdR142424bEY-tnwXyQ/exec";
+            <div class="field full">
 
+              <label for="siglas">
+                SIGLAS DE SUS NOMBRES Y APELLIDOS
+                <span class="required">*</span>
+              </label>
 
-/* ==========================================================
-   2. DATOS SOCIODEMOGRÁFICOS
-========================================================== */
-
-const DEMO_FIELDS = [
-
-  {
-    id:"initials",
-    label:"SIGLAS DE SUS NOMBRES Y APELLIDOS",
-    type:"text",
-    required:true
-  },
-
-  {
-    id:"estadoCivil",
-    label:"Estado Civil",
-    type:"single",
-    options:[
-      "Soltero",
-      "Casado",
-      "Conviviente",
-      "Viudo",
-      "Divorciado"
-    ],
-    required:true
-  },
-
-  {
-    id:"procedencia",
-    label:"Lugar de Procedencia",
-    type:"single",
-    options:[
-      "Capital - Lima",
-      "Provincia"
-    ],
-    required:true
-  },
-
-  {
-    id:"ocupacion",
-    label:"Ocupación",
-    type:"single",
-    options:[
-      "Solo Estudia",
-      "Trabaja y Estudia",
-      "Otros"
-    ],
-    required:true
-  },
-
-  {
-    id:"genero",
-    label:"Género",
-    type:"single",
-    options:[
-      "Masculino",
-      "Femenino"
-    ],
-    required:true
-  },
-
-  {
-    id:"edad",
-    label:"Edad",
-    type:"single",
-    options:[
-      "18 – 25 años",
-      "25 – 30 años",
-      "30 a más"
-    ],
-    required:true
-  },
-
-  {
-    id:"ciclo",
-    label:"Ciclo en curso",
-    type:"single",
-    options:[
-      "3 CICLO – 4 CICLO",
-      "5 CICLO – 6 CICLO",
-      "7 CICLO – 10 CICLO"
-    ],
-    required:true
-  }
-
-];
-
-
-/* ==========================================================
-   3. RECUPERACIÓN LOCAL
-========================================================== */
-
-let demographics =
-JSON.parse(
-  localStorage.getItem(
-    "lcu_demographics_v2"
-  ) || "{}"
-);
-
-let answers =
-JSON.parse(
-  localStorage.getItem(
-    "lcu_answers_v2"
-  ) || "{}"
-);
-
-
-/* ==========================================================
-   4. PREGUNTAS
-========================================================== */
-
-const SECTIONS = [
-
-/* ==========================================================
-   SECCIÓN 1
-========================================================== */
-
-{
-  id:"s1",
-
-  title:
-  "Sección 1 — Conocimiento sobre LCUs y ciencia de los materiales",
-
-  questions:[
-
-    {
-      id:"q1",
-      type:"single",
-
-      prompt:
-      "¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q2",
-      type:"single",
-
-      prompt:
-      "¿Sabe si su unidad de fotocurado (LCU) tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q3",
-      type:"single",
-
-      prompt:
-      "¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q4",
-      type:"single",
-
-      prompt:
-      "¿Con qué frecuencia utiliza la LCU y materiales activados por luz en su práctica clínica?",
-
-      options:[
-        "Diariamente",
-        "Semanalmente",
-        "Raramente",
-        "Nunca"
-      ],
-
-      scored:false
-    },
-
-
-    /* ======================================================
-       PREGUNTA 5
-       TODAS LAS ALTERNATIVAS ORIGINALES SE CONSERVAN
-    ====================================================== */
-
-    {
-      id:"q5",
-
-      type:"multi",
-
-      prompt:
-      "¿Cuál de los siguientes puede asociarse con una exposición radiante insuficiente (polimerización inadecuada)?",
-
-      hint:
-      "Seleccione todas las que correspondan. Para obtener 1 punto, debe marcar las nueve alternativas individuales correctas o, en su defecto, únicamente la alternativa «TODAS LAS ANTERIORES». Si no marca todas las respuestas correctas, la puntuación será 0. Si marca «TODAS LAS ANTERIORES» junto con cualquier otra alternativa, la puntuación también será 0.",
-
-      options:[
-
-        "Bajas propiedades mecánicas",
-
-        "Baja estabilidad de color",
-
-        "Mayor colonización bacteriana",
-
-        "Reacciones tóxicas",
-
-        "Reacciones alérgicas",
-
-        "Caries secundaria",
-
-        "Filtración marginal",
-
-        "Alteración de color marginal",
-
-        "Sensibilidad dental",
-
-        "TODAS LAS ANTERIORES"
-
-      ],
-
-      scored:true
-    },
-
-
-    {
-      id:"q6",
-      type:"single",
-
-      prompt:
-      "¿Cuál es la irradiancia mínima requerida para una polimerización adecuada de compuestos de 2 mm de espesor en 40 segundos?",
-
-      options:[
-        "100-300 mW/cm²",
-        "300-500 mW/cm²",
-        ">500 mW/cm²",
-        "No estoy seguro"
-      ],
-
-      correct:1,
-      scored:true
-    },
-
-
-    {
-      id:"q7",
-      type:"single",
-
-      prompt:
-      "¿Cuál es la técnica de control de infecciones que tiene el menor efecto negativo en las puntas de fotocurado?",
-
-      options:[
-        "Autoclave",
-        "Solución desinfectante",
-        "Barrera transparente",
-        "No estoy seguro"
-      ],
-
-      correct:2,
-      scored:true
-    },
-
-
-    {
-      id:"q8",
-      type:"multi",
-
-      prompt:
-      "¿Cuál(es) es/son su(s) fuente(s) de información sobre las LCU y los materiales activados por luz?",
-
-      hint:
-      "Seleccione todas las que correspondan",
-
-      options:[
-
-        "Libros de texto",
-
-        "Revistas científicas",
-
-        "Conferencias en el currículo de pregrado",
-
-        "Conferencias en el currículo de posgrado",
-
-        "Conferencias de educación continua (incluyendo congresos)",
-
-        "Folletos de fabricantes",
-
-        "Internet y redes sociales"
-
-      ],
-
-      scored:false
-    }
-
-  ]
-},
-
-
-/* ==========================================================
-   SECCIÓN 2
-========================================================== */
-
-{
-  id:"s2",
-
-  title:
-  "Sección 2 — Práctica clínica relacionada con LCUs (competencia clínica)",
-
-  questions:[
-
-    {
-      id:"q9",
-      type:"single",
-
-      prompt:
-      "¿Qué tipo de LCU está utilizando?",
-
-      options:[
-
-        "Luces de cuarzo-tungsteno-halógeno (QTH)",
-
-        "Luces de arco de plasma (PAC)",
-
-        "Láseres de iones de argón",
-
-        "Diodos emisores de luz (LED)",
-
-        "No estoy seguro"
-
-      ],
-
-      scored:false
-    },
-
-
-    {
-      id:"q10",
-      type:"single",
-
-      prompt:
-      "¿Qué modo de curado utiliza para polimerizar su restauración?",
-
-      options:[
-
-        "Inicio suave (Soft start)",
-
-        "Curado rápido (Fast cure)",
-
-        "Modo convencional",
-
-        "No reviso el modo de curado en mi dispositivo"
-
-      ],
-
-      scored:false
-    },
-
-
-    {
-      id:"q11",
-      type:"single",
-
-      prompt:
-      "¿Cuánto tiempo fotocura una restauración de resina compuesta?",
-
-      options:[
-
-        "10 segundos por cada incremento de 2 mm",
-
-        "20 segundos por cada incremento de 2 mm",
-
-        "40 segundos por cada incremento de 2 mm",
-
-        "60 segundos para la restauración completa"
-
-      ],
-
-      correct:1,
-      scored:true
-    },
-
-
-    {
-      id:"q12",
-      type:"single",
-
-      prompt:
-      "La ubicación y morfología del diente pueden afectar la posición entre la punta de la LCU y la superficie de la resina. El dentista siempre debe aspirar a:",
-
-      options:[
-
-        "Mantener la punta lo más cerca posible de la superficie de la restauración",
-
-        "Mantener la punta hasta a 10 mm",
-
-        "Posicionar la punta a un ángulo de 45 grados",
-
-        "Posicionar la punta a un ángulo de 90 grados"
-
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q13",
-      type:"single",
-
-      prompt:
-      "Para aumentar la exposición radiante total durante el curado de su restauración, podría necesitar:",
-
-      options:[
-
-        "Almacenar el material de resina en un refrigerador antes de la aplicación clínica",
-
-        "Aumentar el tiempo de curado más allá de la recomendación del fabricante",
-
-        "Elegir un tono de resina más oscuro"
-
-      ],
-
-      correct:1,
-      scored:true
-    },
-
-
-    {
-      id:"q14",
-      type:"single",
-
-      prompt:
-      "¿Qué utiliza principalmente para proteger sus ojos de los riesgos de la «luz azul»?",
-
-      options:[
-
-        "Escudo de luz montado en la LCU",
-
-        "Escudo de luz manual",
-
-        "Gafas protectoras naranjas",
-
-        "Mi asistente realiza el curado",
-
-        "Miro hacia otro lado"
-
-      ],
-
-      correct:2,
-      scored:true
-    }
-
-  ]
-},
-
-
-/* ==========================================================
-   SECCIÓN 3
-========================================================== */
-
-{
-  id:"s3",
-
-  title:
-  "Sección 3 — Mantenimiento y control de la unidad de fotocurado (LCU)",
-
-  questions:[
-
-    {
-      id:"q15",
-      type:"single",
-
-      prompt:
-      "¿Conoce la vida útil esperada de su unidad de fotocurado?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q16",
-      type:"single",
-
-      prompt:
-      "¿Inspecciona, limpia y revisa su LCU antes de usarla para asegurarse de que esté libre de defectos y residuos y que esté en la configuración correcta?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q17",
-      type:"single",
-
-      prompt:
-      "¿Controla el mantenimiento de su unidad de fotocurado y sigue las recomendaciones de mantenimiento del fabricante?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q18",
-      type:"single",
-
-      prompt:
-      "¿Con qué frecuencia realiza el mantenimiento de su dispositivo?",
-
-      options:[
-
-        "1–3 meses",
-
-        "3–6 meses",
-
-        "6–12 meses",
-
-        "12 meses",
-
-        "No realizo mantenimiento a mi dispositivo"
-
-      ],
-
-      scored:false
-    },
-
-
-    {
-      id:"q19",
-      type:"single",
-
-      prompt:
-      "¿Utiliza un radiómetro dental para controlar la irradiancia de su LCU?",
-
-      options:[
-
-        "Sí",
-
-        "No",
-
-        "No estoy familiarizado con este dispositivo"
-
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q20",
-      type:"single",
-
-      prompt:
-      "¿Con qué frecuencia revisa el nivel de irradiancia (potencia de salida) de su dispositivo?",
-
-      options:[
-
-        "1–3 meses",
-
-        "3–6 meses",
-
-        "6–12 meses",
-
-        "12 meses",
-
-        "No realizo mantenimiento a mi dispositivo"
-
-      ],
-
-      scored:false
-    }
-
-  ]
-},
-
-
-/* ==========================================================
-   SECCIÓN 4
-========================================================== */
-
-{
-  id:"s4",
-
-  title:
-  "Sección 4 — Nivel de satisfacción con la LCU y la ciencia de los materiales",
-
-  questions:[
-
-    {
-      id:"q21",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con su unidad de fotocurado?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q22",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con su nivel de conocimiento sobre las LCU y los materiales activados por luz?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q23",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con su práctica clínica respecto a la aplicación de la LCU y los materiales activados por luz?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q24",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con el nivel de formación en los programas de odontología respecto a la práctica clínica de las LCU?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q25",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con los cursos de educación continua ofrecidos relacionados con la LCU y su práctica clínica?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    }
-
-  ]
-}];
-
-
-/* ==========================================================
-   5. FUNCIONES GENERALES
-========================================================== */
-
-const form =
-document.getElementById("surveyForm");
-
-
-function esc(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* ==========================================================
-   6. RENDERIZAR FORMULARIO
-========================================================== */
-
-function render(){
-
-  form.innerHTML = "";
-
-
-  /* =========================
-     DATOS SOCIODEMOGRÁFICOS
-  ========================= */
-
-  const demoSection =
-  document.createElement("section");
-
-  demoSection.className =
-  "block";
-
-
-  let demoHTML = `
-    <h2>
-      Datos sociodemográficos
-    </h2>
-
-    <div class="q">
-
-      <div class="demo-grid">
-  `;
-
-
-  demoHTML += `
-
-    <div class="demo-item">
-
-      <label
-        class="demo-label"
-        for="initials">
-
-        SIGLAS DE SUS NOMBRES Y APELLIDOS
-        <span class="required">*</span>
-
-      </label>
-
-      <input
-        class="text-input"
-        id="initials"
-        maxlength="10"
-        autocomplete="off"
-        placeholder="Ejemplo: GGRP"
-        value="${esc(demographics.initials || "")}">
-
-      <div class="small-note">
-        Ejemplo: GGRP
-      </div>
-
-    </div>
-
-  `;
-
-
-  for(
-    const field
-    of DEMO_FIELDS.slice(1)
-  ){
-
-    demoHTML += `
-
-      <div class="demo-item">
-
-        <label class="demo-label">
-
-          ${esc(field.label)}
-
-          <span class="required">*</span>
-
-        </label>
-
-        <div class="inline-options">
-
-    `;
-
-
-    field.options.forEach(
-      (opt,i)=>{
-
-        const checked =
-        demographics[field.id] === opt;
-
-
-        demoHTML += `
-
-          <label
-            class="opt ${checked ? "checked" : ""}">
-
-            <input
-              type="radio"
-              name="demo_${field.id}"
-              value="${esc(opt)}"
-              ${checked ? "checked" : ""}>
-
-            <span>
-              ${esc(opt)}
-            </span>
-
-          </label>
-
-        `;
-
-      }
-    );
-
-
-    demoHTML += `
-        </div>
-    `;
-
-
-    if(
-      field.id === "ocupacion"
-    ){
-
-      demoHTML += `
-
-        <div
-          id="otherOccupationWrap"
-          style="
-          display:
-          ${demographics.ocupacion === "Otros"
-            ? "block"
-            : "none"};
-          margin-top:.55rem;">
-
-          <input
-            class="text-input"
-            id="otherOccupation"
-            maxlength="100"
-            placeholder="Especifique otra ocupación"
-            value="${esc(
-              demographics.otherOccupation || ""
-            )}">
-
-        </div>
-
-      `;
-
-    }
-
-
-    demoHTML += `
-      </div>
-    `;
-
-  }
-
-
-  demoHTML += `
-      </div>
-    </div>
-  `;
-
-
-  demoSection.innerHTML =
-  demoHTML;
-
-  form.appendChild(
-    demoSection
-  );
-
-
-  /* =========================
-     PREGUNTAS
-  ========================= */
-
-  SECTIONS.forEach(
-    section=>{
-
-      const sectionElement =
-      document.createElement("section");
-
-      sectionElement.className =
-      "block";
-
-
-      sectionElement.innerHTML =
-      `<h2>
-        ${esc(section.title)}
-      </h2>`;
-
-
-      section.questions.forEach(
-        question=>{
-
-          const questionElement =
-          document.createElement("div");
-
-          questionElement.className =
-          "q";
-
-
-          let html = `
-
-            <div class="q-number">
-
-              ${esc(
-                question.id.toUpperCase()
-              )}
+              <input
+                type="text"
+                id="siglas"
+                name="siglas"
+                placeholder="Ejemplo: GGRP"
+                maxlength="20"
+                required
+              >
 
             </div>
 
-            <p class="prompt">
 
-              ${esc(
-                question.prompt
-              )}
+            <!-- ESTADO CIVIL -->
 
-            </p>
+            <div class="field">
 
-          `;
+              <label>
+                Estado Civil
+                <span class="required">*</span>
+              </label>
 
+              <div class="options-grid">
 
-          if(question.hint){
-
-            html += `
-
-              <p class="hint">
-
-                ${esc(
-                  question.hint
-                )}
-
-              </p>
-
-            `;
-
-          }
-
-
-          question.options.forEach(
-            (option,index)=>{
-
-              const inputType =
-              question.type === "multi"
-                ? "checkbox"
-                : "radio";
-
-
-              const checked =
-              question.type === "multi"
-
-              ? Array.isArray(
-                  answers[question.id]
-                )
-                &&
-                answers[
-                  question.id
-                ].includes(index)
-
-              : answers[
-                  question.id
-                ] === index;
-
-
-              html += `
-
-                <label
-                  class="opt ${
-                    checked
-                      ? "checked"
-                      : ""
-                  }">
-
+                <label class="option">
                   <input
-                    type="${inputType}"
-                    name="${question.id}"
-                    value="${index}"
-                    ${
-                      checked
-                        ? "checked"
-                        : ""
-                    }>
-
-                  <span>
-                    ${esc(option)}
-                  </span>
-
+                    type="radio"
+                    name="estadoCivil"
+                    value="Soltero"
+                    required
+                  >
+                  <span>Soltero</span>
                 </label>
 
-              `;
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="estadoCivil"
+                    value="Casado"
+                  >
+                  <span>Casado</span>
+                </label>
 
-            }
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="estadoCivil"
+                    value="Conviviente"
+                  >
+                  <span>Conviviente</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="estadoCivil"
+                    value="Viudo"
+                  >
+                  <span>Viudo</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="estadoCivil"
+                    value="Divorciado"
+                  >
+                  <span>Divorciado</span>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- PROCEDENCIA -->
+
+            <div class="field">
+
+              <label>
+                Lugar de Procedencia
+                <span class="required">*</span>
+              </label>
+
+              <div class="options-grid">
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="procedencia"
+                    value="Capital - Lima"
+                    required
+                  >
+                  <span>Capital - Lima</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="procedencia"
+                    value="Provincia"
+                  >
+                  <span>Provincia</span>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- OCUPACIÓN -->
+
+            <div class="field">
+
+              <label>
+                Ocupación
+                <span class="required">*</span>
+              </label>
+
+              <div class="options-grid">
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="ocupacion"
+                    value="Solo Estudia"
+                    required
+                  >
+                  <span>Solo Estudia</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="ocupacion"
+                    value="Trabaja y Estudia"
+                  >
+                  <span>Trabaja y Estudia</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="ocupacion"
+                    value="Otros"
+                  >
+                  <span>Otros</span>
+                </label>
+
+              </div>
+
+              <input
+                type="text"
+                id="ocupacionOtros"
+                name="ocupacionOtros"
+                placeholder="Especifique si seleccionó Otros"
+              >
+
+            </div>
+
+
+            <!-- GÉNERO -->
+
+            <div class="field">
+
+              <label>
+                GENERO
+                <span class="required">*</span>
+              </label>
+
+              <div class="options-grid">
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="genero"
+                    value="Masculino"
+                    required
+                  >
+                  <span>Masculino</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="genero"
+                    value="Femenino"
+                  >
+                  <span>Femenino</span>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- EDAD -->
+
+            <div class="field">
+
+              <label>
+                EDAD
+                <span class="required">*</span>
+              </label>
+
+              <div class="options-grid">
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="edad"
+                    value="18 – 25 años"
+                    required
+                  >
+                  <span>18 – 25 años</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="edad"
+                    value="25 – 30 años"
+                  >
+                  <span>25 – 30 años</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="edad"
+                    value="30 a más"
+                  >
+                  <span>30 a más</span>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- CICLO -->
+
+            <div class="field full">
+
+              <label>
+                CICLO EN CURSO
+                <span class="required">*</span>
+              </label>
+
+              <div class="options-grid">
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="ciclo"
+                    value="3 CICLO – 4 CICLO"
+                    required
+                  >
+                  <span>3 CICLO – 4 CICLO</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="ciclo"
+                    value="5 CICLO – 6 CICLO"
+                  >
+                  <span>5 CICLO – 6 CICLO</span>
+                </label>
+
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="ciclo"
+                    value="7 CICLO – 10 CICLO"
+                  >
+                  <span>7 CICLO – 10 CICLO</span>
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           SECCIÓN 1
+      ==================================================== -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          SECCIÓN 1. CONOCIMIENTOS SOBRE LA FOTOPOLIMERIZACIÓN
+        </h2>
+
+        <div class="section-content">
+
+          <!-- Q1 -->
+
+          <div class="question">
+
+            <span class="question-number">1</span>
+
+            <span class="question-text">
+              ¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q1"
+                  value="0"
+                  data-label="Sí"
+                  required
+                >
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q1"
+                  value="1"
+                  data-label="No"
+                >
+                <span>No</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q2 -->
+
+          <div class="question">
+
+            <span class="question-number">2</span>
+
+            <span class="question-text">
+              ¿Sabe si su unidad de fotocurado (LCU) tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q2"
+                  value="0"
+                  data-label="Sí"
+                  required
+                >
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q2"
+                  value="1"
+                  data-label="No"
+                >
+                <span>No</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q3 -->
+
+          <div class="question">
+
+            <span class="question-number">3</span>
+
+            <span class="question-text">
+              ¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q3"
+                  value="0"
+                  data-label="Sí"
+                  required
+                >
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q3"
+                  value="1"
+                  data-label="No"
+                >
+                <span>No</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q4 -->
+
+          <div class="question">
+
+            <span class="question-number">4</span>
+
+            <span class="question-text">
+              ¿Con qué frecuencia utiliza una unidad de fotocurado durante su práctica clínica?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q4"
+                  value="Diariamente"
+                  data-label="Diariamente"
+                  required
+                >
+                <span>Diariamente</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q4"
+                  value="Semanalmente"
+                  data-label="Semanalmente"
+                >
+                <span>Semanalmente</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q4"
+                  value="Raramente"
+                  data-label="Raramente"
+                >
+                <span>Raramente</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q4"
+                  value="Nunca"
+                  data-label="Nunca"
+                >
+                <span>Nunca</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q5 -->
+
+          <div class="question">
+
+            <span class="question-number">5</span>
+
+            <span class="question-text">
+              ¿Cuáles pueden ser las consecuencias de una polimerización inadecuada de los materiales restauradores?
+            </span>
+
+            <div class="question-instruction">
+              Puede seleccionar más de una alternativa.
+            </div>
+
+            <div class="options-grid">
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="0"
+                  data-label="Bajas propiedades mecánicas"
+                >
+                <span>Bajas propiedades mecánicas</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="1"
+                  data-label="Baja estabilidad de color"
+                >
+                <span>Baja estabilidad de color</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="2"
+                  data-label="Mayor colonización bacteriana"
+                >
+                <span>Mayor colonización bacteriana</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="3"
+                  data-label="Reacciones tóxicas"
+                >
+                <span>Reacciones tóxicas</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="4"
+                  data-label="Reacciones alérgicas"
+                >
+                <span>Reacciones alérgicas</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="5"
+                  data-label="Caries secundaria"
+                >
+                <span>Caries secundaria</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="6"
+                  data-label="Filtración marginal"
+                >
+                <span>Filtración marginal</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="7"
+                  data-label="Alteración de color marginal"
+                >
+                <span>Alteración de color marginal</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="8"
+                  data-label="Sensibilidad dental"
+                >
+                <span>Sensibilidad dental</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q5"
+                  value="9"
+                  data-label="TODAS LAS ANTERIORES"
+                >
+                <span><strong>TODAS LAS ANTERIORES</strong></span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q6 -->
+
+          <div class="question">
+
+            <span class="question-number">6</span>
+
+            <span class="question-text">
+              ¿Cuál considera que es la irradiancia mínima para una adecuada polimerización de composites de 2 mm en 40 segundos?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q6"
+                  value="0"
+                  data-label="100-300 mW/cm²"
+                  required
+                >
+                <span>100-300 mW/cm²</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q6"
+                  value="1"
+                  data-label="300-500 mW/cm²"
+                >
+                <span>300-500 mW/cm²</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q6"
+                  value="2"
+                  data-label=">500 mW/cm²"
+                >
+                <span>&gt;500 mW/cm²</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q6"
+                  value="3"
+                  data-label="No estoy seguro"
+                >
+                <span>No estoy seguro</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q7 -->
+
+          <div class="question">
+
+            <span class="question-number">7</span>
+
+            <span class="question-text">
+              ¿Qué técnica de control de infecciones tiene el menor efecto negativo sobre las puntas de fotocurado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q7"
+                  value="0"
+                  data-label="Autoclave"
+                  required
+                >
+                <span>Autoclave</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q7"
+                  value="1"
+                  data-label="Solución desinfectante"
+                >
+                <span>Solución desinfectante</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q7"
+                  value="2"
+                  data-label="Barrera transparente"
+                >
+                <span>Barrera transparente</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="radio"
+                  name="q7"
+                  value="3"
+                  data-label="No estoy seguro"
+                >
+                <span>No estoy seguro</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q8 -->
+
+          <div class="question">
+
+            <span class="question-number">8</span>
+
+            <span class="question-text">
+              ¿Cuáles son sus principales fuentes de información sobre unidades de fotocurado?
+            </span>
+
+            <div class="question-instruction">
+              Puede seleccionar más de una alternativa.
+            </div>
+
+            <div class="options-grid">
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Libros de texto"
+                  data-label="Libros de texto"
+                >
+                <span>Libros de texto</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Revistas científicas"
+                  data-label="Revistas científicas"
+                >
+                <span>Revistas científicas</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Conferencias en el currículo de pregrado"
+                  data-label="Conferencias en el currículo de pregrado"
+                >
+                <span>Conferencias en el currículo de pregrado</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Conferencias en el currículo de posgrado"
+                  data-label="Conferencias en el currículo de posgrado"
+                >
+                <span>Conferencias en el currículo de posgrado</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Conferencias de educación continua (incluyendo congresos)"
+                  data-label="Conferencias de educación continua (incluyendo congresos)"
+                >
+                <span>Conferencias de educación continua (incluyendo congresos)</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Folletos de fabricantes"
+                  data-label="Folletos de fabricantes"
+                >
+                <span>Folletos de fabricantes</span>
+              </label>
+
+              <label class="option">
+                <input
+                  type="checkbox"
+                  name="q8"
+                  value="Internet y redes sociales"
+                  data-label="Internet y redes sociales"
+                >
+                <span>Internet y redes sociales</span>
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           SECCIÓN 2
+      ==================================================== -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          SECCIÓN 2. COMPETENCIAS EN EL USO DE LA UNIDAD DE FOTOCURADO
+        </h2>
+
+        <div class="section-content">
+
+
+          <!-- Q9 -->
+
+          <div class="question">
+
+            <span class="question-number">9</span>
+
+            <span class="question-text">
+              ¿Qué tipo de unidad de fotocurado utiliza habitualmente?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q9" value="QTH" data-label="QTH" required>
+                <span>QTH</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q9" value="PAC" data-label="PAC">
+                <span>PAC</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q9" value="Argon ion lasers" data-label="Argon ion lasers">
+                <span>Argon ion lasers</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q9" value="LED" data-label="LED">
+                <span>LED</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q9" value="No estoy seguro" data-label="No estoy seguro">
+                <span>No estoy seguro</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q10 -->
+
+          <div class="question">
+
+            <span class="question-number">10</span>
+
+            <span class="question-text">
+              ¿Qué modo de fotocurado utiliza habitualmente?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q10" value="Soft start" data-label="Soft start" required>
+                <span>Soft start</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q10" value="Fast cure" data-label="Fast cure">
+                <span>Fast cure</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q10" value="Modo convencional" data-label="Modo convencional">
+                <span>Modo convencional</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q10" value="No reviso el modo" data-label="No reviso el modo...">
+                <span>No reviso el modo...</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q11 -->
+
+          <div class="question">
+
+            <span class="question-number">11</span>
+
+            <span class="question-text">
+              ¿Cuál considera que es el tiempo de fotocurado adecuado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q11" value="0" data-label="10s por 2mm" required>
+                <span>10s por 2mm</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q11" value="1" data-label="20s por 2mm">
+                <span>20s por 2mm</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q11" value="2" data-label="40s por 2mm">
+                <span>40s por 2mm</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q11" value="3" data-label="60s toda la restauración">
+                <span>60s toda la restauración</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q12 -->
+
+          <div class="question">
+
+            <span class="question-number">12</span>
+
+            <span class="question-text">
+              ¿Cuál debe ser la posición de la punta de la unidad de fotocurado respecto al material?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q12" value="0" data-label="Lo más cerca posible" required>
+                <span>Lo más cerca posible</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q12" value="1" data-label="Hasta 10mm">
+                <span>Hasta 10mm</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q12" value="2" data-label="45°">
+                <span>45°</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q12" value="3" data-label="90°">
+                <span>90°</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q13 -->
+
+          <div class="question">
+
+            <span class="question-number">13</span>
+
+            <span class="question-text">
+              ¿Cuál de las siguientes acciones puede aumentar la exposición radiante total?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q13" value="0" data-label="Colocar el material en refrigerador" required>
+                <span>Colocar el material en refrigerador</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q13" value="1" data-label="Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante">
+                <span>Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q13" value="2" data-label="Utilizar un tono más oscuro">
+                <span>Utilizar un tono más oscuro</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q14 -->
+
+          <div class="question">
+
+            <span class="question-number">14</span>
+
+            <span class="question-text">
+              ¿Qué medida recomienda para proteger los ojos de la luz azul emitida durante el fotocurado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q14" value="0" data-label="Escudo montado" required>
+                <span>Escudo montado</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q14" value="1" data-label="Escudo manual">
+                <span>Escudo manual</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q14" value="2" data-label="Gafas protectoras naranjas">
+                <span>Gafas protectoras naranjas</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q14" value="3" data-label="Asistente">
+                <span>Asistente</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q14" value="4" data-label="Espejo alejado">
+                <span>Espejo alejado</span>
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           SECCIÓN 3
+      ==================================================== -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          SECCIÓN 3. MANTENIMIENTO Y CONTROL DE LA UNIDAD DE FOTOCURADO
+        </h2>
+
+        <div class="section-content">
+
+
+          <!-- Q15 -->
+
+          <div class="question">
+
+            <span class="question-number">15</span>
+
+            <span class="question-text">
+              ¿Conoce la vida útil esperada de su unidad de fotocurado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q15" value="0" data-label="Sí" required>
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q15" value="1" data-label="No">
+                <span>No</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q16 -->
+
+          <div class="question">
+
+            <span class="question-number">16</span>
+
+            <span class="question-text">
+              ¿Inspecciona, limpia y verifica la unidad de fotocurado antes de utilizarla?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q16" value="0" data-label="Sí" required>
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q16" value="1" data-label="No">
+                <span>No</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q17 -->
+
+          <div class="question">
+
+            <span class="question-number">17</span>
+
+            <span class="question-text">
+              ¿Controla el mantenimiento de su unidad de fotocurado y sigue las recomendaciones del fabricante?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q17" value="0" data-label="Sí" required>
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q17" value="1" data-label="No">
+                <span>No</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q18 -->
+
+          <div class="question">
+
+            <span class="question-number">18</span>
+
+            <span class="question-text">
+              ¿Con qué frecuencia realiza el mantenimiento de su unidad de fotocurado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q18" value="1–3 meses" data-label="1–3 meses" required>
+                <span>1–3 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q18" value="3–6 meses" data-label="3–6 meses">
+                <span>3–6 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q18" value="6–12 meses" data-label="6–12 meses">
+                <span>6–12 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q18" value="12 meses" data-label="12 meses">
+                <span>12 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q18" value="No realizo mantenimiento" data-label="No realizo mantenimiento">
+                <span>No realizo mantenimiento</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q19 -->
+
+          <div class="question">
+
+            <span class="question-number">19</span>
+
+            <span class="question-text">
+              ¿Utiliza un radiómetro dental para verificar la irradiancia de la unidad de fotocurado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q19" value="0" data-label="Sí" required>
+                <span>Sí</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q19" value="1" data-label="No">
+                <span>No</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q19" value="2" data-label="No estoy familiarizado">
+                <span>No estoy familiarizado</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q20 -->
+
+          <div class="question">
+
+            <span class="question-number">20</span>
+
+            <span class="question-text">
+              ¿Con qué frecuencia revisa la irradiancia de su unidad de fotocurado?
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q20" value="1–3 meses" data-label="1–3 meses" required>
+                <span>1–3 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q20" value="3–6 meses" data-label="3–6 meses">
+                <span>3–6 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q20" value="6–12 meses" data-label="6–12 meses">
+                <span>6–12 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q20" value="12 meses" data-label="12 meses">
+                <span>12 meses</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q20" value="No reviso" data-label="No reviso">
+                <span>No reviso</span>
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           SECCIÓN 4
+      ==================================================== -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          SECCIÓN 4. NIVEL DE SATISFACCIÓN
+        </h2>
+
+        <div class="section-content">
+
+          <p class="section-description" style="padding:0 0 15px;">
+            Seleccione una alternativa para cada afirmación.
+          </p>
+
+
+          <!-- Q21 -->
+
+          <div class="question">
+
+            <span class="question-number">21</span>
+
+            <span class="question-text">
+              Estoy satisfecho(a) con mi unidad de fotocurado.
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q21" value="3" data-label="Satisfecho(a)" required>
+                <span>Satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q21" value="2" data-label="Moderadamente satisfecho(a)">
+                <span>Moderadamente satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q21" value="1" data-label="Insatisfecho(a)">
+                <span>Insatisfecho(a)</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q22 -->
+
+          <div class="question">
+
+            <span class="question-number">22</span>
+
+            <span class="question-text">
+              Estoy satisfecho(a) con mis conocimientos sobre unidades de fotocurado.
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q22" value="3" data-label="Satisfecho(a)" required>
+                <span>Satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q22" value="2" data-label="Moderadamente satisfecho(a)">
+                <span>Moderadamente satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q22" value="1" data-label="Insatisfecho(a)">
+                <span>Insatisfecho(a)</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q23 -->
+
+          <div class="question">
+
+            <span class="question-number">23</span>
+
+            <span class="question-text">
+              Estoy satisfecho(a) con mi práctica clínica respecto al uso de unidades de fotocurado.
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q23" value="3" data-label="Satisfecho(a)" required>
+                <span>Satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q23" value="2" data-label="Moderadamente satisfecho(a)">
+                <span>Moderadamente satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q23" value="1" data-label="Insatisfecho(a)">
+                <span>Insatisfecho(a)</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q24 -->
+
+          <div class="question">
+
+            <span class="question-number">24</span>
+
+            <span class="question-text">
+              Estoy satisfecho(a) con la formación recibida en los programas de odontología/estomatología sobre unidades de fotocurado.
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q24" value="3" data-label="Satisfecho(a)" required>
+                <span>Satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q24" value="2" data-label="Moderadamente satisfecho(a)">
+                <span>Moderadamente satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q24" value="1" data-label="Insatisfecho(a)">
+                <span>Insatisfecho(a)</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- Q25 -->
+
+          <div class="question">
+
+            <span class="question-number">25</span>
+
+            <span class="question-text">
+              Estoy satisfecho(a) con la educación continua recibida sobre unidades de fotocurado.
+            </span>
+
+            <div class="options-grid" style="margin-top:15px;">
+
+              <label class="option">
+                <input type="radio" name="q25" value="3" data-label="Satisfecho(a)" required>
+                <span>Satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q25" value="2" data-label="Moderadamente satisfecho(a)">
+                <span>Moderadamente satisfecho(a)</span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="q25" value="1" data-label="Insatisfecho(a)">
+                <span>Insatisfecho(a)</span>
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           BOTONES
+      ==================================================== -->
+
+      <div class="actions">
+
+        <button
+          type="button"
+          id="saveDraftBtn"
+          class="btn btn-light"
+        >
+          Guardar avance
+        </button>
+
+        <button
+          type="button"
+          id="clearBtn"
+          class="btn btn-danger"
+        >
+          Limpiar formulario
+        </button>
+
+        <button
+          type="submit"
+          id="submitBtn"
+          class="btn btn-primary"
+        >
+          Enviar cuestionario
+        </button>
+
+      </div>
+
+    </form>
+
+
+    <!-- =====================================================
+         RESULTADOS
+    ====================================================== -->
+
+    <section
+      id="resultSection"
+      class="section"
+    >
+
+      <h2 class="section-title">
+        RESULTADO DEL CUESTIONARIO
+      </h2>
+
+      <div class="result-card">
+
+        <div class="score-circle">
+
+          <div
+            id="scoreNumber"
+            class="score-number"
+          >
+            0
+          </div>
+
+          <div class="score-total">
+            de 29 puntos
+          </div>
+
+        </div>
+
+
+        <div
+          id="classification"
+          class="classification"
+        >
+        </div>
+
+        <p class="result-note">
+          El resultado se calcula automáticamente según la clave de puntuación establecida para el cuestionario.
+        </p>
+
+
+        <div class="result-breakdown">
+
+          <div class="breakdown-item">
+
+            <div class="breakdown-title">
+              Sección 1
+            </div>
+
+            <div
+              id="section1Score"
+              class="breakdown-score"
+            >
+              0 / 6
+            </div>
+
+          </div>
+
+
+          <div class="breakdown-item">
+
+            <div class="breakdown-title">
+              Sección 2
+            </div>
+
+            <div
+              id="section2Score"
+              class="breakdown-score"
+            >
+              0 / 4
+            </div>
+
+          </div>
+
+
+          <div class="breakdown-item">
+
+            <div class="breakdown-title">
+              Sección 3
+            </div>
+
+            <div
+              id="section3Score"
+              class="breakdown-score"
+            >
+              0 / 4
+            </div>
+
+          </div>
+
+
+          <div class="breakdown-item">
+
+            <div class="breakdown-title">
+              Sección 4
+            </div>
+
+            <div
+              id="section4Score"
+              class="breakdown-score"
+            >
+              0 / 15
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             QR
+        ================================================== -->
+
+        <div class="qr-section">
+
+          <h3>
+            CÓDIGO QR DEL CUESTIONARIO
+          </h3>
+
+          <p>
+            Escanee este código QR desde cualquier dispositivo móvil para abrir el cuestionario.
+          </p>
+
+          <img
+            id="qrImage"
+            src=""
+            alt="Código QR del cuestionario"
+          >
+
+          <p
+            id="qrUrl"
+            class="qr-url"
+          >
+          </p>
+
+          <div class="actions">
+
+            <button
+              type="button"
+              id="printQrBtn"
+              class="btn btn-secondary"
+            >
+              Imprimir QR
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <footer class="footer">
+
+      Cuestionario de investigación - Estomatología
+
+    </footer>
+
+  </main>
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
+
+  <script>
+
+    /* =======================================================
+       CONFIGURACIÓN GOOGLE APPS SCRIPT
+    ======================================================== */
+
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbzQutV2HoMCgM5AJDfFjX0XpLL29KL3z_QDQirJuDPu7u8m7hMOiFP6caccWQOoL8YZbw/exec";
+
+
+    /* =======================================================
+       CONFIGURACIÓN GENERAL
+    ======================================================== */
+
+    const STORAGE_KEY =
+      "cuestionario_lcu_led_borrador_v2";
+
+
+    /*
+      PREGUNTAS OBLIGATORIAS
+
+      7 datos sociodemográficos
+      +
+      25 preguntas
+
+      Total = 32 campos principales.
+    */
+
+    const requiredNames = [
+
+      "siglas",
+      "estadoCivil",
+      "procedencia",
+      "ocupacion",
+      "genero",
+      "edad",
+      "ciclo",
+
+      "q1",
+      "q2",
+      "q3",
+      "q4",
+      "q5",
+      "q6",
+      "q7",
+      "q8",
+      "q9",
+      "q10",
+      "q11",
+      "q12",
+      "q13",
+      "q14",
+      "q15",
+      "q16",
+      "q17",
+      "q18",
+      "q19",
+      "q20",
+      "q21",
+      "q22",
+      "q23",
+      "q24",
+      "q25"
+
+    ];
+
+
+    /* =======================================================
+       ELEMENTOS
+    ======================================================== */
+
+    const form =
+      document.getElementById("questionnaire");
+
+    const submitBtn =
+      document.getElementById("submitBtn");
+
+    const saveDraftBtn =
+      document.getElementById("saveDraftBtn");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const progressFill =
+      document.getElementById("progressFill");
+
+    const progressText =
+      document.getElementById("progressText");
+
+    const answeredText =
+      document.getElementById("answeredText");
+
+
+    /* =======================================================
+       ALERTAS
+    ======================================================== */
+
+    function showAlert(type, message) {
+
+      const success =
+        document.getElementById("alertSuccess");
+
+      const danger =
+        document.getElementById("alertDanger");
+
+      const warning =
+        document.getElementById("alertWarning");
+
+      success.style.display = "none";
+      danger.style.display = "none";
+      warning.style.display = "none";
+
+      let element;
+
+      if (type === "success") {
+        element = success;
+      }
+
+      if (type === "danger") {
+        element = danger;
+      }
+
+      if (type === "warning") {
+        element = warning;
+      }
+
+      if (!element) {
+        return;
+      }
+
+      element.textContent = message;
+      element.style.display = "block";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    function hideAlerts() {
+
+      document
+        .querySelectorAll(".alert")
+        .forEach(function (element) {
+
+          element.style.display = "none";
+
+        });
+
+    }
+
+
+    /* =======================================================
+       VALOR DE CAMPO
+    ======================================================== */
+
+    function getFieldValue(name) {
+
+      const elements =
+        form.querySelectorAll(
+          `[name="${name}"]`
+        );
+
+      if (!elements.length) {
+        return "";
+      }
+
+      const first =
+        elements[0];
+
+      if (
+        first.type === "checkbox"
+      ) {
+
+        return Array.from(elements)
+          .filter(
+            element => element.checked
+          )
+          .map(
+            element => element.value
           );
 
+      }
 
-          questionElement.innerHTML =
-          html;
-
-          sectionElement.appendChild(
-            questionElement
+      const checked =
+        Array.from(elements)
+          .find(
+            element => element.checked
           );
+
+      if (checked) {
+        return checked.value;
+      }
+
+      if (
+        first.type === "text" ||
+        first.type === "number"
+      ) {
+        return first.value.trim();
+      }
+
+      return "";
+
+    }
+
+
+    /* =======================================================
+       CONTAR RESPUESTAS
+    ======================================================== */
+
+    function isFieldAnswered(name) {
+
+      const elements =
+        form.querySelectorAll(
+          `[name="${name}"]`
+        );
+
+      if (!elements.length) {
+        return false;
+      }
+
+      const first =
+        elements[0];
+
+      if (first.type === "checkbox") {
+
+        return Array.from(elements)
+          .some(
+            element => element.checked
+          );
+
+      }
+
+      if (
+        first.type === "radio"
+      ) {
+
+        return Array.from(elements)
+          .some(
+            element => element.checked
+          );
+
+      }
+
+      return first.value.trim() !== "";
+
+    }
+
+
+    function updateProgress() {
+
+      let answered = 0;
+
+      requiredNames.forEach(
+        function(name) {
+
+          if (
+            isFieldAnswered(name)
+          ) {
+            answered++;
+          }
+
+        }
+      );
+
+      const total =
+        requiredNames.length;
+
+      const percent =
+        Math.round(
+          (answered / total) * 100
+        );
+
+      progressFill.style.width =
+        percent + "%";
+
+      progressText.textContent =
+        "Progreso: " +
+        percent +
+        "%";
+
+      answeredText.textContent =
+        answered +
+        " de " +
+        total +
+        " campos";
+
+    }
+
+
+    /* =======================================================
+       VALIDACIÓN
+    ======================================================== */
+
+    function validateForm() {
+
+      const missing = [];
+
+      requiredNames.forEach(
+        function(name) {
+
+          if (
+            !isFieldAnswered(name)
+          ) {
+
+            missing.push(name);
+
+          }
 
         }
       );
 
 
-      form.appendChild(
-        sectionElement
-      );
+      /*
+        Si selecciona "Otros" en ocupación,
+        se solicita especificar.
+      */
+
+      const otherOccupation =
+        form.querySelector(
+          'input[name="ocupacion"][value="Otros"]'
+        );
+
+      const otherText =
+        document.getElementById(
+          "ocupacionOtros"
+        );
+
+      if (
+        otherOccupation &&
+        otherOccupation.checked &&
+        !otherText.value.trim()
+      ) {
+
+        missing.push(
+          "ocupacionOtros"
+        );
+
+      }
+
+
+      if (missing.length > 0) {
+
+        showAlert(
+          "danger",
+          "Complete todos los campos obligatorios antes de enviar el cuestionario."
+        );
+
+        /*
+          Intentar llevar al primer campo faltante.
+        */
+
+        const firstMissing =
+          missing[0];
+
+        let element =
+          form.querySelector(
+            `[name="${firstMissing}"]`
+          );
+
+        if (
+          firstMissing ===
+          "ocupacionOtros"
+        ) {
+
+          element =
+            document.getElementById(
+              "ocupacionOtros"
+            );
+
+        }
+
+        if (element) {
+
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
+        }
+
+        return false;
+
+      }
+
+      return true;
 
     }
-  );
 
 
-  attachListeners();
+    /* =======================================================
+       GUARDAR BORRADOR
+    ======================================================== */
 
-  updateProgress();
+    function collectDraft() {
 
-}
+      const data = {};
+
+      requiredNames.forEach(
+        function(name) {
+
+          data[name] =
+            getFieldValue(name);
+
+        }
+      );
+
+      data.ocupacionOtros =
+        document
+          .getElementById(
+            "ocupacionOtros"
+          )
+          .value
+          .trim();
+
+      return data;
+
+    }
 
 
-/* ==========================================================
-   7. EVENTOS
-========================================================== */
+    function saveDraft() {
 
-function attachListeners(){
+      try {
 
-  const initials =
-  document.getElementById(
-    "initials"
-  );
+        const data =
+          collectDraft();
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(data)
+        );
+
+        showAlert(
+          "success",
+          "El avance del cuestionario se guardó correctamente en este dispositivo."
+        );
+
+      } catch (error) {
+
+        showAlert(
+          "danger",
+          "No fue posible guardar el avance en este dispositivo."
+        );
+
+      }
+
+    }
 
 
-  initials.addEventListener(
-    "input",
-    ()=>{
+    /* =======================================================
+       RESTAURAR BORRADOR
+    ======================================================== */
 
-      demographics.initials =
-      initials.value
-        .trim()
-        .toUpperCase();
+    function restoreDraft() {
 
-      saveDemographics();
+      try {
+
+        const saved =
+          localStorage.getItem(
+            STORAGE_KEY
+          );
+
+        if (!saved) {
+          return;
+        }
+
+        const data =
+          JSON.parse(saved);
+
+
+        Object.keys(data)
+          .forEach(
+            function(name) {
+
+              const elements =
+                form.querySelectorAll(
+                  `[name="${name}"]`
+                );
+
+              if (!elements.length) {
+                return;
+              }
+
+              const value =
+                data[name];
+
+
+              if (
+                elements[0].type ===
+                "checkbox"
+              ) {
+
+                const values =
+                  Array.isArray(value)
+                    ? value
+                    : [];
+
+                elements.forEach(
+                  function(element) {
+
+                    element.checked =
+                      values.includes(
+                        element.value
+                      );
+
+                  }
+                );
+
+              } else if (
+                elements[0].type ===
+                "radio"
+              ) {
+
+                elements.forEach(
+                  function(element) {
+
+                    element.checked =
+                      element.value ===
+                      String(value);
+
+                  }
+                );
+
+              } else {
+
+                elements[0].value =
+                  value || "";
+
+              }
+
+            }
+          );
+
+
+        const otherText =
+          document.getElementById(
+            "ocupacionOtros"
+          );
+
+        if (
+          data.ocupacionOtros
+        ) {
+
+          otherText.value =
+            data.ocupacionOtros;
+
+        }
+
+
+        updateProgress();
+
+      } catch (error) {
+
+        console.warn(
+          "No se pudo restaurar el borrador.",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =======================================================
+       LIMPIAR
+    ======================================================== */
+
+    function clearForm() {
+
+      const confirmation =
+        window.confirm(
+          "¿Está seguro de que desea borrar todas las respuestas?"
+        );
+
+      if (!confirmation) {
+        return;
+      }
+
+      form.reset();
+
+      document
+        .getElementById(
+          "ocupacionOtros"
+        )
+        .value = "";
+
+      localStorage.removeItem(
+        STORAGE_KEY
+      );
+
+      document
+        .getElementById(
+          "resultSection"
+        )
+        .style.display = "none";
+
+      hideAlerts();
 
       updateProgress();
 
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
     }
-  );
 
 
-  document
-    .querySelectorAll(
-      'input[name^="demo_"]'
-    )
-    .forEach(
-      input=>{
+    /* =======================================================
+       PUNTUACIÓN
+    ======================================================== */
 
-        input.addEventListener(
-          "change",
-          ()=>{
+    function calculateScore() {
 
-            const id =
-            input.name.replace(
-              "demo_",
-              ""
-            );
+      let section1 = 0;
+      let section2 = 0;
+      let section3 = 0;
+      let section4 = 0;
 
 
-            demographics[id] =
-            input.value;
+      /* -----------------------------------------------------
+         SECCIÓN 1
+         Q1, Q2, Q3, Q5, Q6, Q7
+      ----------------------------------------------------- */
+
+      const q1 =
+        getFieldValue("q1");
+
+      const q2 =
+        getFieldValue("q2");
+
+      const q3 =
+        getFieldValue("q3");
+
+      /*
+        Según la clave establecida:
+        Q1 = Sí -> índice 0
+        Q2 = Sí -> índice 0
+        Q3 = Sí -> índice 0
+      */
+
+      if (q1 === "0") {
+        section1++;
+      }
+
+      if (q2 === "0") {
+        section1++;
+      }
+
+      if (q3 === "0") {
+        section1++;
+      }
 
 
-            if(
-              id === "ocupacion"
-              &&
-              input.value !== "Otros"
-            ){
+      /* -----------------------------------------------------
+         Q5 - REGLA ESPECIAL
 
-              demographics.otherOccupation =
-              "";
+         Se obtiene el conjunto de opciones seleccionadas.
 
-            }
+         Correcto únicamente si:
+
+         A) están seleccionadas exactamente las
+            alternativas 1 a 9
+
+         O
+
+         B) está seleccionada ÚNICAMENTE
+            "TODAS LAS ANTERIORES"
+
+         Cualquier otra combinación = 0.
+      ----------------------------------------------------- */
+
+      const q5Elements =
+        Array.from(
+          form.querySelectorAll(
+            'input[name="q5"]'
+          )
+        );
+
+      const q5Selected =
+        q5Elements
+          .filter(
+            element => element.checked
+          )
+          .map(
+            element =>
+              Number(element.value)
+          )
+          .sort(
+            (a, b) => a - b
+          );
 
 
-            saveDemographics();
-
-            render();
-
+      const allNine =
+        q5Selected.length === 9 &&
+        q5Selected.every(
+          function(value, index) {
+            return value === index;
           }
         );
+
+      const onlyAllPrevious =
+        q5Selected.length === 1 &&
+        q5Selected[0] === 9;
+
+
+      if (
+        allNine ||
+        onlyAllPrevious
+      ) {
+
+        section1++;
+
+      }
+
+
+      /* Q6 */
+
+      if (
+        getFieldValue("q6") === "1"
+      ) {
+
+        section1++;
+
+      }
+
+
+      /* Q7 */
+
+      if (
+        getFieldValue("q7") === "2"
+      ) {
+
+        section1++;
+
+      }
+
+
+      /* -----------------------------------------------------
+         SECCIÓN 2
+         Q11, Q12, Q13, Q14
+      ----------------------------------------------------- */
+
+      if (
+        getFieldValue("q11") === "1"
+      ) {
+
+        section2++;
+
+      }
+
+      if (
+        getFieldValue("q12") === "0"
+      ) {
+
+        section2++;
+
+      }
+
+      if (
+        getFieldValue("q13") === "1"
+      ) {
+
+        section2++;
+
+      }
+
+      if (
+        getFieldValue("q14") === "2"
+      ) {
+
+        section2++;
+
+      }
+
+
+      /* -----------------------------------------------------
+         SECCIÓN 3
+         Q15, Q16, Q17, Q19
+      ----------------------------------------------------- */
+
+      if (
+        getFieldValue("q15") === "0"
+      ) {
+
+        section3++;
+
+      }
+
+      if (
+        getFieldValue("q16") === "0"
+      ) {
+
+        section3++;
+
+      }
+
+      if (
+        getFieldValue("q17") === "0"
+      ) {
+
+        section3++;
+
+      }
+
+      if (
+        getFieldValue("q19") === "0"
+      ) {
+
+        section3++;
+
+      }
+
+
+      /* -----------------------------------------------------
+         SECCIÓN 4
+
+         Satisfecho = 3
+         Moderadamente satisfecho = 2
+         Insatisfecho = 1
+
+         Máximo:
+         3 x 5 = 15
+      ----------------------------------------------------- */
+
+      section4 +=
+        Number(
+          getFieldValue("q21")
+        ) || 0;
+
+      section4 +=
+        Number(
+          getFieldValue("q22")
+        ) || 0;
+
+      section4 +=
+        Number(
+          getFieldValue("q23")
+        ) || 0;
+
+      section4 +=
+        Number(
+          getFieldValue("q24")
+        ) || 0;
+
+      section4 +=
+        Number(
+          getFieldValue("q25")
+        ) || 0;
+
+
+      const total =
+        section1 +
+        section2 +
+        section3 +
+        section4;
+
+
+      return {
+
+        section1,
+        section2,
+        section3,
+        section4,
+        total
+
+      };
+
+    }
+
+
+    /* =======================================================
+       CLASIFICACIÓN
+    ======================================================== */
+
+    function getClassification(total) {
+
+      /*
+        Se muestra una clasificación descriptiva
+        sin modificar la puntuación.
+
+        Puedes modificar estos rangos si tu protocolo
+        de investigación establece puntos de corte diferentes.
+      */
+
+      if (total <= 9) {
+
+        return "Nivel bajo";
+
+      }
+
+      if (total <= 19) {
+
+        return "Nivel medio";
+
+      }
+
+      return "Nivel alto";
+
+    }
+
+
+    /* =======================================================
+       OBTENER ETIQUETA DE RESPUESTA
+    ======================================================== */
+
+    function getAnswerLabels(name) {
+
+      const elements =
+        Array.from(
+          form.querySelectorAll(
+            `[name="${name}"]`
+          )
+        );
+
+      if (!elements.length) {
+        return "";
+      }
+
+
+      const selected =
+        elements.filter(
+          element => element.checked
+        );
+
+
+      if (!selected.length) {
+        return "";
+      }
+
+
+      return selected
+        .map(
+          function(element) {
+
+            return (
+              element.dataset.label ||
+              element.value
+            );
+
+          }
+        )
+        .join(" | ");
+
+    }
+
+
+    /* =======================================================
+       CONSTRUIR REGISTRO PARA GOOGLE SHEETS
+    ======================================================== */
+
+    function buildRecord() {
+
+      const score =
+        calculateScore();
+
+
+      const record = {
+
+        timestamp:
+          new Date().toISOString(),
+
+        siglas:
+          getFieldValue("siglas"),
+
+        estadoCivil:
+          getFieldValue("estadoCivil"),
+
+        procedencia:
+          getFieldValue("procedencia"),
+
+        ocupacion:
+          getFieldValue("ocupacion"),
+
+        ocupacionOtros:
+          document
+            .getElementById(
+              "ocupacionOtros"
+            )
+            .value
+            .trim(),
+
+        genero:
+          getFieldValue("genero"),
+
+        edad:
+          getFieldValue("edad"),
+
+        ciclo:
+          getFieldValue("ciclo"),
+
+
+        q1:
+          getAnswerLabels("q1"),
+
+        q2:
+          getAnswerLabels("q2"),
+
+        q3:
+          getAnswerLabels("q3"),
+
+        q4:
+          getAnswerLabels("q4"),
+
+        q5:
+          getAnswerLabels("q5"),
+
+        q6:
+          getAnswerLabels("q6"),
+
+        q7:
+          getAnswerLabels("q7"),
+
+        q8:
+          getAnswerLabels("q8"),
+
+        q9:
+          getAnswerLabels("q9"),
+
+        q10:
+          getAnswerLabels("q10"),
+
+        q11:
+          getAnswerLabels("q11"),
+
+        q12:
+          getAnswerLabels("q12"),
+
+        q13:
+          getAnswerLabels("q13"),
+
+        q14:
+          getAnswerLabels("q14"),
+
+        q15:
+          getAnswerLabels("q15"),
+
+        q16:
+          getAnswerLabels("q16"),
+
+        q17:
+          getAnswerLabels("q17"),
+
+        q18:
+          getAnswerLabels("q18"),
+
+        q19:
+          getAnswerLabels("q19"),
+
+        q20:
+          getAnswerLabels("q20"),
+
+        q21:
+          getAnswerLabels("q21"),
+
+        q22:
+          getAnswerLabels("q22"),
+
+        q23:
+          getAnswerLabels("q23"),
+
+        q24:
+          getAnswerLabels("q24"),
+
+        q25:
+          getAnswerLabels("q25"),
+
+
+        seccion1:
+          score.section1,
+
+        seccion2:
+          score.section2,
+
+        seccion3:
+          score.section3,
+
+        seccion4:
+          score.section4,
+
+        puntajeTotal:
+          score.total,
+
+        nivel:
+          getClassification(
+            score.total
+          )
+
+      };
+
+
+      return record;
+
+    }
+
+
+    /* =======================================================
+       MOSTRAR RESULTADO
+    ======================================================== */
+
+    function showResult(score) {
+
+      const resultSection =
+        document.getElementById(
+          "resultSection"
+        );
+
+      resultSection.style.display =
+        "block";
+
+
+      document.getElementById(
+        "scoreNumber"
+      ).textContent =
+        score.total;
+
+
+      document.getElementById(
+        "classification"
+      ).textContent =
+        getClassification(
+          score.total
+        );
+
+
+      document.getElementById(
+        "section1Score"
+      ).textContent =
+        score.section1 +
+        " / 6";
+
+
+      document.getElementById(
+        "section2Score"
+      ).textContent =
+        score.section2 +
+        " / 4";
+
+
+      document.getElementById(
+        "section3Score"
+      ).textContent =
+        score.section3 +
+        " / 4";
+
+
+      document.getElementById(
+        "section4Score"
+      ).textContent =
+        score.section4 +
+        " / 15";
+
+
+      /*
+        Generar QR utilizando la URL actual
+        de GitHub Pages.
+      */
+
+      generateQR();
+
+
+      resultSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+
+    /* =======================================================
+       GENERAR QR
+    ======================================================== */
+
+    function generateQR() {
+
+      const currentUrl =
+        window.location.href.split("#")[0];
+
+
+      const qrUrl =
+        "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+        encodeURIComponent(
+          currentUrl
+        );
+
+
+      const qrImage =
+        document.getElementById(
+          "qrImage"
+        );
+
+      const qrText =
+        document.getElementById(
+          "qrUrl"
+        );
+
+
+      qrImage.src =
+        qrUrl;
+
+      qrText.textContent =
+        currentUrl;
+
+    }
+
+
+    /* =======================================================
+       ENVIAR A GOOGLE APPS SCRIPT
+    ======================================================== */
+
+    async function sendToGoogleSheets(
+      record
+    ) {
+
+      /*
+        IMPORTANTE:
+
+        Se utiliza:
+
+        method: POST
+        mode: no-cors
+        Content-Type: text/plain
+
+        text/plain es una solicitud simple y evita
+        el preflight CORS del navegador.
+
+        Con no-cors el navegador no permite leer
+        la respuesta del servidor, por lo que el éxito
+        del envío se interpreta como la finalización
+        de la solicitud.
+
+        La verificación definitiva se realiza
+        en Google Sheets.
+      */
+
+
+      await fetch(
+        API_URL,
+        {
+
+          method: "POST",
+
+          mode: "no-cors",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify(record)
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       ENVÍO PRINCIPAL
+    ======================================================== */
+
+    form.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+        hideAlerts();
+
+
+        if (!validateForm()) {
+          return;
+        }
+
+
+        const originalText =
+          submitBtn.textContent;
+
+
+        submitBtn.disabled =
+          true;
+
+        saveDraftBtn.disabled =
+          true;
+
+        clearBtn.disabled =
+          true;
+
+
+        submitBtn.textContent =
+          "Enviando...";
+
+
+        try {
+
+          const record =
+            buildRecord();
+
+
+          /*
+            Enviar a Google Sheets.
+          */
+
+          await sendToGoogleSheets(
+            record
+          );
+
+
+          /*
+            Eliminar borrador solamente después
+            de completar la solicitud.
+          */
+
+          localStorage.removeItem(
+            STORAGE_KEY
+          );
+
+
+          /*
+            Mostrar resultado.
+          */
+
+          showResult(
+            calculateScore()
+          );
+
+
+          showAlert(
+            "success",
+            "El cuestionario fue enviado. Revise la hoja de Google Sheets para confirmar que el registro aparece correctamente."
+          );
+
+
+          submitBtn.textContent =
+            "Enviado correctamente";
+
+
+        } catch (error) {
+
+          console.error(
+            "Error de envío:",
+            error
+          );
+
+
+          showAlert(
+            "danger",
+            "No se pudo completar el envío. Verifique su conexión a Internet y que la URL de Google Apps Script esté correctamente desplegada."
+          );
+
+
+          submitBtn.disabled =
+            false;
+
+          saveDraftBtn.disabled =
+            false;
+
+          clearBtn.disabled =
+            false;
+
+          submitBtn.textContent =
+            originalText;
+
+        }
 
       }
     );
 
 
-  const otherOccupation =
-  document.getElementById(
-    "otherOccupation"
-  );
+    /* =======================================================
+       GUARDAR AVANCE
+    ======================================================== */
+
+    saveDraftBtn.addEventListener(
+      "click",
+      function() {
+
+        saveDraft();
+
+      }
+    );
 
 
-  if(otherOccupation){
+    /* =======================================================
+       LIMPIAR
+    ======================================================== */
 
-    otherOccupation.addEventListener(
+    clearBtn.addEventListener(
+      "click",
+      function() {
+
+        clearForm();
+
+      }
+    );
+
+
+    /* =======================================================
+       ACTUALIZAR PROGRESO
+    ======================================================== */
+
+    form.addEventListener(
       "input",
-      ()=>{
-
-        demographics.otherOccupation =
-        otherOccupation.value.trim();
-
-        saveDemographics();
+      function() {
 
         updateProgress();
 
       }
     );
 
-  }
 
-
-  form
-    .querySelectorAll(
-      ".opt input[name^='q']"
-    )
-    .forEach(
-      input=>{
-
-        input.addEventListener(
-          "change",
-          onAnswerChange
-        );
-
-      }
-    );
-
-}
-
-
-/* ==========================================================
-   8. GUARDAR DATOS LOCALES
-========================================================== */
-
-function saveDemographics(){
-
-  localStorage.setItem(
-    "lcu_demographics_v2",
-    JSON.stringify(
-      demographics
-    )
-  );
-
-}
-
-
-/* ==========================================================
-   9. CAMBIO DE RESPUESTAS
-========================================================== */
-
-function onAnswerChange(event){
-
-  const questionId =
-  event.target.name;
-
-  const value =
-  Number(
-    event.target.value
-  );
-
-
-  const question =
-  findQuestion(
-    questionId
-  );
-
-
-  if(
-    question.type === "multi"
-  ){
-
-    let array =
-    Array.isArray(
-      answers[questionId]
-    )
-
-    ? answers[questionId].slice()
-
-    : [];
-
-
-    if(event.target.checked){
-
-      if(
-        !array.includes(value)
-      ){
-
-        array.push(value);
-
-      }
-
-    }else{
-
-      array =
-      array.filter(
-        item =>
-        item !== value
-      );
-
-    }
-
-
-    answers[questionId] =
-    array;
-
-  }else{
-
-    answers[questionId] =
-    value;
-
-  }
-
-
-  localStorage.setItem(
-    "lcu_answers_v2",
-    JSON.stringify(
-      answers
-    )
-  );
-
-
-  render();
-
-
-  document
-    .getElementById(
-      "results"
-    )
-    .classList.remove(
-      "show"
-    );
-
-
-  document
-    .getElementById(
-      "submitStatus"
-    )
-    .innerHTML = "";
-
-}
-
-
-/* ==========================================================
-   10. BUSCAR PREGUNTA
-========================================================== */
-
-function findQuestion(id){
-
-  for(
-    const section
-    of SECTIONS
-  ){
-
-    for(
-      const question
-      of section.questions
-    ){
-
-      if(
-        question.id === id
-      ){
-
-        return question;
-
-      }
-
-    }
-
-  }
-
-  return null;
-
-}
-
-
-/* ==========================================================
-   11. VALIDACIÓN SOCIODEMOGRÁFICA
-========================================================== */
-
-function demographicAnswered(){
-
-  if(
-    !demographics.initials
-  ){
-
-    return false;
-
-  }
-
-
-  for(
-    const field
-    of DEMO_FIELDS.slice(1)
-  ){
-
-    if(
-      !demographics[field.id]
-    ){
-
-      return false;
-
-    }
-
-  }
-
-
-  if(
-    demographics.ocupacion ===
-    "Otros"
-    &&
-    !demographics.otherOccupation
-  ){
-
-    return false;
-
-  }
-
-
-  return true;
-
-}
-
-
-/* ==========================================================
-   12. CONTAR RESPUESTAS
-========================================================== */
-
-function countAnsweredQuestions(){
-
-  let count = 0;
-
-
-  SECTIONS.forEach(
-    section=>{
-
-      section.questions.forEach(
-        question=>{
-
-          const answer =
-          answers[question.id];
-
-
-          if(
-            question.type === "multi"
-          ){
-
-            if(
-              Array.isArray(answer)
-              &&
-              answer.length > 0
-            ){
-
-              count++;
-
-            }
-
-          }else{
-
-            if(
-              answer !== undefined
-              &&
-              answer !== null
-            ){
-
-              count++;
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  return count;
-
-}
-
-
-/* ==========================================================
-   13. PROGRESO
-========================================================== */
-
-function totalSurveyItems(){
-
-  return (
-
-    DEMO_FIELDS.length
-
-    +
-
-    SECTIONS.reduce(
-      (
-        total,
-        section
-      ) =>
-
-      total +
-      section.questions.length,
-
-      0
-    )
-
-  );
-
-}
-
-
-function updateProgress(){
-
-  let count =
-  demographicAnswered()
-    ? DEMO_FIELDS.length
-    : 0;
-
-
-  count +=
-  countAnsweredQuestions();
-
-
-  const total =
-  totalSurveyItems();
-
-
-  const percentage =
-  Math.min(
-    100,
-    count /
-    total *
-    100
-  );
-
-
-  document
-    .getElementById(
-      "progressText"
-    )
-    .textContent =
-    `${count} / ${total} respondidas`;
-
-
-  document
-    .getElementById(
-      "progressFill"
-    )
-    .style.width =
-    percentage + "%";
-
-}
-
-
-/* ==========================================================
-   14. VALIDACIÓN COMPLETA
-========================================================== */
-
-function validateComplete(){
-
-  if(
-    !demographicAnswered()
-  ){
-
-    return "Complete todos los datos sociodemográficos obligatorios.";
-
-  }
-
-
-  const missing = [];
-
-
-  SECTIONS.forEach(
-    section=>{
-
-      section.questions.forEach(
-        question=>{
-
-          const answer =
-          answers[question.id];
-
-
-          if(
-            question.type === "multi"
-          ){
-
-            if(
-              !Array.isArray(answer)
-              ||
-              answer.length === 0
-            ){
-
-              missing.push(
-                question.id.toUpperCase()
-              );
-
-            }
-
-          }else{
-
-            if(
-              answer === undefined
-              ||
-              answer === null
-            ){
-
-              missing.push(
-                question.id.toUpperCase()
-              );
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  if(missing.length){
-
-    return `
-      Faltan ${missing.length}
-      pregunta(s) por responder:
-      ${missing.join(", ")}.
-    `;
-
-  }
-
-
-  return "";
-
-}
-
-
-/* ==========================================================
-   15. REGLA ESPECIAL PREGUNTA 5
-========================================================== */
-
-/*
-
-  PREGUNTA 5
-
-  Índices:
-
-  0 = Bajas propiedades mecánicas
-  1 = Baja estabilidad de color
-  2 = Mayor colonización bacteriana
-  3 = Reacciones tóxicas
-  4 = Reacciones alérgicas
-  5 = Caries secundaria
-  6 = Filtración marginal
-  7 = Alteración de color marginal
-  8 = Sensibilidad dental
-  9 = TODAS LAS ANTERIORES
-
-
-  SE OTORGA 1 PUNTO ÚNICAMENTE SI:
-
-  CASO A:
-  Selecciona únicamente:
-  TODAS LAS ANTERIORES
-
-  O
-
-  CASO B:
-  Selecciona exactamente las nueve
-  alternativas individuales 0–8.
-
-  CUALQUIER OTRA COMBINACIÓN = 0 PUNTOS.
-
-*/
-
-function isQ5Correct(
-  selected
-){
-
-  if(
-    !Array.isArray(selected)
-  ){
-
-    return false;
-
-  }
-
-
-  const ALL =
-  9;
-
-
-  const individualCorrect = [
-    0,1,2,3,4,5,6,7,8
-  ];
-
-
-  /* TODAS LAS ANTERIORES SOLA */
-
-  if(
-    selected.length === 1
-    &&
-    selected[0] === ALL
-  ){
-
-    return true;
-
-  }
-
-
-  /* NUEVE ALTERNATIVAS */
-
-  if(
-
-    selected.length ===
-    individualCorrect.length
-
-    &&
-
-    !selected.includes(ALL)
-
-    &&
-
-    individualCorrect.every(
-      index =>
-      selected.includes(index)
-    )
-
-  ){
-
-    return true;
-
-  }
-
-
-  return false;
-
-}
-
-
-/* ==========================================================
-   16. PUNTUACIÓN
-========================================================== */
-
-function scoreSection(
-  section
-){
-
-  let score = 0;
-
-  let max = 0;
-
-
-  section.questions.forEach(
-    question=>{
-
-
-      if(
-        question.scored === false
-      ){
-
-        return;
-
-      }
-
-
-      /* PREGUNTA 5 */
-
-      if(
-        question.id === "q5"
-      ){
-
-        max++;
-
-        if(
-          isQ5Correct(
-            answers.q5 || []
-          )
-        ){
-
-          score++;
-
-        }
-
-        return;
-
-      }
-
-
-      /* LIKERT */
-
-      if(
-        question.scored ===
-        "likert"
-      ){
-
-        max += Math.max(
-          ...question.likertWeights
-        );
-
-
-        const answer =
-        answers[
-          question.id
-        ];
-
-
-        if(
-          answer !== undefined
-        ){
-
-          score +=
-          question.likertWeights[
-            answer
-          ];
-
-        }
-
-
-        return;
-
-      }
-
-
-      /* RESPUESTA SIMPLE */
-
-      max++;
-
-
-      const answer =
-      answers[
-        question.id
-      ];
-
-
-      if(
-        answer ===
-        question.correct
-      ){
-
-        score++;
-
-      }
-
-    }
-  );
-
-
-  return {
-    score,
-    max
-  };
-
-}
-
-
-/* ==========================================================
-   17. CALCULAR RESULTADOS
-========================================================== */
-
-function calculateResults(){
-
-  const results =
-  SECTIONS.map(
-    scoreSection
-  );
-
-
-  const [
-    s1,
-    s2,
-    s3,
-    s4
-  ] = results;
-
-
-  document.getElementById(
-    "s1score"
-  ).textContent =
-  `${s1.score} / ${s1.max}`;
-
-
-  document.getElementById(
-    "s2score"
-  ).textContent =
-  `${s2.score} / ${s2.max}`;
-
-
-  document.getElementById(
-    "s3score"
-  ).textContent =
-  `${s3.score} / ${s3.max}`;
-
-
-  document.getElementById(
-    "s4score"
-  ).textContent =
-  `${s4.score} / ${s4.max}`;
-
-
-  const s1pct =
-  s1.max
-    ? s1.score /
-      s1.max *
-      100
-    : 0;
-
-
-  const s2pct =
-  s2.max
-    ? s2.score /
-      s2.max *
-      100
-    : 0;
-
-
-  const s3pct =
-  s3.max
-    ? s3.score /
-      s3.max *
-      100
-    : 0;
-
-
-  const s4pct =
-  s4.max
-    ? s4.score /
-      s4.max *
-      100
-    : 0;
-
-
-  document.getElementById(
-    "s1level"
-  ).textContent =
-
-    s1pct >= 83
-      ? "Bueno / Alto"
-      : s1pct >= 50
-        ? "Regular / Moderado"
-        : "Deficiente / Bajo";
-
-
-  document.getElementById(
-    "s2level"
-  ).textContent =
-
-    s2pct === 100
-      ? "Adecuada"
-      : s2pct >= 50
-        ? "Parcialmente adecuada"
-        : "Inadecuada";
-
-
-  document.getElementById(
-    "s3level"
-  ).textContent =
-
-    s3pct === 100
-      ? "Óptimo"
-      : s3pct >= 50
-        ? "Aceptable"
-        : "Deficiente";
-
-
-  document.getElementById(
-    "s4level"
-  ).textContent =
-
-    s4pct >= 87
-      ? "Alta"
-      : s4pct >= 53
-        ? "Moderada"
-        : "Baja";
-
-
-  const totalScore =
-    s1.score +
-    s2.score +
-    s3.score +
-    s4.score;
-
-
-  const totalMax =
-    s1.max +
-    s2.max +
-    s3.max +
-    s4.max;
-
-
-  const totalPercentage =
-    totalMax
-      ? totalScore /
-        totalMax *
-        100
-      : 0;
-
-
-  document.getElementById(
-    "totalScore"
-  ).textContent =
-
-    `${totalScore} / ${totalMax} (${totalPercentage.toFixed(0)}%)`;
-
-
-  document.getElementById(
-    "totalLevel"
-  ).textContent =
-
-    totalPercentage >= 80
-      ? "Alto"
-      : totalPercentage >= 50
-        ? "Moderado"
-        : "Bajo";
-
-
-  const summary =
-
-`RESUMEN — CUESTIONARIO LCU LED
-
-DATOS SOCIODEMOGRÁFICOS
-
-Siglas:
-${demographics.initials || ""}
-
-Estado civil:
-${demographics.estadoCivil || ""}
-
-Lugar de procedencia:
-${demographics.procedencia || ""}
-
-Ocupación:
-${
-  demographics.ocupacion === "Otros"
-  ? "Otros: " +
-    (
-      demographics.otherOccupation || ""
-    )
-  : demographics.ocupacion || ""
-}
-
-Género:
-${demographics.genero || ""}
-
-Edad:
-${demographics.edad || ""}
-
-Ciclo:
-${demographics.ciclo || ""}
-
-
-RESULTADOS
-
-Sección 1 — Conocimiento:
-${s1.score}/${s1.max}
-
-Sección 2 — Práctica clínica:
-${s2.score}/${s2.max}
-
-Sección 3 — Mantenimiento:
-${s3.score}/${s3.max}
-
-Sección 4 — Satisfacción:
-${s4.score}/${s4.max}
-
-PUNTAJE GLOBAL:
-${totalScore}/${totalMax}
-(${totalPercentage.toFixed(0)}%)`;
-
-
-  document.getElementById(
-    "printSummary"
-  ).textContent =
-  summary;
-
-
-  document.getElementById(
-    "results"
-  ).classList.add(
-    "show"
-  );
-
-
-  return {
-
-    results,
-
-    totalScore,
-
-    totalMax,
-
-    totalPercentage
-
-  };
-
-}
-
-
-/* ==========================================================
-   18. BOTÓN CALCULAR
-========================================================== */
-
-document
-  .getElementById(
-    "btnScore"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      const error =
-      validateComplete();
-
-
-      if(error){
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ⚠ ${esc(error)}
-
-          </div>
-
-        `;
-
-
-        document.getElementById(
-          "submitStatus"
-        ).scrollIntoView({
-          behavior:"smooth"
-        });
-
-
-        return;
-
-      }
-
-
-      calculateResults();
-
-
-      document.getElementById(
-        "results"
-      ).scrollIntoView({
-        behavior:"smooth"
-      });
-
-    }
-  );
-
-
-/* ==========================================================
-   19. IDENTIFICADOR DEL PARTICIPANTE
-========================================================== */
-
-function getParticipantId(){
-
-  let id =
-  localStorage.getItem(
-    "lcu_participant_id_v2"
-  );
-
-
-  if(!id){
-
-    if(
-      window.crypto
-      &&
-      crypto.randomUUID
-    ){
-
-      id =
-      crypto.randomUUID();
-
-    }else{
-
-      id =
-      "P-" +
-      Date.now() +
-      "-" +
-      Math.random()
-        .toString(36)
-        .slice(2);
-
-    }
-
-
-    localStorage.setItem(
-      "lcu_participant_id_v2",
-      id
-    );
-
-  }
-
-
-  return id;
-
-}
-
-
-/* ==========================================================
-   20. ENVIAR RESPUESTA
-========================================================== */
-
-document
-  .getElementById(
-    "btnSubmit"
-  )
-  .addEventListener(
-    "click",
-    async ()=>{
-
-
-      const validation =
-      validateComplete();
-
-
-      if(validation){
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ⚠ ${esc(validation)}
-
-          </div>
-
-        `;
-
-
-        document.getElementById(
-          "submitStatus"
-        ).scrollIntoView({
-          behavior:"smooth"
-        });
-
-
-        return;
-
-      }
-
-
-      if(
-        !API_URL
-        ||
-        API_URL.includes(
-          "PEGAR_AQUI"
-        )
-      ){
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ⚠ Debe configurar primero
-            la URL /exec de Google Apps Script
-            en la variable API_URL.
-
-          </div>
-
-        `;
-
-
-        return;
-
-      }
-
-
-      const calculation =
-      calculateResults();
-
-
-      const [
-        s1,
-        s2,
-        s3,
-        s4
-      ] =
-      calculation.results;
-
-
-      const record = {
-
-        participantId:
-        getParticipantId(),
-
-
-        submittedAt:
-        new Date()
-          .toISOString(),
-
-
-        demographics:{
-
-          initials:
-          demographics.initials || "",
-
-          estadoCivil:
-          demographics.estadoCivil || "",
-
-          procedencia:
-          demographics.procedencia || "",
-
-          ocupacion:
-          demographics.ocupacion || "",
-
-          otherOccupation:
-          demographics.otherOccupation || "",
-
-          genero:
-          demographics.genero || "",
-
-          edad:
-          demographics.edad || "",
-
-          ciclo:
-          demographics.ciclo || ""
-
-        },
-
-
-        answers:{
-          ...answers
-        },
-
-
-        scores:{
-
-          s1:{
-            score:s1.score,
-            max:s1.max
-          },
-
-          s2:{
-            score:s2.score,
-            max:s2.max
-          },
-
-          s3:{
-            score:s3.score,
-            max:s3.max
-          },
-
-          s4:{
-            score:s4.score,
-            max:s4.max
-          },
-
-          total:
-          calculation.totalScore,
-
-          totalMax:
-          calculation.totalMax,
-
-          totalPct:
-          Number(
-            calculation.totalPercentage
-              .toFixed(2)
-          )
-
-        }
-
-      };
-
-
-      const button =
-      document.getElementById(
-        "btnSubmit"
-      );
-
-
-      button.disabled = true;
-
-
-      document.getElementById(
-        "submitStatus"
-      ).innerHTML = `
-
-        <div class="status-box">
-
-          Enviando respuesta...
-          Espere unos segundos.
-
-        </div>
-
-      `;
-
-
-      try{
-
-        /*
-          IMPORTANTE:
-
-          Se utiliza text/plain y no application/json
-          para evitar una solicitud CORS preflight.
-
-          no-cors permite que GitHub Pages envíe
-          la información a Apps Script.
-        */
-
-        await fetch(
-          API_URL,
-          {
-
-            method:"POST",
-
-            mode:"no-cors",
-
-            cache:"no-store",
-
-            headers:{
-              "Content-Type":
-              "text/plain;charset=utf-8"
-            },
-
-            body:
-            JSON.stringify(
-              record
-            )
-
-          }
-        );
-
-
-        /*
-          Debido a no-cors el navegador no permite
-          leer la respuesta de Apps Script.
-
-          Por eso la confirmación se muestra después
-          de que la solicitud termina.
-
-          La comprobación definitiva debe hacerse
-          en Google Sheets.
-        */
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--success);
-            ">
-
-            ✓ Respuesta enviada correctamente.
-            Gracias por participar.
-
-          </div>
-
-        `;
-
-
-        localStorage.setItem(
-          "lcu_last_submission_v2",
-          JSON.stringify(record)
-        );
-
-
-      }catch(error){
-
-        console.error(
-          error
-        );
-
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ✕ No se pudo enviar la respuesta.
-            Revise la URL /exec de Google Apps Script
-            y la configuración de la implementación.
-
-          </div>
-
-        `;
-
-      }finally{
-
-        button.disabled =
-        false;
-
-      }
-
-    }
-  );
-
-
-/* ==========================================================
-   21. REINICIAR
-========================================================== */
-
-document
-  .getElementById(
-    "btnReset"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      if(
-        confirm(
-          "¿Está seguro de reiniciar todas las respuestas?"
-        )
-      ){
-
-        demographics =
-        {};
-
-        answers =
-        {};
-
-
-        localStorage.removeItem(
-          "lcu_demographics_v2"
-        );
-
-        localStorage.removeItem(
-          "lcu_answers_v2"
-        );
-
-
-        document.getElementById(
-          "results"
-        ).classList.remove(
-          "show"
-        );
-
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = "";
-
-
-        render();
-
-
-        window.scrollTo({
-          top:0,
-          behavior:"smooth"
-        });
-
-      }
-
-    }
-  );
-
-
-/* ==========================================================
-   22. PDF
-========================================================== */
-
-document
-  .getElementById(
-    "btnPrint"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-      window.print();
-    }
-  );
-
-
-/* ==========================================================
-   23. GENERAR QR
-========================================================== */
-
-document
-  .getElementById(
-    "btnShowQR"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      const qrSection =
-      document.getElementById(
-        "qrSection"
-      );
-
-
-      const qrContainer =
-      document.getElementById(
-        "qrcode"
-      );
-
-
-      qrContainer.innerHTML =
-      "";
-
-
-      /*
-        window.location.href
-        será la dirección final de
-        GitHub Pages.
-
-        Ejemplo:
-
-        https://roandre1995-del.github.io/encuesta-lcu/
-      */
-
-      const questionnaireURL =
-      window.location.href;
-
-
-      new QRCode(
-        qrContainer,
-        {
-
-          text:
-          questionnaireURL,
-
-          width:256,
-
-          height:256,
-
-          correctLevel:
-          QRCode.CorrectLevel.H
-
-        }
-      );
-
-
-      document.getElementById(
-        "qrUrl"
-      ).textContent =
-      questionnaireURL;
-
-
-      qrSection.style.display =
-      "block";
-
-
-      qrSection.scrollIntoView({
-        behavior:"smooth"
-      });
-
-    }
-  );
-
-
-/* ==========================================================
-   24. INICIAR
-========================================================== */
-
-render();
-
-</script>
-
-</body>
-</html>}
-
-.progress-track{
-  flex:1;
-  height:7px;
-  background:#dfe7e3;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.progress-fill{
-  height:100%;
-  width:0%;
-  background:var(--accent);
-  transition:width .25s ease;
-}
-
-/* =========================
-   CONTENIDO
-========================= */
-
-main{
-  max-width:920px;
-  margin:auto;
-  padding:2rem 1rem 5rem;
-}
-
-section.block{
-  margin-bottom:2rem;
-}
-
-section.block > h2{
-  font-size:.85rem;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  color:var(--accent-dark);
-  border-bottom:2px solid var(--line);
-  padding-bottom:.6rem;
-  margin:0 0 1rem;
-}
-
-.q{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:1.2rem;
-  margin-bottom:1rem;
-  box-shadow:var(--shadow);
-}
-
-.q-number{
-  font-size:.75rem;
-  font-weight:bold;
-  color:var(--accent);
-  text-transform:uppercase;
-  margin-bottom:.4rem;
-}
-
-.prompt{
-  margin:0 0 .8rem;
-  font-size:1rem;
-  font-weight:600;
-}
-
-.hint{
-  color:var(--muted);
-  font-size:.78rem;
-  margin:-.3rem 0 .8rem;
-}
-
-/* =========================
-   OPCIONES
-========================= */
-
-.opt{
-  display:flex;
-  align-items:flex-start;
-  gap:.65rem;
-  padding:.65rem;
-  margin:.15rem 0;
-  border-radius:8px;
-  cursor:pointer;
-  transition:.12s;
-}
-
-.opt:hover{
-  background:#f2f6f4;
-}
-
-.opt.checked{
-  background:var(--accent-soft);
-}
-
-.opt input{
-  width:17px;
-  height:17px;
-  margin-top:.2rem;
-  accent-color:var(--accent);
-  flex-shrink:0;
-}
-
-.opt span{
-  font-size:.93rem;
-}
-
-/* =========================
-   DATOS SOCIODEMOGRÁFICOS
-========================= */
-
-.demo-grid{
-  display:grid;
-  grid-template-columns:
-  repeat(2,minmax(0,1fr));
-  gap:1rem;
-}
-
-.demo-item{
-  margin-bottom:.4rem;
-}
-
-.demo-label{
-  display:block;
-  font-size:.82rem;
-  font-weight:bold;
-  margin-bottom:.4rem;
-}
-
-.required{
-  color:var(--danger);
-}
-
-.text-input{
-  width:100%;
-  padding:.75rem;
-  border:1px solid #cbd5d1;
-  border-radius:8px;
-  background:white;
-  font:inherit;
-}
-
-.text-input:focus{
-  outline:2px solid rgba(47,107,91,.15);
-  border-color:var(--accent);
-}
-
-.inline-options{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.3rem .5rem;
-}
-
-.inline-options .opt{
-  flex:1 1 180px;
-}
-
-.small-note{
-  color:var(--muted);
-  font-size:.75rem;
-  margin-top:.3rem;
-}
-
-/* =========================
-   BOTONES
-========================= */
-
-.actions{
-  max-width:920px;
-  margin:auto;
-  padding:0 1rem 3rem;
-  display:flex;
-  flex-wrap:wrap;
-  gap:.7rem;
-}
-
-button{
-  border:1px solid var(--accent-dark);
-  border-radius:8px;
-  padding:.8rem 1.1rem;
-  background:var(--accent-dark);
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{
-  filter:brightness(1.07);
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-button.secondary{
-  background:white;
-  color:var(--accent-dark);
-}
-
-/* =========================
-   MENSAJE ENVÍO
-========================= */
-
-#submitStatus{
-  max-width:920px;
-  margin:-1.5rem auto 1.5rem;
-  padding:0 1rem;
-  font-size:.9rem;
-  font-weight:bold;
-}
-
-.status-box{
-  padding:.9rem 1rem;
-  border-radius:8px;
-  background:white;
-  border:1px solid var(--line);
-}
-
-/* =========================
-   RESULTADOS
-========================= */
-
-#results{
-  display:none;
-  max-width:920px;
-  margin:0 auto 4rem;
-  padding:0 1rem;
-}
-
-#results.show{
-  display:block;
-}
-
-.card-result{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:1.2rem;
-  margin-bottom:.8rem;
-  box-shadow:var(--shadow);
-}
-
-.card-result h3{
-  margin:0 0 .5rem;
-  font-size:.82rem;
-  text-transform:uppercase;
-  color:var(--accent);
-}
-
-.score-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:1rem;
-}
-
-.score-num{
-  font-size:1.5rem;
-}
-
-.score-level{
-  font-size:.8rem;
-  padding:.25rem .65rem;
-  border-radius:20px;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-}
-
-/* =========================
-   QR
-========================= */
-
-#qrSection{
-  max-width:920px;
-  margin:0 auto 4rem;
-  padding:0 1rem;
-}
-
-.qr-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:1.5rem;
-  text-align:center;
-  box-shadow:var(--shadow);
-}
-
-#qrcode{
-  margin:1.2rem auto;
-  width:256px;
-  height:256px;
-}
-
-#qrcode img,
-#qrcode canvas{
-  max-width:100%;
-  height:auto;
-}
-
-.qr-url{
-  word-break:break-all;
-  color:var(--muted);
-  font-size:.78rem;
-}
-
-/* =========================
-   MÓVIL
-========================= */
-
-@media(max-width:680px){
-
-  .demo-grid{
-    grid-template-columns:1fr;
-  }
-
-  header{
-    padding:2rem .9rem;
-  }
-
-  main{
-    padding-top:1.3rem;
-  }
-
-  .progress-inner{
-    gap:.5rem;
-  }
-
-  #progressText{
-    min-width:95px;
-    font-size:.7rem;
-  }
-
-  .actions{
-    display:grid;
-    grid-template-columns:1fr;
-  }
-
-  button{
-    width:100%;
-  }
-
-  #qrcode{
-    width:220px;
-    height:220px;
-  }
-}
-
-/* =========================
-   IMPRESIÓN
-========================= */
-
-@media print{
-
-  header,
-  .progress-bar,
-  .actions,
-  #submitStatus,
-  #qrSection{
-    display:none!important;
-  }
-
-  body{
-    background:white;
-  }
-
-  .q{
-    box-shadow:none;
-    break-inside:avoid;
-  }
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- =========================
-     PROGRESO
-========================= -->
-
-<div class="progress-bar">
-
-  <div class="progress-inner">
-
-    <span id="progressText">
-      0 / 32 respondidas
-    </span>
-
-    <div class="progress-track">
-
-      <div
-        class="progress-fill"
-        id="progressFill">
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     ENCABEZADO
-========================= -->
-
-<header>
-
-  <div class="wrap">
-
-    <h1>
-      CUESTIONARIO NIVEL DE CONOCIMIENTO Y COMPETENCIAS SOBRE LA EFICACIA DE LA LUZ EMITIDA POR UNIDADES DE FOTOCURADO LED EN ESTUDIANTES DE ESTOMATOLOGIA DE UNA UNIVERSIDAD PRIVADA DE LIMA.
-    </h1>
-
-    <p>
-      Lea cuidadosamente cada pregunta y seleccione la alternativa que corresponda.
-    </p>
-
-    <div class="notice">
-
-      <strong>Indicaciones:</strong>
-
-      Complete todos los datos sociodemográficos y todas las preguntas antes de enviar el cuestionario.
-
-      Las respuestas serán registradas en una base de datos destinada al procesamiento de la investigación.
-
-      En la pregunta 5 deberá seleccionar todas las alternativas que correspondan según las instrucciones específicas indicadas.
-
-    </div>
-
-  </div>
-
-</header>
-
-
-<!-- =========================
-     FORMULARIO
-========================= -->
-
-<main id="surveyForm"></main>
-
-
-<!-- =========================
-     BOTONES
-========================= -->
-
-<div class="actions">
-
-  <button
-    id="btnScore"
-    type="button">
-    Calcular mi resultado
-  </button>
-
-  <button
-    id="btnSubmit"
-    type="button">
-    Enviar respuesta
-  </button>
-
-  <button
-    id="btnReset"
-    class="secondary"
-    type="button">
-    Reiniciar encuesta
-  </button>
-
-  <button
-    id="btnPrint"
-    class="secondary"
-    type="button">
-    Guardar como PDF
-  </button>
-
-  <button
-    id="btnShowQR"
-    class="secondary"
-    type="button">
-    Mostrar código QR
-  </button>
-
-</div>
-
-
-<div id="submitStatus"></div>
-
-
-<!-- =========================
-     RESULTADOS
-========================= -->
-
-<div id="results">
-
-  <div class="card-result">
-
-    <h3>
-      Sección 1 · Conocimiento
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s1score">
-        0 / 6
-      </span>
-
-      <span
-        class="score-level"
-        id="s1level">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Sección 2 · Práctica clínica
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s2score">
-        0 / 4
-      </span>
-
-      <span
-        class="score-level"
-        id="s2level">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Sección 3 · Mantenimiento
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s3score">
-        0 / 4
-      </span>
-
-      <span
-        class="score-level"
-        id="s3level">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Sección 4 · Satisfacción
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="s4score">
-        0 / 15
-      </span>
-
-      <span
-        class="score-level"
-        id="s4level">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Puntaje global
-    </h3>
-
-    <div class="score-row">
-
-      <span
-        class="score-num"
-        id="totalScore">
-        0 / 29 (0%)
-      </span>
-
-      <span
-        class="score-level"
-        id="totalLevel">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card-result">
-
-    <h3>
-      Resumen
-    </h3>
-
-    <div id="printSummary"></div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     QR
-========================= -->
-
-<div
-  id="qrSection"
-  style="display:none;">
-
-  <div class="qr-card">
-
-    <h3>
-      CÓDIGO QR DEL CUESTIONARIO
-    </h3>
-
-    <p>
-      Escanee este código con cualquier teléfono móvil para abrir directamente el cuestionario.
-    </p>
-
-    <div id="qrcode"></div>
-
-    <div
-      class="qr-url"
-      id="qrUrl">
-    </div>
-
-    <br>
-
-    <button
-      type="button"
-      onclick="window.print()">
-      Imprimir QR
-    </button>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/* ==========================================================
-   1. CONFIGURACIÓN DE GOOGLE APPS SCRIPT
-   ==========================================================
-
-   IMPORTANTE:
-   Reemplace únicamente la URL que aparece dentro de las
-   comillas por la URL /exec de su aplicación web.
-
-   Ejemplo:
-
-   const API_URL =
-   "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
-
-========================================================== */
-
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzbZd_2Kxk97FJGUy8JuICfBIPVo7YTkPURbEIK90CWkEIG_X3u2yZEKSfltea84OPqRg/exec";
-
-
-/* ==========================================================
-   2. DATOS SOCIODEMOGRÁFICOS
-========================================================== */
-
-const DEMO_FIELDS = [
-
-  {
-    id:"initials",
-    label:"SIGLAS DE SUS NOMBRES Y APELLIDOS",
-    type:"text",
-    required:true
-  },
-
-  {
-    id:"estadoCivil",
-    label:"Estado Civil",
-    type:"single",
-    options:[
-      "Soltero",
-      "Casado",
-      "Conviviente",
-      "Viudo",
-      "Divorciado"
-    ],
-    required:true
-  },
-
-  {
-    id:"procedencia",
-    label:"Lugar de Procedencia",
-    type:"single",
-    options:[
-      "Capital - Lima",
-      "Provincia"
-    ],
-    required:true
-  },
-
-  {
-    id:"ocupacion",
-    label:"Ocupación",
-    type:"single",
-    options:[
-      "Solo Estudia",
-      "Trabaja y Estudia",
-      "Otros"
-    ],
-    required:true
-  },
-
-  {
-    id:"genero",
-    label:"Género",
-    type:"single",
-    options:[
-      "Masculino",
-      "Femenino"
-    ],
-    required:true
-  },
-
-  {
-    id:"edad",
-    label:"Edad",
-    type:"single",
-    options:[
-      "18 – 25 años",
-      "25 – 30 años",
-      "30 a más"
-    ],
-    required:true
-  },
-
-  {
-    id:"ciclo",
-    label:"Ciclo en curso",
-    type:"single",
-    options:[
-      "3 CICLO – 4 CICLO",
-      "5 CICLO – 6 CICLO",
-      "7 CICLO – 10 CICLO"
-    ],
-    required:true
-  }
-
-];
-
-
-/* ==========================================================
-   3. RECUPERACIÓN LOCAL
-========================================================== */
-
-let demographics =
-JSON.parse(
-  localStorage.getItem(
-    "lcu_demographics_v2"
-  ) || "{}"
-);
-
-let answers =
-JSON.parse(
-  localStorage.getItem(
-    "lcu_answers_v2"
-  ) || "{}"
-);
-
-
-/* ==========================================================
-   4. PREGUNTAS
-========================================================== */
-
-const SECTIONS = [
-
-/* ==========================================================
-   SECCIÓN 1
-========================================================== */
-
-{
-  id:"s1",
-
-  title:
-  "Sección 1 — Conocimiento sobre LCUs y ciencia de los materiales",
-
-  questions:[
-
-    {
-      id:"q1",
-      type:"single",
-
-      prompt:
-      "¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q2",
-      type:"single",
-
-      prompt:
-      "¿Sabe si su unidad de fotocurado (LCU) tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q3",
-      type:"single",
-
-      prompt:
-      "¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q4",
-      type:"single",
-
-      prompt:
-      "¿Con qué frecuencia utiliza la LCU y materiales activados por luz en su práctica clínica?",
-
-      options:[
-        "Diariamente",
-        "Semanalmente",
-        "Raramente",
-        "Nunca"
-      ],
-
-      scored:false
-    },
-
-
-    /* ======================================================
-       PREGUNTA 5
-       TODAS LAS ALTERNATIVAS ORIGINALES SE CONSERVAN
-    ====================================================== */
-
-    {
-      id:"q5",
-
-      type:"multi",
-
-      prompt:
-      "¿Cuál de los siguientes puede asociarse con una exposición radiante insuficiente (polimerización inadecuada)?",
-
-      hint:
-      "Seleccione todas las que correspondan. Para obtener 1 punto, debe marcar las nueve alternativas individuales correctas o, en su defecto, únicamente la alternativa «TODAS LAS ANTERIORES». Si no marca todas las respuestas correctas, la puntuación será 0. Si marca «TODAS LAS ANTERIORES» junto con cualquier otra alternativa, la puntuación también será 0.",
-
-      options:[
-
-        "Bajas propiedades mecánicas",
-
-        "Baja estabilidad de color",
-
-        "Mayor colonización bacteriana",
-
-        "Reacciones tóxicas",
-
-        "Reacciones alérgicas",
-
-        "Caries secundaria",
-
-        "Filtración marginal",
-
-        "Alteración de color marginal",
-
-        "Sensibilidad dental",
-
-        "TODAS LAS ANTERIORES"
-
-      ],
-
-      scored:true
-    },
-
-
-    {
-      id:"q6",
-      type:"single",
-
-      prompt:
-      "¿Cuál es la irradiancia mínima requerida para una polimerización adecuada de compuestos de 2 mm de espesor en 40 segundos?",
-
-      options:[
-        "100-300 mW/cm²",
-        "300-500 mW/cm²",
-        ">500 mW/cm²",
-        "No estoy seguro"
-      ],
-
-      correct:1,
-      scored:true
-    },
-
-
-    {
-      id:"q7",
-      type:"single",
-
-      prompt:
-      "¿Cuál es la técnica de control de infecciones que tiene el menor efecto negativo en las puntas de fotocurado?",
-
-      options:[
-        "Autoclave",
-        "Solución desinfectante",
-        "Barrera transparente",
-        "No estoy seguro"
-      ],
-
-      correct:2,
-      scored:true
-    },
-
-
-    {
-      id:"q8",
-      type:"multi",
-
-      prompt:
-      "¿Cuál(es) es/son su(s) fuente(s) de información sobre las LCU y los materiales activados por luz?",
-
-      hint:
-      "Seleccione todas las que correspondan",
-
-      options:[
-
-        "Libros de texto",
-
-        "Revistas científicas",
-
-        "Conferencias en el currículo de pregrado",
-
-        "Conferencias en el currículo de posgrado",
-
-        "Conferencias de educación continua (incluyendo congresos)",
-
-        "Folletos de fabricantes",
-
-        "Internet y redes sociales"
-
-      ],
-
-      scored:false
-    }
-
-  ]
-},
-
-
-/* ==========================================================
-   SECCIÓN 2
-========================================================== */
-
-{
-  id:"s2",
-
-  title:
-  "Sección 2 — Práctica clínica relacionada con LCUs (competencia clínica)",
-
-  questions:[
-
-    {
-      id:"q9",
-      type:"single",
-
-      prompt:
-      "¿Qué tipo de LCU está utilizando?",
-
-      options:[
-
-        "Luces de cuarzo-tungsteno-halógeno (QTH)",
-
-        "Luces de arco de plasma (PAC)",
-
-        "Láseres de iones de argón",
-
-        "Diodos emisores de luz (LED)",
-
-        "No estoy seguro"
-
-      ],
-
-      scored:false
-    },
-
-
-    {
-      id:"q10",
-      type:"single",
-
-      prompt:
-      "¿Qué modo de curado utiliza para polimerizar su restauración?",
-
-      options:[
-
-        "Inicio suave (Soft start)",
-
-        "Curado rápido (Fast cure)",
-
-        "Modo convencional",
-
-        "No reviso el modo de curado en mi dispositivo"
-
-      ],
-
-      scored:false
-    },
-
-
-    {
-      id:"q11",
-      type:"single",
-
-      prompt:
-      "¿Cuánto tiempo fotocura una restauración de resina compuesta?",
-
-      options:[
-
-        "10 segundos por cada incremento de 2 mm",
-
-        "20 segundos por cada incremento de 2 mm",
-
-        "40 segundos por cada incremento de 2 mm",
-
-        "60 segundos para la restauración completa"
-
-      ],
-
-      correct:1,
-      scored:true
-    },
-
-
-    {
-      id:"q12",
-      type:"single",
-
-      prompt:
-      "La ubicación y morfología del diente pueden afectar la posición entre la punta de la LCU y la superficie de la resina. El dentista siempre debe aspirar a:",
-
-      options:[
-
-        "Mantener la punta lo más cerca posible de la superficie de la restauración",
-
-        "Mantener la punta hasta a 10 mm",
-
-        "Posicionar la punta a un ángulo de 45 grados",
-
-        "Posicionar la punta a un ángulo de 90 grados"
-
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q13",
-      type:"single",
-
-      prompt:
-      "Para aumentar la exposición radiante total durante el curado de su restauración, podría necesitar:",
-
-      options:[
-
-        "Almacenar el material de resina en un refrigerador antes de la aplicación clínica",
-
-        "Aumentar el tiempo de curado más allá de la recomendación del fabricante",
-
-        "Elegir un tono de resina más oscuro"
-
-      ],
-
-      correct:1,
-      scored:true
-    },
-
-
-    {
-      id:"q14",
-      type:"single",
-
-      prompt:
-      "¿Qué utiliza principalmente para proteger sus ojos de los riesgos de la «luz azul»?",
-
-      options:[
-
-        "Escudo de luz montado en la LCU",
-
-        "Escudo de luz manual",
-
-        "Gafas protectoras naranjas",
-
-        "Mi asistente realiza el curado",
-
-        "Miro hacia otro lado"
-
-      ],
-
-      correct:2,
-      scored:true
-    }
-
-  ]
-},
-
-
-/* ==========================================================
-   SECCIÓN 3
-========================================================== */
-
-{
-  id:"s3",
-
-  title:
-  "Sección 3 — Mantenimiento y control de la unidad de fotocurado (LCU)",
-
-  questions:[
-
-    {
-      id:"q15",
-      type:"single",
-
-      prompt:
-      "¿Conoce la vida útil esperada de su unidad de fotocurado?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q16",
-      type:"single",
-
-      prompt:
-      "¿Inspecciona, limpia y revisa su LCU antes de usarla para asegurarse de que esté libre de defectos y residuos y que esté en la configuración correcta?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q17",
-      type:"single",
-
-      prompt:
-      "¿Controla el mantenimiento de su unidad de fotocurado y sigue las recomendaciones de mantenimiento del fabricante?",
-
-      options:[
-        "Sí",
-        "No"
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q18",
-      type:"single",
-
-      prompt:
-      "¿Con qué frecuencia realiza el mantenimiento de su dispositivo?",
-
-      options:[
-
-        "1–3 meses",
-
-        "3–6 meses",
-
-        "6–12 meses",
-
-        "12 meses",
-
-        "No realizo mantenimiento a mi dispositivo"
-
-      ],
-
-      scored:false
-    },
-
-
-    {
-      id:"q19",
-      type:"single",
-
-      prompt:
-      "¿Utiliza un radiómetro dental para controlar la irradiancia de su LCU?",
-
-      options:[
-
-        "Sí",
-
-        "No",
-
-        "No estoy familiarizado con este dispositivo"
-
-      ],
-
-      correct:0,
-      scored:true
-    },
-
-
-    {
-      id:"q20",
-      type:"single",
-
-      prompt:
-      "¿Con qué frecuencia revisa el nivel de irradiancia (potencia de salida) de su dispositivo?",
-
-      options:[
-
-        "1–3 meses",
-
-        "3–6 meses",
-
-        "6–12 meses",
-
-        "12 meses",
-
-        "No realizo mantenimiento a mi dispositivo"
-
-      ],
-
-      scored:false
-    }
-
-  ]
-},
-
-
-/* ==========================================================
-   SECCIÓN 4
-========================================================== */
-
-{
-  id:"s4",
-
-  title:
-  "Sección 4 — Nivel de satisfacción con la LCU y la ciencia de los materiales",
-
-  questions:[
-
-    {
-      id:"q21",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con su unidad de fotocurado?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q22",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con su nivel de conocimiento sobre las LCU y los materiales activados por luz?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q23",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con su práctica clínica respecto a la aplicación de la LCU y los materiales activados por luz?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q24",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con el nivel de formación en los programas de odontología respecto a la práctica clínica de las LCU?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    },
-
-
-    {
-      id:"q25",
-      type:"single",
-
-      prompt:
-      "¿Está satisfecho(a) con los cursos de educación continua ofrecidos relacionados con la LCU y su práctica clínica?",
-
-      options:[
-        "Satisfecho(a)",
-        "Moderadamente satisfecho(a)",
-        "Insatisfecho(a)"
-      ],
-
-      likertWeights:[
-        3,
-        2,
-        1
-      ],
-
-      scored:"likert"
-    }
-
-  ]
-}];
-
-
-/* ==========================================================
-   5. FUNCIONES GENERALES
-========================================================== */
-
-const form =
-document.getElementById("surveyForm");
-
-
-function esc(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* ==========================================================
-   6. RENDERIZAR FORMULARIO
-========================================================== */
-
-function render(){
-
-  form.innerHTML = "";
-
-
-  /* =========================
-     DATOS SOCIODEMOGRÁFICOS
-  ========================= */
-
-  const demoSection =
-  document.createElement("section");
-
-  demoSection.className =
-  "block";
-
-
-  let demoHTML = `
-    <h2>
-      Datos sociodemográficos
-    </h2>
-
-    <div class="q">
-
-      <div class="demo-grid">
-  `;
-
-
-  demoHTML += `
-
-    <div class="demo-item">
-
-      <label
-        class="demo-label"
-        for="initials">
-
-        SIGLAS DE SUS NOMBRES Y APELLIDOS
-        <span class="required">*</span>
-
-      </label>
-
-      <input
-        class="text-input"
-        id="initials"
-        maxlength="10"
-        autocomplete="off"
-        placeholder="Ejemplo: GGRP"
-        value="${esc(demographics.initials || "")}">
-
-      <div class="small-note">
-        Ejemplo: GGRP
-      </div>
-
-    </div>
-
-  `;
-
-
-  for(
-    const field
-    of DEMO_FIELDS.slice(1)
-  ){
-
-    demoHTML += `
-
-      <div class="demo-item">
-
-        <label class="demo-label">
-
-          ${esc(field.label)}
-
-          <span class="required">*</span>
-
-        </label>
-
-        <div class="inline-options">
-
-    `;
-
-
-    field.options.forEach(
-      (opt,i)=>{
-
-        const checked =
-        demographics[field.id] === opt;
-
-
-        demoHTML += `
-
-          <label
-            class="opt ${checked ? "checked" : ""}">
-
-            <input
-              type="radio"
-              name="demo_${field.id}"
-              value="${esc(opt)}"
-              ${checked ? "checked" : ""}>
-
-            <span>
-              ${esc(opt)}
-            </span>
-
-          </label>
-
-        `;
-
-      }
-    );
-
-
-    demoHTML += `
-        </div>
-    `;
-
-
-    if(
-      field.id === "ocupacion"
-    ){
-
-      demoHTML += `
-
-        <div
-          id="otherOccupationWrap"
-          style="
-          display:
-          ${demographics.ocupacion === "Otros"
-            ? "block"
-            : "none"};
-          margin-top:.55rem;">
-
-          <input
-            class="text-input"
-            id="otherOccupation"
-            maxlength="100"
-            placeholder="Especifique otra ocupación"
-            value="${esc(
-              demographics.otherOccupation || ""
-            )}">
-
-        </div>
-
-      `;
-
-    }
-
-
-    demoHTML += `
-      </div>
-    `;
-
-  }
-
-
-  demoHTML += `
-      </div>
-    </div>
-  `;
-
-
-  demoSection.innerHTML =
-  demoHTML;
-
-  form.appendChild(
-    demoSection
-  );
-
-
-  /* =========================
-     PREGUNTAS
-  ========================= */
-
-  SECTIONS.forEach(
-    section=>{
-
-      const sectionElement =
-      document.createElement("section");
-
-      sectionElement.className =
-      "block";
-
-
-      sectionElement.innerHTML =
-      `<h2>
-        ${esc(section.title)}
-      </h2>`;
-
-
-      section.questions.forEach(
-        question=>{
-
-          const questionElement =
-          document.createElement("div");
-
-          questionElement.className =
-          "q";
-
-
-          let html = `
-
-            <div class="q-number">
-
-              ${esc(
-                question.id.toUpperCase()
-              )}
-
-            </div>
-
-            <p class="prompt">
-
-              ${esc(
-                question.prompt
-              )}
-
-            </p>
-
-          `;
-
-
-          if(question.hint){
-
-            html += `
-
-              <p class="hint">
-
-                ${esc(
-                  question.hint
-                )}
-
-              </p>
-
-            `;
-
-          }
-
-
-          question.options.forEach(
-            (option,index)=>{
-
-              const inputType =
-              question.type === "multi"
-                ? "checkbox"
-                : "radio";
-
-
-              const checked =
-              question.type === "multi"
-
-              ? Array.isArray(
-                  answers[question.id]
-                )
-                &&
-                answers[
-                  question.id
-                ].includes(index)
-
-              : answers[
-                  question.id
-                ] === index;
-
-
-              html += `
-
-                <label
-                  class="opt ${
-                    checked
-                      ? "checked"
-                      : ""
-                  }">
-
-                  <input
-                    type="${inputType}"
-                    name="${question.id}"
-                    value="${index}"
-                    ${
-                      checked
-                        ? "checked"
-                        : ""
-                    }>
-
-                  <span>
-                    ${esc(option)}
-                  </span>
-
-                </label>
-
-              `;
-
-            }
-          );
-
-
-          questionElement.innerHTML =
-          html;
-
-          sectionElement.appendChild(
-            questionElement
-          );
-
-        }
-      );
-
-
-      form.appendChild(
-        sectionElement
-      );
-
-    }
-  );
-
-
-  attachListeners();
-
-  updateProgress();
-
-}
-
-
-/* ==========================================================
-   7. EVENTOS
-========================================================== */
-
-function attachListeners(){
-
-  const initials =
-  document.getElementById(
-    "initials"
-  );
-
-
-  initials.addEventListener(
-    "input",
-    ()=>{
-
-      demographics.initials =
-      initials.value
-        .trim()
-        .toUpperCase();
-
-      saveDemographics();
-
-      updateProgress();
-
-    }
-  );
-
-
-  document
-    .querySelectorAll(
-      'input[name^="demo_"]'
-    )
-    .forEach(
-      input=>{
-
-        input.addEventListener(
-          "change",
-          ()=>{
-
-            const id =
-            input.name.replace(
-              "demo_",
-              ""
-            );
-
-
-            demographics[id] =
-            input.value;
-
-
-            if(
-              id === "ocupacion"
-              &&
-              input.value !== "Otros"
-            ){
-
-              demographics.otherOccupation =
-              "";
-
-            }
-
-
-            saveDemographics();
-
-            render();
-
-          }
-        );
-
-      }
-    );
-
-
-  const otherOccupation =
-  document.getElementById(
-    "otherOccupation"
-  );
-
-
-  if(otherOccupation){
-
-    otherOccupation.addEventListener(
-      "input",
-      ()=>{
-
-        demographics.otherOccupation =
-        otherOccupation.value.trim();
-
-        saveDemographics();
+    form.addEventListener(
+      "change",
+      function() {
 
         updateProgress();
 
-      }
-    );
-
-  }
-
-
-  form
-    .querySelectorAll(
-      ".opt input[name^='q']"
-    )
-    .forEach(
-      input=>{
-
-        input.addEventListener(
-          "change",
-          onAnswerChange
-        );
-
-      }
-    );
-
-}
-
-
-/* ==========================================================
-   8. GUARDAR DATOS LOCALES
-========================================================== */
-
-function saveDemographics(){
-
-  localStorage.setItem(
-    "lcu_demographics_v2",
-    JSON.stringify(
-      demographics
-    )
-  );
-
-}
-
-
-/* ==========================================================
-   9. CAMBIO DE RESPUESTAS
-========================================================== */
-
-function onAnswerChange(event){
-
-  const questionId =
-  event.target.name;
-
-  const value =
-  Number(
-    event.target.value
-  );
-
-
-  const question =
-  findQuestion(
-    questionId
-  );
-
-
-  if(
-    question.type === "multi"
-  ){
-
-    let array =
-    Array.isArray(
-      answers[questionId]
-    )
-
-    ? answers[questionId].slice()
-
-    : [];
-
-
-    if(event.target.checked){
-
-      if(
-        !array.includes(value)
-      ){
-
-        array.push(value);
-
-      }
-
-    }else{
-
-      array =
-      array.filter(
-        item =>
-        item !== value
-      );
-
-    }
-
-
-    answers[questionId] =
-    array;
-
-  }else{
-
-    answers[questionId] =
-    value;
-
-  }
-
-
-  localStorage.setItem(
-    "lcu_answers_v2",
-    JSON.stringify(
-      answers
-    )
-  );
-
-
-  render();
-
-
-  document
-    .getElementById(
-      "results"
-    )
-    .classList.remove(
-      "show"
-    );
-
-
-  document
-    .getElementById(
-      "submitStatus"
-    )
-    .innerHTML = "";
-
-}
-
-
-/* ==========================================================
-   10. BUSCAR PREGUNTA
-========================================================== */
-
-function findQuestion(id){
-
-  for(
-    const section
-    of SECTIONS
-  ){
-
-    for(
-      const question
-      of section.questions
-    ){
-
-      if(
-        question.id === id
-      ){
-
-        return question;
-
-      }
-
-    }
-
-  }
-
-  return null;
-
-}
-
-
-/* ==========================================================
-   11. VALIDACIÓN SOCIODEMOGRÁFICA
-========================================================== */
-
-function demographicAnswered(){
-
-  if(
-    !demographics.initials
-  ){
-
-    return false;
-
-  }
-
-
-  for(
-    const field
-    of DEMO_FIELDS.slice(1)
-  ){
-
-    if(
-      !demographics[field.id]
-    ){
-
-      return false;
-
-    }
-
-  }
-
-
-  if(
-    demographics.ocupacion ===
-    "Otros"
-    &&
-    !demographics.otherOccupation
-  ){
-
-    return false;
-
-  }
-
-
-  return true;
-
-}
-
-
-/* ==========================================================
-   12. CONTAR RESPUESTAS
-========================================================== */
-
-function countAnsweredQuestions(){
-
-  let count = 0;
-
-
-  SECTIONS.forEach(
-    section=>{
-
-      section.questions.forEach(
-        question=>{
-
-          const answer =
-          answers[question.id];
-
-
-          if(
-            question.type === "multi"
-          ){
-
-            if(
-              Array.isArray(answer)
-              &&
-              answer.length > 0
-            ){
-
-              count++;
-
-            }
-
-          }else{
-
-            if(
-              answer !== undefined
-              &&
-              answer !== null
-            ){
-
-              count++;
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  return count;
-
-}
-
-
-/* ==========================================================
-   13. PROGRESO
-========================================================== */
-
-function totalSurveyItems(){
-
-  return (
-
-    DEMO_FIELDS.length
-
-    +
-
-    SECTIONS.reduce(
-      (
-        total,
-        section
-      ) =>
-
-      total +
-      section.questions.length,
-
-      0
-    )
-
-  );
-
-}
-
-
-function updateProgress(){
-
-  let count =
-  demographicAnswered()
-    ? DEMO_FIELDS.length
-    : 0;
-
-
-  count +=
-  countAnsweredQuestions();
-
-
-  const total =
-  totalSurveyItems();
-
-
-  const percentage =
-  Math.min(
-    100,
-    count /
-    total *
-    100
-  );
-
-
-  document
-    .getElementById(
-      "progressText"
-    )
-    .textContent =
-    `${count} / ${total} respondidas`;
-
-
-  document
-    .getElementById(
-      "progressFill"
-    )
-    .style.width =
-    percentage + "%";
-
-}
-
-
-/* ==========================================================
-   14. VALIDACIÓN COMPLETA
-========================================================== */
-
-function validateComplete(){
-
-  if(
-    !demographicAnswered()
-  ){
-
-    return "Complete todos los datos sociodemográficos obligatorios.";
-
-  }
-
-
-  const missing = [];
-
-
-  SECTIONS.forEach(
-    section=>{
-
-      section.questions.forEach(
-        question=>{
-
-          const answer =
-          answers[question.id];
-
-
-          if(
-            question.type === "multi"
-          ){
-
-            if(
-              !Array.isArray(answer)
-              ||
-              answer.length === 0
-            ){
-
-              missing.push(
-                question.id.toUpperCase()
-              );
-
-            }
-
-          }else{
-
-            if(
-              answer === undefined
-              ||
-              answer === null
-            ){
-
-              missing.push(
-                question.id.toUpperCase()
-              );
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-
-  if(missing.length){
-
-    return `
-      Faltan ${missing.length}
-      pregunta(s) por responder:
-      ${missing.join(", ")}.
-    `;
-
-  }
-
-
-  return "";
-
-}
-
-
-/* ==========================================================
-   15. REGLA ESPECIAL PREGUNTA 5
-========================================================== */
-
-/*
-
-  PREGUNTA 5
-
-  Índices:
-
-  0 = Bajas propiedades mecánicas
-  1 = Baja estabilidad de color
-  2 = Mayor colonización bacteriana
-  3 = Reacciones tóxicas
-  4 = Reacciones alérgicas
-  5 = Caries secundaria
-  6 = Filtración marginal
-  7 = Alteración de color marginal
-  8 = Sensibilidad dental
-  9 = TODAS LAS ANTERIORES
-
-
-  SE OTORGA 1 PUNTO ÚNICAMENTE SI:
-
-  CASO A:
-  Selecciona únicamente:
-  TODAS LAS ANTERIORES
-
-  O
-
-  CASO B:
-  Selecciona exactamente las nueve
-  alternativas individuales 0–8.
-
-  CUALQUIER OTRA COMBINACIÓN = 0 PUNTOS.
-
-*/
-
-function isQ5Correct(
-  selected
-){
-
-  if(
-    !Array.isArray(selected)
-  ){
-
-    return false;
-
-  }
-
-
-  const ALL =
-  9;
-
-
-  const individualCorrect = [
-    0,1,2,3,4,5,6,7,8
-  ];
-
-
-  /* TODAS LAS ANTERIORES SOLA */
-
-  if(
-    selected.length === 1
-    &&
-    selected[0] === ALL
-  ){
-
-    return true;
-
-  }
-
-
-  /* NUEVE ALTERNATIVAS */
-
-  if(
-
-    selected.length ===
-    individualCorrect.length
-
-    &&
-
-    !selected.includes(ALL)
-
-    &&
-
-    individualCorrect.every(
-      index =>
-      selected.includes(index)
-    )
-
-  ){
-
-    return true;
-
-  }
-
-
-  return false;
-
-}
-
-
-/* ==========================================================
-   16. PUNTUACIÓN
-========================================================== */
-
-function scoreSection(
-  section
-){
-
-  let score = 0;
-
-  let max = 0;
-
-
-  section.questions.forEach(
-    question=>{
-
-
-      if(
-        question.scored === false
-      ){
-
-        return;
-
-      }
-
-
-      /* PREGUNTA 5 */
-
-      if(
-        question.id === "q5"
-      ){
-
-        max++;
-
-        if(
-          isQ5Correct(
-            answers.q5 || []
-          )
-        ){
-
-          score++;
-
-        }
-
-        return;
-
-      }
-
-
-      /* LIKERT */
-
-      if(
-        question.scored ===
-        "likert"
-      ){
-
-        max += Math.max(
-          ...question.likertWeights
-        );
-
-
-        const answer =
-        answers[
-          question.id
-        ];
-
-
-        if(
-          answer !== undefined
-        ){
-
-          score +=
-          question.likertWeights[
-            answer
-          ];
-
-        }
-
-
-        return;
-
-      }
-
-
-      /* RESPUESTA SIMPLE */
-
-      max++;
-
-
-      const answer =
-      answers[
-        question.id
-      ];
-
-
-      if(
-        answer ===
-        question.correct
-      ){
-
-        score++;
-
-      }
-
-    }
-  );
-
-
-  return {
-    score,
-    max
-  };
-
-}
-
-
-/* ==========================================================
-   17. CALCULAR RESULTADOS
-========================================================== */
-
-function calculateResults(){
-
-  const results =
-  SECTIONS.map(
-    scoreSection
-  );
-
-
-  const [
-    s1,
-    s2,
-    s3,
-    s4
-  ] = results;
-
-
-  document.getElementById(
-    "s1score"
-  ).textContent =
-  `${s1.score} / ${s1.max}`;
-
-
-  document.getElementById(
-    "s2score"
-  ).textContent =
-  `${s2.score} / ${s2.max}`;
-
-
-  document.getElementById(
-    "s3score"
-  ).textContent =
-  `${s3.score} / ${s3.max}`;
-
-
-  document.getElementById(
-    "s4score"
-  ).textContent =
-  `${s4.score} / ${s4.max}`;
-
-
-  const s1pct =
-  s1.max
-    ? s1.score /
-      s1.max *
-      100
-    : 0;
-
-
-  const s2pct =
-  s2.max
-    ? s2.score /
-      s2.max *
-      100
-    : 0;
-
-
-  const s3pct =
-  s3.max
-    ? s3.score /
-      s3.max *
-      100
-    : 0;
-
-
-  const s4pct =
-  s4.max
-    ? s4.score /
-      s4.max *
-      100
-    : 0;
-
-
-  document.getElementById(
-    "s1level"
-  ).textContent =
-
-    s1pct >= 83
-      ? "Bueno / Alto"
-      : s1pct >= 50
-        ? "Regular / Moderado"
-        : "Deficiente / Bajo";
-
-
-  document.getElementById(
-    "s2level"
-  ).textContent =
-
-    s2pct === 100
-      ? "Adecuada"
-      : s2pct >= 50
-        ? "Parcialmente adecuada"
-        : "Inadecuada";
-
-
-  document.getElementById(
-    "s3level"
-  ).textContent =
-
-    s3pct === 100
-      ? "Óptimo"
-      : s3pct >= 50
-        ? "Aceptable"
-        : "Deficiente";
-
-
-  document.getElementById(
-    "s4level"
-  ).textContent =
-
-    s4pct >= 87
-      ? "Alta"
-      : s4pct >= 53
-        ? "Moderada"
-        : "Baja";
-
-
-  const totalScore =
-    s1.score +
-    s2.score +
-    s3.score +
-    s4.score;
-
-
-  const totalMax =
-    s1.max +
-    s2.max +
-    s3.max +
-    s4.max;
-
-
-  const totalPercentage =
-    totalMax
-      ? totalScore /
-        totalMax *
-        100
-      : 0;
-
-
-  document.getElementById(
-    "totalScore"
-  ).textContent =
-
-    `${totalScore} / ${totalMax} (${totalPercentage.toFixed(0)}%)`;
-
-
-  document.getElementById(
-    "totalLevel"
-  ).textContent =
-
-    totalPercentage >= 80
-      ? "Alto"
-      : totalPercentage >= 50
-        ? "Moderado"
-        : "Bajo";
-
-
-  const summary =
-
-`RESUMEN — CUESTIONARIO LCU LED
-
-DATOS SOCIODEMOGRÁFICOS
-
-Siglas:
-${demographics.initials || ""}
-
-Estado civil:
-${demographics.estadoCivil || ""}
-
-Lugar de procedencia:
-${demographics.procedencia || ""}
-
-Ocupación:
-${
-  demographics.ocupacion === "Otros"
-  ? "Otros: " +
-    (
-      demographics.otherOccupation || ""
-    )
-  : demographics.ocupacion || ""
-}
-
-Género:
-${demographics.genero || ""}
-
-Edad:
-${demographics.edad || ""}
-
-Ciclo:
-${demographics.ciclo || ""}
-
-
-RESULTADOS
-
-Sección 1 — Conocimiento:
-${s1.score}/${s1.max}
-
-Sección 2 — Práctica clínica:
-${s2.score}/${s2.max}
-
-Sección 3 — Mantenimiento:
-${s3.score}/${s3.max}
-
-Sección 4 — Satisfacción:
-${s4.score}/${s4.max}
-
-PUNTAJE GLOBAL:
-${totalScore}/${totalMax}
-(${totalPercentage.toFixed(0)}%)`;
-
-
-  document.getElementById(
-    "printSummary"
-  ).textContent =
-  summary;
-
-
-  document.getElementById(
-    "results"
-  ).classList.add(
-    "show"
-  );
-
-
-  return {
-
-    results,
-
-    totalScore,
-
-    totalMax,
-
-    totalPercentage
-
-  };
-
-}
-
-
-/* ==========================================================
-   18. BOTÓN CALCULAR
-========================================================== */
-
-document
-  .getElementById(
-    "btnScore"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      const error =
-      validateComplete();
-
-
-      if(error){
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ⚠ ${esc(error)}
-
-          </div>
-
-        `;
-
-
-        document.getElementById(
-          "submitStatus"
-        ).scrollIntoView({
-          behavior:"smooth"
-        });
-
-
-        return;
-
-      }
-
-
-      calculateResults();
-
-
-      document.getElementById(
-        "results"
-      ).scrollIntoView({
-        behavior:"smooth"
-      });
-
-    }
-  );
-
-
-/* ==========================================================
-   19. IDENTIFICADOR DEL PARTICIPANTE
-========================================================== */
-
-function getParticipantId(){
-
-  let id =
-  localStorage.getItem(
-    "lcu_participant_id_v2"
-  );
-
-
-  if(!id){
-
-    if(
-      window.crypto
-      &&
-      crypto.randomUUID
-    ){
-
-      id =
-      crypto.randomUUID();
-
-    }else{
-
-      id =
-      "P-" +
-      Date.now() +
-      "-" +
-      Math.random()
-        .toString(36)
-        .slice(2);
-
-    }
-
-
-    localStorage.setItem(
-      "lcu_participant_id_v2",
-      id
-    );
-
-  }
-
-
-  return id;
-
-}
-
-
-/* ==========================================================
-   20. ENVIAR RESPUESTA
-========================================================== */
-
-document
-  .getElementById(
-    "btnSubmit"
-  )
-  .addEventListener(
-    "click",
-    async ()=>{
-
-
-      const validation =
-      validateComplete();
-
-
-      if(validation){
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ⚠ ${esc(validation)}
-
-          </div>
-
-        `;
-
-
-        document.getElementById(
-          "submitStatus"
-        ).scrollIntoView({
-          behavior:"smooth"
-        });
-
-
-        return;
-
-      }
-
-
-      if(
-        !API_URL
-        ||
-        API_URL.includes(
-          "https://script.google.com/macros/s/AKfycbzbZd_2Kxk97FJGUy8JuICfBIPVo7YTkPURbEIK90CWkEIG_X3u2yZEKSfltea84OPqRg/exec"
-        )
-      ){
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ⚠ Debe configurar primero
-            la URL /exec de Google Apps Script
-            en la variable API_URL.
-
-          </div>
-
-        `;
-
-
-        return;
-
-      }
-
-
-      const calculation =
-      calculateResults();
-
-
-      const [
-        s1,
-        s2,
-        s3,
-        s4
-      ] =
-      calculation.results;
-
-
-      const record = {
-
-        participantId:
-        getParticipantId(),
-
-
-        submittedAt:
-        new Date()
-          .toISOString(),
-
-
-        demographics:{
-
-          initials:
-          demographics.initials || "",
-
-          estadoCivil:
-          demographics.estadoCivil || "",
-
-          procedencia:
-          demographics.procedencia || "",
-
-          ocupacion:
-          demographics.ocupacion || "",
-
-          otherOccupation:
-          demographics.otherOccupation || "",
-
-          genero:
-          demographics.genero || "",
-
-          edad:
-          demographics.edad || "",
-
-          ciclo:
-          demographics.ciclo || ""
-
-        },
-
-
-        answers:{
-          ...answers
-        },
-
-
-        scores:{
-
-          s1:{
-            score:s1.score,
-            max:s1.max
-          },
-
-          s2:{
-            score:s2.score,
-            max:s2.max
-          },
-
-          s3:{
-            score:s3.score,
-            max:s3.max
-          },
-
-          s4:{
-            score:s4.score,
-            max:s4.max
-          },
-
-          total:
-          calculation.totalScore,
-
-          totalMax:
-          calculation.totalMax,
-
-          totalPct:
-          Number(
-            calculation.totalPercentage
-              .toFixed(2)
-          )
-
-        }
-
-      };
-
-
-      const button =
-      document.getElementById(
-        "btnSubmit"
-      );
-
-
-      button.disabled = true;
-
-
-      document.getElementById(
-        "submitStatus"
-      ).innerHTML = `
-
-        <div class="status-box">
-
-          Enviando respuesta...
-          Espere unos segundos.
-
-        </div>
-
-      `;
-
-
-      try{
-
         /*
-          IMPORTANTE:
-
-          Se utiliza text/plain y no application/json
-          para evitar una solicitud CORS preflight.
-
-          no-cors permite que GitHub Pages envíe
-          la información a Apps Script.
+          Guardado automático silencioso.
         */
 
-        await fetch(
-          API_URL,
-          {
+        try {
 
-            method:"POST",
+          const data =
+            collectDraft();
 
-            mode:"no-cors",
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(data)
+          );
 
-            cache:"no-store",
+        } catch (error) {
 
-            headers:{
-              "Content-Type":
-              "text/plain;charset=utf-8"
-            },
+          console.warn(
+            "No se pudo guardar automáticamente.",
+            error
+          );
 
-            body:
-            JSON.stringify(
-              record
-            )
-
-          }
-        );
-
-
-        /*
-          Debido a no-cors el navegador no permite
-          leer la respuesta de Apps Script.
-
-          Por eso la confirmación se muestra después
-          de que la solicitud termina.
-
-          La comprobación definitiva debe hacerse
-          en Google Sheets.
-        */
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--success);
-            ">
-
-            ✓ Respuesta enviada correctamente.
-            Gracias por participar.
-
-          </div>
-
-        `;
-
-
-        localStorage.setItem(
-          "lcu_last_submission_v2",
-          JSON.stringify(record)
-        );
-
-
-      }catch(error){
-
-        console.error(
-          error
-        );
-
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = `
-
-          <div
-            class="status-box"
-            style="
-              color:var(--danger);
-            ">
-
-            ✕ No se pudo enviar la respuesta.
-            Revise la URL /exec de Google Apps Script
-            y la configuración de la implementación.
-
-          </div>
-
-        `;
-
-      }finally{
-
-        button.disabled =
-        false;
+        }
 
       }
-
-    }
-  );
+    );
 
 
-/* ==========================================================
-   21. REINICIAR
-========================================================== */
+    /* =======================================================
+       OCUPACIÓN "OTROS"
+    ======================================================== */
 
-document
-  .getElementById(
-    "btnReset"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
+    document
+      .querySelectorAll(
+        'input[name="ocupacion"]'
+      )
+      .forEach(
+        function(radio) {
 
-      if(
-        confirm(
-          "¿Está seguro de reiniciar todas las respuestas?"
-        )
-      ){
+          radio.addEventListener(
+            "change",
+            function() {
 
-        demographics =
-        {};
+              const otherText =
+                document.getElementById(
+                  "ocupacionOtros"
+                );
 
-        answers =
-        {};
+              if (
+                this.value === "Otros"
+              ) {
 
+                otherText.focus();
 
-        localStorage.removeItem(
-          "lcu_demographics_v2"
-        );
+              } else {
 
-        localStorage.removeItem(
-          "lcu_answers_v2"
-        );
+                otherText.value =
+                  "";
 
+              }
 
-        document.getElementById(
-          "results"
-        ).classList.remove(
-          "show"
-        );
+              updateProgress();
 
-
-        document.getElementById(
-          "submitStatus"
-        ).innerHTML = "";
-
-
-        render();
-
-
-        window.scrollTo({
-          top:0,
-          behavior:"smooth"
-        });
-
-      }
-
-    }
-  );
-
-
-/* ==========================================================
-   22. PDF
-========================================================== */
-
-document
-  .getElementById(
-    "btnPrint"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-      window.print();
-    }
-  );
-
-
-/* ==========================================================
-   23. GENERAR QR
-========================================================== */
-
-document
-  .getElementById(
-    "btnShowQR"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      const qrSection =
-      document.getElementById(
-        "qrSection"
-      );
-
-
-      const qrContainer =
-      document.getElementById(
-        "qrcode"
-      );
-
-
-      qrContainer.innerHTML =
-      "";
-
-
-      /*
-        window.location.href
-        será la dirección final de
-        GitHub Pages.
-
-        Ejemplo:
-
-        https://roandre1995-del.github.io/encuesta-lcu/
-      */
-
-      const questionnaireURL =
-      window.location.href;
-
-
-      new QRCode(
-        qrContainer,
-        {
-
-          text:
-          questionnaireURL,
-
-          width:256,
-
-          height:256,
-
-          correctLevel:
-          QRCode.CorrectLevel.H
+            }
+          );
 
         }
       );
 
 
-      document.getElementById(
-        "qrUrl"
-      ).textContent =
-      questionnaireURL;
+    /* =======================================================
+       IMPRIMIR QR
+    ======================================================== */
+
+    document
+      .getElementById(
+        "printQrBtn"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          window.print();
+
+        }
+      );
 
 
-      qrSection.style.display =
-      "block";
+    /* =======================================================
+       INICIALIZACIÓN
+    ======================================================== */
 
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
 
-      qrSection.scrollIntoView({
-        behavior:"smooth"
-      });
+        restoreDraft();
 
-    }
-  );
+        updateProgress();
 
+        /*
+          Si ya está publicada la página, preparar QR
+          automáticamente.
+        */
 
-/* ==========================================================
-   24. INICIAR
-========================================================== */
+        generateQR();
 
-render();
+      }
+    );
 
-</script>
+  </script>
 
 </body>
 </html>
