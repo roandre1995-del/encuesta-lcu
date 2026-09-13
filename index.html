@@ -1,1180 +1,848 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cuestionario LCU LED</title>
+  <title>Cuestionario LCU LED</title>
 
-<style>
-:root {
-  --primary: #155eef;
-  --primary-dark: #0b4acb;
-  --background: #f4f7fb;
-  --card: #ffffff;
-  --text: #172033;
-  --muted: #667085;
-  --border: #d9e1ec;
-  --success: #087443;
-  --danger: #b42318;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f1f5f9;
+      color: #1e293b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-body {
-  margin: 0;
-  background: var(--background);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-}
+    .contenedor {
+      width: 100%;
+      max-width: 950px;
+      margin: auto;
+      background: white;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
 
-.container {
-  width: min(100%, 1000px);
-  margin: auto;
-  padding: 20px 14px 50px;
-}
+    h1 {
+      text-align: center;
+      color: #0f172a;
+      font-size: 25px;
+      line-height: 1.4;
+    }
 
-header,
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: 0 5px 20px rgba(16, 24, 40, 0.06);
-}
+    h2 {
+      color: #075985;
+      border-bottom: 2px solid #bae6fd;
+      padding-bottom: 8px;
+      margin-top: 30px;
+    }
 
-header {
-  padding: 25px;
-  margin-bottom: 16px;
-}
+    h3 {
+      font-size: 17px;
+      line-height: 1.5;
+    }
 
-h1 {
-  text-align: center;
-  font-size: 24px;
-  line-height: 1.3;
-  margin: 0;
-}
+    .descripcion {
+      color: #475569;
+      line-height: 1.6;
+      text-align: justify;
+    }
 
-h2 {
-  font-size: 20px;
-  margin-top: 0;
-}
+    .campo {
+      margin-bottom: 18px;
+    }
 
-.subtitle {
-  color: var(--muted);
-  text-align: center;
-  margin-top: 12px;
-  font-size: 14px;
-}
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
 
-.card {
-  padding: 22px;
-  margin-bottom: 16px;
-}
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+    }
 
-.progress-container {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--background);
-  padding: 10px 0;
-}
+    .pregunta {
+      margin: 22px 0;
+      padding: 18px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: white;
+    }
 
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 6px;
-}
+    .opcion {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      margin: 6px 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-weight: normal;
+      cursor: pointer;
+    }
 
-.progress {
-  height: 9px;
-  background: #e4eaf2;
-  border-radius: 20px;
-  overflow: hidden;
-}
+    .opcion:hover {
+      background: #e0f2fe;
+    }
 
-.progress-bar {
-  height: 100%;
-  width: 0;
-  background: var(--primary);
-  transition: width 0.2s ease;
-}
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-top: 3px;
+      transform: scale(1.15);
+      flex-shrink: 0;
+    }
 
-.field {
-  margin-bottom: 20px;
-}
+    .nota {
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 8px;
+      background: #eff6ff;
+      color: #1e40af;
+      line-height: 1.5;
+    }
 
-.question {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 9px;
-}
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 10px;
+      background: #0369a1;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.option {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  padding: 11px;
-  margin: 7px 0;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  background: white;
-}
+    button:hover {
+      background: #075985;
+    }
 
-.option:hover {
-  background: #f7faff;
-  border-color: #a9bfe8;
-}
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
 
-.option input {
-  margin-top: 4px;
-  accent-color: var(--primary);
-}
+    #mensaje {
+      display: none;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
 
-input[type="text"],
-input[type="number"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #c8d1df;
-  border-radius: 10px;
-  font-size: 16px;
-}
+    .exito {
+      background: #dcfce7;
+      color: #166534;
+    }
 
-.hint {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 5px;
-}
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
 
-.hidden {
-  display: none;
-}
+    .oculto {
+      display: none;
+    }
 
-.scale-box {
-  background: #f7faff;
-  border: 1px solid #d4e1f7;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
+    .qr {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+    }
 
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+    .qr img {
+      width: 180px;
+      max-width: 100%;
+      margin-top: 12px;
+    }
 
-button {
-  border: 0;
-  border-radius: 10px;
-  padding: 13px 22px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    @media (max-width: 600px) {
+      body {
+        padding: 8px;
+      }
 
-.primary {
-  color: white;
-  background: var(--primary);
-}
+      .contenedor {
+        padding: 16px;
+      }
 
-.primary:hover {
-  background: var(--primary-dark);
-}
+      h1 {
+        font-size: 20px;
+      }
 
-.secondary {
-  color: var(--text);
-  background: #e8edf5;
-}
+      h2 {
+        font-size: 20px;
+      }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.message {
-  display: none;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-.message.success {
-  display: block;
-  color: var(--success);
-  background: #ecfdf3;
-}
-
-.message.error {
-  display: block;
-  color: var(--danger);
-  background: #fef3f2;
-}
-
-.result {
-  display: none;
-  text-align: center;
-  background: #f7faff;
-  border: 2px solid #c8d7f5;
-  border-radius: 15px;
-  padding: 20px;
-  margin-top: 20px;
-}
-
-.score {
-  color: var(--primary);
-  font-size: 35px;
-  font-weight: bold;
-}
-
-.result-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.result-item {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-}
-
-.result-item strong {
-  display: block;
-  font-size: 21px;
-  margin-top: 5px;
-}
-
-.qr {
-  text-align: center;
-}
-
-.qr img {
-  max-width: 220px;
-  width: 100%;
-  border: 8px solid white;
-  border-radius: 10px;
-}
-
-.small {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-@media (max-width: 650px) {
-  .container {
-    padding: 10px 8px 35px;
-  }
-
-  header,
-  .card {
-    padding: 16px;
-    border-radius: 13px;
-  }
-
-  h1 {
-    font-size: 20px;
-  }
-
-  h2 {
-    font-size: 18px;
-  }
-
-  .result-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media print {
-  body {
-    background: white;
-  }
-
-  #form,
-  .progress-container,
-  .buttons,
-  .message {
-    display: none !important;
-  }
-
-  header,
-  .card,
-  .result {
-    box-shadow: none;
-  }
-}
-</style>
+      .pregunta {
+        padding: 12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="contenedor">
 
-<header>
-<h1>
-CUESTIONARIO NIVEL DE CONOCIMIENTO Y COMPETENCIAS SOBRE LA EFICACIA DE LA LUZ EMITIDA POR UNIDADES DE FOTOCURADO LED EN ESTUDIANTES DE ESTOMATOLOGIA DE UNA UNIVERSIDAD PRIVADA DE LIMA.
-</h1>
+  <h1>
+    CUESTIONARIO NIVEL DE CONOCIMIENTO Y COMPETENCIAS SOBRE LA EFICACIA DE LA LUZ EMITIDA POR UNIDADES DE FOTOCURADO LED EN ESTUDIANTES DE ESTOMATOLOGÍA DE UNA UNIVERSIDAD PRIVADA DE LIMA
+  </h1>
 
-<p class="subtitle">
-Complete todos los campos. La información será utilizada exclusivamente para fines de investigación.
-</p>
-</header>
+  <p class="descripcion">
+    El presente cuestionario tiene como finalidad evaluar el nivel de conocimiento,
+    competencias y satisfacción de los estudiantes de Estomatología respecto a la
+    eficacia de la luz emitida por las unidades de fotocurado LED.
+  </p>
 
-<div class="progress-container">
-  <div class="progress-info">
-    <span>Progreso del cuestionario</span>
-    <span id="progressText">0 de 32 campos completados</span>
+  <form id="formulario">
+
+    <h2>Datos sociodemográficos</h2>
+
+    <div class="campo">
+      <label for="siglas">Siglas de sus nombres y apellidos</label>
+      <input
+        type="text"
+        id="siglas"
+        name="siglas"
+        placeholder="Ejemplo: GGRP"
+        required
+      >
+    </div>
+
+    <div class="campo">
+      <label for="estadoCivil">Estado civil</label>
+      <select id="estadoCivil" name="estadoCivil" required>
+        <option value="">Seleccione una opción</option>
+        <option>Soltero</option>
+        <option>Casado</option>
+        <option>Conviviente</option>
+        <option>Viudo</option>
+        <option>Divorciado</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="procedencia">Lugar de procedencia</label>
+      <select id="procedencia" name="procedencia" required>
+        <option value="">Seleccione una opción</option>
+        <option>Capital - Lima</option>
+        <option>Provincia</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="ocupacion">Ocupación</label>
+      <select id="ocupacion" name="ocupacion" required>
+        <option value="">Seleccione una opción</option>
+        <option>Solo estudia</option>
+        <option>Trabaja y estudia</option>
+        <option>Otros</option>
+      </select>
+    </div>
+
+    <div class="campo oculto" id="campoOcupacionOtro">
+      <label for="ocupacionOtro">Especifique otra ocupación</label>
+      <input type="text" id="ocupacionOtro" name="ocupacionOtro">
+    </div>
+
+    <div class="campo">
+      <label for="genero">Género</label>
+      <select id="genero" name="genero" required>
+        <option value="">Seleccione una opción</option>
+        <option>Masculino</option>
+        <option>Femenino</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="edad">Edad en años</label>
+      <input type="number" id="edad" name="edad" min="18" max="100" required>
+    </div>
+
+    <div class="campo">
+      <label for="ciclo">Ciclo actual</label>
+      <input type="number" id="ciclo" name="ciclo" min="3" max="10" required>
+    </div>
+
+    <h2>Sección 1: Conocimiento sobre la luz de fotocurado</h2>
+
+    <div class="pregunta">
+      <h3>1. ¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?</h3>
+      <label class="opcion"><input type="radio" name="q1" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q1" value="No"> No</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>2. ¿Sabe si su unidad de fotocurado tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?</h3>
+      <label class="opcion"><input type="radio" name="q2" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q2" value="No"> No</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>3. ¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?</h3>
+      <label class="opcion"><input type="radio" name="q3" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q3" value="No"> No</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>4. ¿Con qué frecuencia utiliza una unidad de fotocurado?</h3>
+      <label class="opcion"><input type="radio" name="q4" value="Diariamente" required> Diariamente</label>
+      <label class="opcion"><input type="radio" name="q4" value="Semanalmente"> Semanalmente</label>
+      <label class="opcion"><input type="radio" name="q4" value="Raramente"> Raramente</label>
+      <label class="opcion"><input type="radio" name="q4" value="Nunca"> Nunca</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>
+        5. ¿Cuáles pueden ser las consecuencias de una polimerización inadecuada de los materiales restauradores?
+      </h3>
+
+      <div class="nota">
+        Seleccione una o varias alternativas. También puede seleccionar únicamente
+        “TODAS LAS ANTERIORES”.
+      </div>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Bajas propiedades mecánicas">
+        Bajas propiedades mecánicas
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Baja estabilidad de color">
+        Baja estabilidad de color
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Mayor colonización bacteriana">
+        Mayor colonización bacteriana
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Reacciones tóxicas">
+        Reacciones tóxicas
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Reacciones alérgicas">
+        Reacciones alérgicas
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Caries secundaria">
+        Caries secundaria
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Filtración marginal">
+        Filtración marginal
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Alteración de color marginal">
+        Alteración de color marginal
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="Sensibilidad dental">
+        Sensibilidad dental
+      </label>
+
+      <label class="opcion">
+        <input type="checkbox" name="q5" value="TODAS LAS ANTERIORES">
+        TODAS LAS ANTERIORES
+      </label>
+    </div>
+
+    <div class="pregunta">
+      <h3>6. ¿Cuál es la irradiancia mínima recomendada para una polimerización adecuada de composites de 2 mm en 40 segundos?</h3>
+      <label class="opcion"><input type="radio" name="q6" value="100-300 mW/cm²" required> 100-300 mW/cm²</label>
+      <label class="opcion"><input type="radio" name="q6" value="300-500 mW/cm²"> 300-500 mW/cm²</label>
+      <label class="opcion"><input type="radio" name="q6" value="Mayor de 500 mW/cm²"> Mayor de 500 mW/cm²</label>
+      <label class="opcion"><input type="radio" name="q6" value="No estoy seguro"> No estoy seguro</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>7. ¿Qué técnica de control de infecciones tiene el menor efecto negativo sobre las puntas de fotocurado?</h3>
+      <label class="opcion"><input type="radio" name="q7" value="Autoclave" required> Autoclave</label>
+      <label class="opcion"><input type="radio" name="q7" value="Solución desinfectante"> Solución desinfectante</label>
+      <label class="opcion"><input type="radio" name="q7" value="Barrera transparente"> Barrera transparente</label>
+      <label class="opcion"><input type="radio" name="q7" value="No estoy seguro"> No estoy seguro</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>8. ¿Cuáles son sus principales fuentes de información sobre unidades de fotocurado?</h3>
+      <label class="opcion"><input type="checkbox" name="q8" value="Libros de texto"> Libros de texto</label>
+      <label class="opcion"><input type="checkbox" name="q8" value="Revistas científicas"> Revistas científicas</label>
+      <label class="opcion"><input type="checkbox" name="q8" value="Conferencias en el currículo de pregrado"> Conferencias en el currículo de pregrado</label>
+      <label class="opcion"><input type="checkbox" name="q8" value="Conferencias en el currículo de posgrado"> Conferencias en el currículo de posgrado</label>
+      <label class="opcion"><input type="checkbox" name="q8" value="Conferencias de educación continua"> Conferencias de educación continua, incluyendo congresos</label>
+      <label class="opcion"><input type="checkbox" name="q8" value="Folletos de fabricantes"> Folletos de fabricantes</label>
+      <label class="opcion"><input type="checkbox" name="q8" value="Internet y redes sociales"> Internet y redes sociales</label>
+    </div>
+
+    <h2>Sección 2: Uso clínico de la unidad de fotocurado</h2>
+
+    <div class="pregunta">
+      <h3>9. ¿Qué tipo de unidad de fotocurado utiliza principalmente?</h3>
+      <label class="opcion"><input type="radio" name="q9" value="QTH" required> QTH</label>
+      <label class="opcion"><input type="radio" name="q9" value="PAC"> PAC</label>
+      <label class="opcion"><input type="radio" name="q9" value="Láser de argón"> Láser de argón</label>
+      <label class="opcion"><input type="radio" name="q9" value="LED"> LED</label>
+      <label class="opcion"><input type="radio" name="q9" value="No estoy seguro"> No estoy seguro</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>10. ¿Qué modo de fotocurado utiliza habitualmente?</h3>
+      <label class="opcion"><input type="radio" name="q10" value="Soft start" required> Soft start</label>
+      <label class="opcion"><input type="radio" name="q10" value="Fast cure"> Fast cure</label>
+      <label class="opcion"><input type="radio" name="q10" value="Modo convencional"> Modo convencional</label>
+      <label class="opcion"><input type="radio" name="q10" value="No reviso el modo"> No reviso el modo de fotocurado</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>11. ¿Cuál es el tiempo de fotocurado recomendado para un incremento de composite de 2 mm?</h3>
+      <label class="opcion"><input type="radio" name="q11" value="10 segundos por cada 2 mm" required> 10 segundos por cada 2 mm</label>
+      <label class="opcion"><input type="radio" name="q11" value="20 segundos por cada 2 mm"> 20 segundos por cada 2 mm</label>
+      <label class="opcion"><input type="radio" name="q11" value="40 segundos por cada 2 mm"> 40 segundos por cada 2 mm</label>
+      <label class="opcion"><input type="radio" name="q11" value="60 segundos para toda la restauración"> 60 segundos para toda la restauración</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>12. ¿Cuál debe ser la posición de la punta de la unidad de fotocurado?</h3>
+      <label class="opcion"><input type="radio" name="q12" value="Lo más cerca posible" required> Lo más cerca posible</label>
+      <label class="opcion"><input type="radio" name="q12" value="Hasta 10 mm"> Hasta 10 mm</label>
+      <label class="opcion"><input type="radio" name="q12" value="45 grados"> A 45°</label>
+      <label class="opcion"><input type="radio" name="q12" value="90 grados"> A 90°</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>13. ¿Cuál de las siguientes acciones permite aumentar la exposición radiante total?</h3>
+      <label class="opcion"><input type="radio" name="q13" value="Colocar la unidad en el refrigerador" required> Colocar la unidad en el refrigerador</label>
+      <label class="opcion"><input type="radio" name="q13" value="Aumentar el tiempo de fotocurado"> Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante</label>
+      <label class="opcion"><input type="radio" name="q13" value="Utilizar un tono más oscuro"> Utilizar un tono más oscuro</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>14. ¿Qué medida protege los ojos de la luz azul emitida durante el fotocurado?</h3>
+      <label class="opcion"><input type="radio" name="q14" value="Escudo incorporado" required> Escudo incorporado en la unidad</label>
+      <label class="opcion"><input type="radio" name="q14" value="Escudo manual"> Escudo manual</label>
+      <label class="opcion"><input type="radio" name="q14" value="Gafas protectoras naranjas"> Gafas protectoras naranjas</label>
+      <label class="opcion"><input type="radio" name="q14" value="Alejar al asistente"> Alejar al asistente</label>
+      <label class="opcion"><input type="radio" name="q14" value="Espejo alejado"> Utilizar un espejo alejado</label>
+    </div>
+
+    <h2>Sección 3: Mantenimiento y control</h2>
+
+    <div class="pregunta">
+      <h3>15. ¿Conoce la vida útil esperada de su unidad de fotocurado?</h3>
+      <label class="opcion"><input type="radio" name="q15" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q15" value="No"> No</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>16. ¿Inspecciona, limpia y revisa la unidad de fotocurado antes de utilizarla?</h3>
+      <label class="opcion"><input type="radio" name="q16" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q16" value="No"> No</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>17. ¿Realiza el mantenimiento siguiendo las indicaciones del fabricante?</h3>
+      <label class="opcion"><input type="radio" name="q17" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q17" value="No"> No</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>18. ¿Con qué frecuencia realiza el mantenimiento?</h3>
+      <label class="opcion"><input type="radio" name="q18" value="1 a 3 meses" required> Cada 1 a 3 meses</label>
+      <label class="opcion"><input type="radio" name="q18" value="3 a 6 meses"> Cada 3 a 6 meses</label>
+      <label class="opcion"><input type="radio" name="q18" value="6 a 12 meses"> Cada 6 a 12 meses</label>
+      <label class="opcion"><input type="radio" name="q18" value="12 meses"> Cada 12 meses</label>
+      <label class="opcion"><input type="radio" name="q18" value="No realizo mantenimiento"> No realizo mantenimiento</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>19. ¿Utiliza un radiómetro dental para medir la irradiancia?</h3>
+      <label class="opcion"><input type="radio" name="q19" value="Sí" required> Sí</label>
+      <label class="opcion"><input type="radio" name="q19" value="No"> No</label>
+      <label class="opcion"><input type="radio" name="q19" value="No estoy familiarizado"> No estoy familiarizado</label>
+    </div>
+
+    <div class="pregunta">
+      <h3>20. ¿Con qué frecuencia revisa la irradiancia?</h3>
+      <label class="opcion"><input type="radio" name="q20" value="1 a 3 meses" required> Cada 1 a 3 meses</label>
+      <label class="opcion"><input type="radio" name="q20" value="3 a 6 meses"> Cada 3 a 6 meses</label>
+      <label class="opcion"><input type="radio" name="q20" value="6 a 12 meses"> Cada 6 a 12 meses</label>
+      <label class="opcion"><input type="radio" name="q20" value="12 meses"> Cada 12 meses</label>
+      <label class="opcion"><input type="radio" name="q20" value="No reviso la irradiancia"> No reviso la irradiancia</label>
+    </div>
+
+    <h2>Sección 4: Satisfacción</h2>
+
+    <div id="satisfaccion"></div>
+
+    <button type="submit" id="btnEnviar">
+      Enviar cuestionario
+    </button>
+
+  </form>
+
+  <div id="mensaje"></div>
+
+  <div class="qr">
+    <h2>Compartir cuestionario</h2>
+    <p>Escanee el código QR para abrir este cuestionario.</p>
+    <img id="codigoQR" alt="Código QR del cuestionario">
   </div>
-
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-</div>
-
-<form id="form" novalidate>
-
-<section class="card">
-<h2>Datos sociodemográficos</h2>
-
-<div class="field">
-<label class="question">SIGLAS DE SUS NOMBRES Y APELLIDOS:</label>
-<input id="siglas" type="text" placeholder="Ejemplo: GGRP" required>
-<div class="hint">No escriba sus nombres ni apellidos completos.</div>
-</div>
-
-<div class="field">
-<label class="question">Estado civil:</label>
-<div id="estadoCivil"></div>
-</div>
-
-<div class="field">
-<label class="question">Lugar de procedencia:</label>
-<div id="procedencia"></div>
-</div>
-
-<div class="field">
-<label class="question">Ocupación:</label>
-<div id="ocupacion"></div>
-
-<input
-  id="ocupacionOtro"
-  class="hidden"
-  type="text"
-  placeholder="Especifique otra ocupación"
->
-</div>
-
-<div class="field">
-<label class="question">Género:</label>
-<div id="genero"></div>
-</div>
-
-<div class="field">
-<label class="question">EDAD:</label>
-<input
-  id="edad"
-  type="number"
-  min="18"
-  max="100"
-  step="1"
-  placeholder="Digite su edad en años"
-  required
->
-<div class="hint">Ingrese su edad exacta en números enteros.</div>
-</div>
-
-<div class="field">
-<label class="question">CICLO EN CURSO:</label>
-<input
-  id="ciclo"
-  type="number"
-  min="3"
-  max="10"
-  step="1"
-  placeholder="Digite su ciclo actual"
-  required
->
-<div class="hint">Ingrese el número del ciclo que actualmente cursa, del 3 al 10.</div>
-</div>
-</section>
-
-<div id="questions"></div>
-
-<section class="card">
-
-<h2>Escala de evaluación</h2>
-
-<div class="scale-box">
-<strong>Conocimiento y competencias:</strong><br>
-0–7 puntos: nivel bajo.<br>
-8–10 puntos: nivel medio.<br>
-11–14 puntos: nivel alto.
-</div>
-
-<div class="scale-box">
-<strong>Satisfacción:</strong><br>
-Satisfecho(a) = 3 puntos.<br>
-Moderadamente satisfecho(a) = 2 puntos.<br>
-Insatisfecho(a) = 1 punto.
-</div>
-
-<div class="scale-box">
-<strong>Interpretación de satisfacción:</strong><br>
-5–8 puntos: satisfacción baja.<br>
-9–11 puntos: satisfacción moderada.<br>
-12–15 puntos: satisfacción alta.
-</div>
-
-<div class="scale-box">
-<strong>Puntaje global referencial:</strong><br>
-0–14 puntos: nivel global bajo.<br>
-15–21 puntos: nivel global medio.<br>
-22–29 puntos: nivel global alto.
-</div>
-
-<p class="small">
-Los puntos de corte son una propuesta operativa. Para una investigación de tesis deben ser confirmados mediante el protocolo, juicio de expertos, prueba piloto o el procedimiento estadístico correspondiente.
-</p>
-
-</section>
-
-<section class="card">
-
-<div class="buttons">
-<button type="submit" class="primary" id="submitBtn">
-Enviar cuestionario
-</button>
-
-<button type="button" class="secondary" id="resetBtn">
-Limpiar formulario
-</button>
-</div>
-
-<div id="message" class="message"></div>
-
-<div id="result" class="result">
-<h2>Resultado registrado</h2>
-
-<div class="score" id="scoreDisplay">0 / 29</div>
-<p id="levelDisplay"></p>
-
-<div class="result-grid">
-<div class="result-item">
-Conocimiento y competencias
-<strong id="knowledgeDisplay">0 / 14</strong>
-</div>
-
-<div class="result-item">
-Satisfacción
-<strong id="satisfactionDisplay">0 / 15</strong>
-</div>
-
-<div class="result-item">
-Puntaje global
-<strong id="globalDisplay">0 / 29</strong>
-</div>
-</div>
-</div>
-
-</section>
-
-</form>
-
-<section class="card qr">
-
-<h2>Código QR del cuestionario</h2>
-
-<p class="small">
-El código QR se actualizará automáticamente con la dirección final de GitHub Pages.
-</p>
-
-<img id="qrImage" alt="Código QR del cuestionario">
-
-<br><br>
-
-<button type="button" class="secondary" onclick="window.print()">
-Imprimir o guardar QR
-</button>
-
-</section>
 
 </div>
 
 <script>
-const API_URL =
-"https://script.google.com/macros/s/AKfycbz0wsjLGmZz0f6WiEdFzYkbKeUXd7uhmKmaNbMsgsmR19Ivipb9v4Pb3fOwveNpBkStqQ/exec";
+  /************************************************
+   * URL ACTUALIZADA DE GOOGLE APPS SCRIPT
+   ************************************************/
 
-const objectiveAnswers = {
-  q1: "Sí",
-  q2: "Sí",
-  q3: "Sí",
-  q6: "300-500",
-  q7: "Barrera transparente",
-  q11: "20s per 2mm",
-  q12: "Lo más cerca posible",
-  q13: "Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante",
-  q14: "Gafas protectoras naranjas",
-  q15: "Sí",
-  q16: "Sí",
-  q17: "Sí",
-  q19: "Sí"
-};
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzYWwo6Z4noVPwIp5q5yJ25Jwn6FlFIIFDWhKLXBs30k4ek2IGu7HupzA9KD5tTcfuz/exec";
 
-const questions = [
-{
-  id: "q1",
-  text: "1. ¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?",
-  type: "radio",
-  options: ["Sí", "No"]
-},
-{
-  id: "q2",
-  text: "2. ¿Sabe si su unidad de fotocurado (LCU) tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?",
-  type: "radio",
-  options: ["Sí", "No"]
-},
-{
-  id: "q3",
-  text: "3. ¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?",
-  type: "radio",
-  options: ["Sí", "No"]
-},
-{
-  id: "q4",
-  text: "4. ¿Con qué frecuencia utiliza una unidad de fotocurado?",
-  type: "radio",
-  options: ["Diariamente", "Semanalmente", "Raramente", "Nunca"]
-},
-{
-  id: "q5",
-  text: "5. ¿Cuáles de los siguientes pueden ser efectos o consecuencias relacionados con una polimerización inadecuada?",
-  type: "checkbox",
-  options: [
-    "Bajas propiedades mecánicas",
-    "Baja estabilidad de color",
-    "Mayor colonización bacteriana",
-    "Reacciones tóxicas",
-    "Reacciones alérgicas",
-    "Caries secundaria",
-    "Filtración marginal",
-    "Alteración de color marginal",
-    "Sensibilidad dental",
-    "TODAS LAS ANTERIORES"
-  ],
-  hint: "Seleccione SOLO “TODAS LAS ANTERIORES” o las nueve alternativas individuales."
-},
-{
-  id: "q6",
-  text: "6. ¿Cuál es la irradiancia mínima recomendada para una polimerización adecuada de composites de 2 mm en 40 segundos?",
-  type: "radio",
-  options: ["100-300", "300-500", ">500", "No estoy seguro"]
-},
-{
-  id: "q7",
-  text: "7. ¿Cuál técnica de control de infecciones tiene el menor efecto negativo sobre las puntas de fotocurado?",
-  type: "radio",
-  options: ["Autoclave", "Solución desinfectante", "Barrera transparente", "No estoy seguro"]
-},
-{
-  id: "q8",
-  text: "8. ¿Cuáles son sus principales fuentes de información sobre unidades de fotocurado?",
-  type: "checkbox",
-  options: [
-    "Libros de texto",
-    "Revistas científicas",
-    "Conferencias en el currículo de pregrado",
-    "Conferencias en el currículo de posgrado",
-    "Conferencias de educación continua (incluyendo congresos)",
-    "Folletos de fabricantes",
-    "Internet y redes sociales"
-  ]
-},
-{
-  id: "q9",
-  text: "9. ¿Qué tipo de unidad de fotocurado utiliza principalmente?",
-  type: "radio",
-  options: ["QTH", "PAC", "Argon ion lasers", "LED", "No estoy seguro"]
-},
-{
-  id: "q10",
-  text: "10. ¿Qué modo de fotocurado utiliza?",
-  type: "radio",
-  options: ["Soft start", "Fast cure", "Modo convencional", "No reviso el modo de fotocurado"]
-},
-{
-  id: "q11",
-  text: "11. ¿Cuál es el tiempo de fotocurado que utiliza?",
-  type: "radio",
-  options: ["10s per 2mm", "20s per 2mm", "40s per 2mm", "60s whole restoration"]
-},
-{
-  id: "q12",
-  text: "12. ¿Cómo debe colocarse la punta de la unidad de fotocurado respecto a la restauración?",
-  type: "radio",
-  options: ["Lo más cerca posible", "Hasta 10mm", "45°", "90°"]
-},
-{
-  id: "q13",
-  text: "13. ¿Cuál de las siguientes opciones puede aumentar la exposición radiante total?",
-  type: "radio",
-  options: [
-    "Colocar la unidad de fotocurado en un refrigerador",
-    "Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante",
-    "Utilizar un tono más oscuro"
-  ]
-},
-{
-  id: "q14",
-  text: "14. ¿Qué medida protege los ojos de la luz azul emitida durante el fotocurado?",
-  type: "radio",
-  options: [
-    "Escudo montado",
-    "Escudo manual",
-    "Gafas protectoras naranjas",
-    "Asistente",
-    "Espejo alejado"
-  ]
-},
-{
-  id: "q15",
-  text: "15. ¿Conoce la vida útil esperada de su unidad de fotocurado?",
-  type: "radio",
-  options: ["Sí", "No"]
-},
-{
-  id: "q16",
-  text: "16. ¿Inspecciona, limpia y verifica la unidad antes de utilizarla?",
-  type: "radio",
-  options: ["Sí", "No"]
-},
-{
-  id: "q17",
-  text: "17. ¿Realiza el mantenimiento y sigue las indicaciones del fabricante?",
-  type: "radio",
-  options: ["Sí", "No"]
-},
-{
-  id: "q18",
-  text: "18. ¿Con qué frecuencia realiza el mantenimiento de la unidad?",
-  type: "radio",
-  options: [
-    "1–3 meses",
-    "3–6 meses",
-    "6–12 meses",
-    "12 meses",
-    "No realiza mantenimiento"
-  ]
-},
-{
-  id: "q19",
-  text: "19. ¿Conoce el uso de un radiómetro dental para controlar la irradiancia?",
-  type: "radio",
-  options: ["Sí", "No", "No familiarizado"]
-},
-{
-  id: "q20",
-  text: "20. ¿Con qué frecuencia revisa la irradiancia de la unidad?",
-  type: "radio",
-  options: [
-    "1–3 meses",
-    "3–6 meses",
-    "6–12 meses",
-    "12 meses",
-    "No reviso"
-  ]
-},
-{
-  id: "q21",
-  text: "21. ¿Qué tan satisfecho(a) está con su unidad de fotocurado?",
-  type: "radio",
-  options: ["Satisfecho(a)", "Moderadamente satisfecho(a)", "Insatisfecho(a)"]
-},
-{
-  id: "q22",
-  text: "22. ¿Qué tan satisfecho(a) está con sus conocimientos sobre unidades de fotocurado?",
-  type: "radio",
-  options: ["Satisfecho(a)", "Moderadamente satisfecho(a)", "Insatisfecho(a)"]
-},
-{
-  id: "q23",
-  text: "23. ¿Qué tan satisfecho(a) está con su práctica clínica relacionada con el fotocurado?",
-  type: "radio",
-  options: ["Satisfecho(a)", "Moderadamente satisfecho(a)", "Insatisfecho(a)"]
-},
-{
-  id: "q24",
-  text: "24. ¿Qué tan satisfecho(a) está con la formación recibida en su programa de estudios sobre unidades de fotocurado?",
-  type: "radio",
-  options: ["Satisfecho(a)", "Moderadamente satisfecho(a)", "Insatisfecho(a)"]
-},
-{
-  id: "q25",
-  text: "25. ¿Qué tan satisfecho(a) está con la educación continua recibida sobre unidades de fotocurado?",
-  type: "radio",
-  options: ["Satisfecho(a)", "Moderadamente satisfecho(a)", "Insatisfecho(a)"]
-}
-];
 
-function createOptions(name, options, type = "radio") {
-  return options.map((option, index) => `
-    <label class="option">
-      <input
-        type="${type}"
-        name="${name}"
-        value="${escapeHtml(option)}"
-        ${index === 0 ? "required" : ""}
-      >
-      <span>${escapeHtml(option)}</span>
-    </label>
-  `).join("");
-}
+  const formulario = document.getElementById("formulario");
+  const boton = document.getElementById("btnEnviar");
+  const mensaje = document.getElementById("mensaje");
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
 
-function renderDemographics() {
-  document.getElementById("estadoCivil").innerHTML =
-    createOptions("estadoCivil", [
-      "Soltero",
-      "Casado",
-      "Conviviente",
-      "Viudo",
-      "Divorciado"
-    ]);
+  /************************************************
+   * PREGUNTAS DE SATISFACCIÓN
+   ************************************************/
 
-  document.getElementById("procedencia").innerHTML =
-    createOptions("procedencia", [
-      "Capital - Lima",
-      "Provincia"
-    ]);
+  const preguntasSatisfaccion = [
+    "21. ¿Qué tan satisfecho(a) está con su unidad de fotocurado?",
+    "22. ¿Qué tan satisfecho(a) está con sus conocimientos sobre las unidades de fotocurado?",
+    "23. ¿Qué tan satisfecho(a) está con su práctica clínica relacionada con el fotocurado?",
+    "24. ¿Qué tan satisfecho(a) está con la formación recibida sobre unidades de fotocurado?",
+    "25. ¿Qué tan satisfecho(a) está con las actividades de educación continua sobre unidades de fotocurado?"
+  ];
 
-  document.getElementById("ocupacion").innerHTML =
-    createOptions("ocupacion", [
-      "Solo Estudia",
-      "Trabaja y Estudia",
-      "Otros"
-    ]);
+  const contenedorSatisfaccion =
+    document.getElementById("satisfaccion");
 
-  document.getElementById("genero").innerHTML =
-    createOptions("genero", [
-      "Masculino",
-      "Femenino"
-    ]);
-}
+  preguntasSatisfaccion.forEach((pregunta, indice) => {
+    const numero = indice + 21;
 
-function renderQuestions() {
-  const container = document.getElementById("questions");
+    const bloque = document.createElement("div");
+    bloque.className = "pregunta";
 
-  let currentSection = 0;
-  let html = "";
+    bloque.innerHTML = `
+      <h3>${pregunta}</h3>
 
-  questions.forEach((question, index) => {
-    if (index === 0) {
-      currentSection = 1;
-      html += `<section class="card"><h2>Sección 1</h2>`;
-    }
+      <label class="opcion">
+        <input type="radio" name="q${numero}" value="Satisfecho(a)" required>
+        Satisfecho(a)
+      </label>
 
-    if (index === 8) {
-      html += `</section><section class="card"><h2>Sección 2</h2>`;
-    }
+      <label class="opcion">
+        <input type="radio" name="q${numero}" value="Moderadamente satisfecho(a)">
+        Moderadamente satisfecho(a)
+      </label>
 
-    if (index === 14) {
-      html += `</section><section class="card"><h2>Sección 3</h2>`;
-    }
-
-    if (index === 20) {
-      html += `
-        </section>
-        <section class="card">
-        <h2>Sección 4: Satisfacción</h2>
-        <div class="scale-box">
-          Satisfecho(a) = 3 puntos ·
-          Moderadamente satisfecho(a) = 2 puntos ·
-          Insatisfecho(a) = 1 punto.
-        </div>
-      `;
-    }
-
-    html += `
-      <div class="field">
-        <label class="question">${question.text}</label>
-        ${question.hint ? `<div class="hint">${question.hint}</div>` : ""}
-        ${createOptions(
-          question.id,
-          question.options,
-          question.type
-        )}
-      </div>
+      <label class="opcion">
+        <input type="radio" name="q${numero}" value="Insatisfecho(a)">
+        Insatisfecho(a)
+      </label>
     `;
+
+    contenedorSatisfaccion.appendChild(bloque);
   });
 
-  html += "</section>";
-  container.innerHTML = html;
-}
 
-function getRadio(name) {
-  const element = document.querySelector(
-    `input[name="${name}"]:checked`
+  /************************************************
+   * CAMPO: OTRA OCUPACIÓN
+   ************************************************/
+
+  document.getElementById("ocupacion").addEventListener(
+    "change",
+    function() {
+      const campo = document.getElementById("campoOcupacionOtro");
+      const entrada = document.getElementById("ocupacionOtro");
+
+      if (this.value === "Otros") {
+        campo.classList.remove("oculto");
+        entrada.required = true;
+      } else {
+        campo.classList.add("oculto");
+        entrada.required = false;
+        entrada.value = "";
+      }
+    }
   );
 
-  return element ? element.value : "";
-}
 
-function getChecks(name) {
-  return [...document.querySelectorAll(
-    `input[name="${name}"]:checked`
-  )].map(element => element.value);
-}
+  /************************************************
+   * LÓGICA CORREGIDA DE LA PREGUNTA 5
+   ************************************************/
 
-function scoreQ5() {
-  const selected = getChecks("q5");
+  const q5 = document.querySelectorAll('input[name="q5"]');
 
-  const nineOptions = [
-    "Bajas propiedades mecánicas",
-    "Baja estabilidad de color",
-    "Mayor colonización bacteriana",
-    "Reacciones tóxicas",
-    "Reacciones alérgicas",
-    "Caries secundaria",
-    "Filtración marginal",
-    "Alteración de color marginal",
-    "Sensibilidad dental"
-  ];
+  q5.forEach((checkbox) => {
+    checkbox.addEventListener("change", function() {
+      const todas = document.querySelector(
+        'input[name="q5"][value="TODAS LAS ANTERIORES"]'
+      );
 
-  if (
-    selected.length === 1 &&
-    selected[0] === "TODAS LAS ANTERIORES"
-  ) {
-    return 1;
-  }
+      const individuales = document.querySelectorAll(
+        'input[name="q5"]:not([value="TODAS LAS ANTERIORES"])'
+      );
 
-  if (
-    selected.length === 9 &&
-    nineOptions.every(option => selected.includes(option))
-  ) {
-    return 1;
-  }
+      if (
+        this.value === "TODAS LAS ANTERIORES" &&
+        this.checked
+      ) {
+        individuales.forEach((opcion) => {
+          opcion.checked = false;
+        });
+      }
 
-  return 0;
-}
-
-function scoreObjective(questionId) {
-  if (questionId === "q5") {
-    return scoreQ5();
-  }
-
-  return getRadio(questionId) === objectiveAnswers[questionId]
-    ? 1
-    : 0;
-}
-
-function calculateScores() {
-  const section1 = [
-    "q1", "q2", "q3", "q5", "q6", "q7"
-  ].reduce((total, question) => {
-    return total + scoreObjective(question);
-  }, 0);
-
-  const section2 = [
-    "q11", "q12", "q13", "q14"
-  ].reduce((total, question) => {
-    return total + scoreObjective(question);
-  }, 0);
-
-  const section3 = [
-    "q15", "q16", "q17", "q19"
-  ].reduce((total, question) => {
-    return total + scoreObjective(question);
-  }, 0);
-
-  const knowledge = section1 + section2 + section3;
-
-  const weights = {
-    "Satisfecho(a)": 3,
-    "Moderadamente satisfecho(a)": 2,
-    "Insatisfecho(a)": 1
-  };
-
-  const satisfaction = [
-    "q21", "q22", "q23", "q24", "q25"
-  ].reduce((total, question) => {
-    return total + (weights[getRadio(question)] || 0);
-  }, 0);
-
-  return {
-    section1,
-    section2,
-    section3,
-    knowledge,
-    satisfaction,
-    global: knowledge + satisfaction
-  };
-}
-
-function getKnowledgeLevel(score) {
-  if (score <= 7) return "Nivel bajo";
-  if (score <= 10) return "Nivel medio";
-  return "Nivel alto";
-}
-
-function getSatisfactionLevel(score) {
-  if (score <= 8) return "Satisfacción baja";
-  if (score <= 11) return "Satisfacción moderada";
-  return "Satisfacción alta";
-}
-
-function getGlobalLevel(score) {
-  if (score <= 14) return "Nivel global bajo";
-  if (score <= 21) return "Nivel global medio";
-  return "Nivel global alto";
-}
-
-function validateCheckboxes() {
-  if (getChecks("q5").length === 0) {
-    alert("Debe responder la pregunta 5.");
-    return false;
-  }
-
-  if (getChecks("q8").length === 0) {
-    alert("Debe responder la pregunta 8.");
-    return false;
-  }
-
-  return true;
-}
-
-function validateForm() {
-  const form = document.getElementById("form");
-
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return false;
-  }
-
-  if (!validateCheckboxes()) {
-    return false;
-  }
-
-  const age = Number(document.getElementById("edad").value);
-  const cycle = Number(document.getElementById("ciclo").value);
-
-  if (!Number.isInteger(age) || age < 18 || age > 100) {
-    alert("Ingrese una edad válida entre 18 y 100 años.");
-    return false;
-  }
-
-  if (!Number.isInteger(cycle) || cycle < 3 || cycle > 10) {
-    alert("Ingrese un ciclo válido entre 3 y 10.");
-    return false;
-  }
-
-  if (
-    getRadio("ocupacion") === "Otros" &&
-    !document.getElementById("ocupacionOtro").value.trim()
-  ) {
-    alert("Especifique su ocupación.");
-    return false;
-  }
-
-  return true;
-}
-
-function collectRecord() {
-  const scores = calculateScores();
-
-  return {
-    fechaHora: new Date().toISOString(),
-
-    siglas: document
-      .getElementById("siglas")
-      .value
-      .trim()
-      .toUpperCase(),
-
-    estadoCivil: getRadio("estadoCivil"),
-    procedencia: getRadio("procedencia"),
-    ocupacion: getRadio("ocupacion"),
-
-    ocupacionOtro: document
-      .getElementById("ocupacionOtro")
-      .value
-      .trim(),
-
-    genero: getRadio("genero"),
-
-    edad: Number(document.getElementById("edad").value),
-    ciclo: Number(document.getElementById("ciclo").value),
-
-    q1: getRadio("q1"),
-    q2: getRadio("q2"),
-    q3: getRadio("q3"),
-    q4: getRadio("q4"),
-    q5: getChecks("q5"),
-    q6: getRadio("q6"),
-    q7: getRadio("q7"),
-    q8: getChecks("q8"),
-    q9: getRadio("q9"),
-    q10: getRadio("q10"),
-    q11: getRadio("q11"),
-    q12: getRadio("q12"),
-    q13: getRadio("q13"),
-    q14: getRadio("q14"),
-    q15: getRadio("q15"),
-    q16: getRadio("q16"),
-    q17: getRadio("q17"),
-    q18: getRadio("q18"),
-    q19: getRadio("q19"),
-    q20: getRadio("q20"),
-    q21: getRadio("q21"),
-    q22: getRadio("q22"),
-    q23: getRadio("q23"),
-    q24: getRadio("q24"),
-    q25: getRadio("q25"),
-
-    conocimientoCompetencia: scores.knowledge,
-    satisfaccion: scores.satisfaction,
-    puntajeGlobal: scores.global,
-
-    nivelConocimiento: getKnowledgeLevel(scores.knowledge),
-    nivelSatisfaccion: getSatisfactionLevel(scores.satisfaction),
-    nivelGlobal: getGlobalLevel(scores.global)
-  };
-}
-
-function updateProgress() {
-  let completed = 0;
-
-  if (document.getElementById("siglas").value.trim()) {
-    completed++;
-  }
-
-  const fields = [
-    "estadoCivil",
-    "procedencia",
-    "ocupacion",
-    "genero",
-    "q1",
-    "q2",
-    "q3",
-    "q4",
-    "q5",
-    "q6",
-    "q7",
-    "q8",
-    "q9",
-    "q10",
-    "q11",
-    "q12",
-    "q13",
-    "q14",
-    "q15",
-    "q16",
-    "q17",
-    "q18",
-    "q19",
-    "q20",
-    "q21",
-    "q22",
-    "q23",
-    "q24",
-    "q25"
-  ];
-
-  fields.forEach(name => {
-    const answered =
-      name === "q5" || name === "q8"
-        ? getChecks(name).length > 0
-        : !!document.querySelector(
-            `input[name="${name}"]:checked`
-          );
-
-    if (answered) completed++;
+      if (
+        this.value !== "TODAS LAS ANTERIORES" &&
+        this.checked
+      ) {
+        todas.checked = false;
+      }
+    });
   });
 
-  if (document.getElementById("edad").value) completed++;
-  if (document.getElementById("ciclo").value) completed++;
 
-  document.getElementById("progressText").textContent =
-    `${completed} de 32 campos completados`;
+  /************************************************
+   * FUNCIONES PARA OBTENER RESPUESTAS
+   ************************************************/
 
-  document.getElementById("progressBar").style.width =
-    `${Math.min(100, completed / 32 * 100)}%`;
-}
-
-document.addEventListener("change", event => {
-  const element = event.target;
-
-  if (element.name === "ocupacion") {
-    const other = document.getElementById("ocupacionOtro");
-
-    if (getRadio("ocupacion") === "Otros") {
-      other.classList.remove("hidden");
-      other.required = true;
-    } else {
-      other.classList.add("hidden");
-      other.required = false;
-      other.value = "";
-    }
-  }
-
-  if (element.name === "q5") {
-    const all = document.querySelector(
-      'input[name="q5"][value="TODAS LAS ANTERIORES"]'
+  function obtenerValor(nombre) {
+    const elemento = document.querySelector(
+      `input[name="${nombre}"]:checked,
+       select[name="${nombre}"],
+       input[name="${nombre}"]`
     );
 
-    const individual = [
-      ...document.querySelectorAll('input[name="q5"]')
-    ].filter(input => input !== all);
-
-    if (element === all && all.checked) {
-      individual.forEach(input => input.checked = false);
-    }
-
-    if (element !== all && element.checked) {
-      all.checked = false;
-    }
+    return elemento ? elemento.value : "";
   }
 
-  updateProgress();
-});
+  function obtenerValores(nombre) {
+    return Array.from(
+      document.querySelectorAll(`input[name="${nombre}"]:checked`)
+    ).map((elemento) => elemento.value);
+  }
 
-document.addEventListener("input", updateProgress);
 
-document.getElementById("form").addEventListener(
-  "submit",
-  async event => {
-    event.preventDefault();
+  /************************************************
+   * PUNTUACIÓN DE LA PREGUNTA 5
+   ************************************************/
 
-    if (!validateForm()) return;
+  function puntuarPregunta5() {
+    const seleccionadas = obtenerValores("q5");
 
-    const button = document.getElementById("submitBtn");
-    const message = document.getElementById("message");
-    const result = document.getElementById("result");
+    const individuales = [
+      "Bajas propiedades mecánicas",
+      "Baja estabilidad de color",
+      "Mayor colonización bacteriana",
+      "Reacciones tóxicas",
+      "Reacciones alérgicas",
+      "Caries secundaria",
+      "Filtración marginal",
+      "Alteración de color marginal",
+      "Sensibilidad dental"
+    ];
 
-    button.disabled = true;
-    button.textContent = "Enviando...";
+    // Correcto: seleccionar únicamente TODAS LAS ANTERIORES
+    if (
+      seleccionadas.length === 1 &&
+      seleccionadas[0] === "TODAS LAS ANTERIORES"
+    ) {
+      return 1;
+    }
 
-    message.className = "message";
-    message.textContent = "";
-    result.style.display = "none";
+    // Correcto: seleccionar exactamente las nueve alternativas
+    if (
+      seleccionadas.length === 9 &&
+      individuales.every((opcion) =>
+        seleccionadas.includes(opcion)
+      )
+    ) {
+      return 1;
+    }
 
-    const record = collectRecord();
+    // Cualquier otra combinación obtiene cero puntos
+    return 0;
+  }
+
+
+  /************************************************
+   * PUNTUACIÓN DE CONOCIMIENTO
+   ************************************************/
+
+  function puntuarConocimiento() {
+    let puntaje = 0;
+
+    if (obtenerValor("q1") === "Sí") puntaje++;
+    if (obtenerValor("q2") === "Sí") puntaje++;
+    if (obtenerValor("q3") === "Sí") puntaje++;
+    if (puntuarPregunta5() === 1) puntaje++;
+    if (obtenerValor("q6") === "300-500 mW/cm²") puntaje++;
+    if (obtenerValor("q7") === "Barrera transparente") puntaje++;
+
+    if (obtenerValor("q11") === "20 segundos por cada 2 mm") puntaje++;
+    if (obtenerValor("q12") === "Lo más cerca posible") puntaje++;
+    if (
+      obtenerValor("q13") ===
+      "Aumentar el tiempo de fotocurado"
+    ) puntaje++;
+    if (obtenerValor("q14") === "Gafas protectoras naranjas") puntaje++;
+
+    if (obtenerValor("q15") === "Sí") puntaje++;
+    if (obtenerValor("q16") === "Sí") puntaje++;
+    if (obtenerValor("q17") === "Sí") puntaje++;
+    if (obtenerValor("q19") === "Sí") puntaje++;
+
+    return puntaje;
+  }
+
+
+  /************************************************
+   * PUNTUACIÓN DE SATISFACCIÓN
+   ************************************************/
+
+  function puntuarSatisfaccion() {
+    const pesos = {
+      "Satisfecho(a)": 3,
+      "Moderadamente satisfecho(a)": 2,
+      "Insatisfecho(a)": 1
+    };
+
+    let puntaje = 0;
+
+    for (let i = 21; i <= 25; i++) {
+      const respuesta = obtenerValor("q" + i);
+      puntaje += pesos[respuesta] || 0;
+    }
+
+    return puntaje;
+  }
+
+
+  /************************************************
+   * NIVELES
+   ************************************************/
+
+  function nivelConocimiento(puntaje) {
+    if (puntaje <= 7) return "Bajo";
+    if (puntaje <= 10) return "Medio";
+    return "Alto";
+  }
+
+  function nivelSatisfaccion(puntaje) {
+    if (puntaje <= 8) return "Bajo";
+    if (puntaje <= 11) return "Moderado";
+    return "Alto";
+  }
+
+  function nivelGlobal(puntaje) {
+    if (puntaje <= 9) return "Bajo";
+    if (puntaje <= 19) return "Medio";
+    return "Alto";
+  }
+
+
+  /************************************************
+   * ENVÍO DEL CUESTIONARIO
+   ************************************************/
+
+  formulario.addEventListener("submit", async function(evento) {
+    evento.preventDefault();
+
+    const respuestasQ5 = obtenerValores("q5");
+
+    if (respuestasQ5.length === 0) {
+      alert("Debe responder la pregunta 5.");
+      return;
+    }
+
+    if (!formulario.checkValidity()) {
+      formulario.reportValidity();
+      return;
+    }
+
+    const conocimiento = puntuarConocimiento();
+    const satisfaccion = puntuarSatisfaccion();
+    const global = conocimiento + satisfaccion;
+
+    const datos = {
+      fechaHora: new Date().toISOString(),
+
+      siglas: document.getElementById("siglas").value.trim(),
+      estadoCivil: document.getElementById("estadoCivil").value,
+      procedencia: document.getElementById("procedencia").value,
+      ocupacion: document.getElementById("ocupacion").value,
+      ocupacionOtro: document.getElementById("ocupacionOtro").value.trim(),
+      genero: document.getElementById("genero").value,
+      edad: document.getElementById("edad").value,
+      ciclo: document.getElementById("ciclo").value,
+
+      q1: obtenerValor("q1"),
+      q2: obtenerValor("q2"),
+      q3: obtenerValor("q3"),
+      q4: obtenerValor("q4"),
+      q5: respuestasQ5.join(" | "),
+      q6: obtenerValor("q6"),
+      q7: obtenerValor("q7"),
+      q8: obtenerValores("q8").join(" | "),
+      q9: obtenerValor("q9"),
+      q10: obtenerValor("q10"),
+      q11: obtenerValor("q11"),
+      q12: obtenerValor("q12"),
+      q13: obtenerValor("q13"),
+      q14: obtenerValor("q14"),
+      q15: obtenerValor("q15"),
+      q16: obtenerValor("q16"),
+      q17: obtenerValor("q17"),
+      q18: obtenerValor("q18"),
+      q19: obtenerValor("q19"),
+      q20: obtenerValor("q20"),
+      q21: obtenerValor("q21"),
+      q22: obtenerValor("q22"),
+      q23: obtenerValor("q23"),
+      q24: obtenerValor("q24"),
+      q25: obtenerValor("q25"),
+
+      conocimientoCompetencia: conocimiento,
+      satisfaccion: satisfaccion,
+      puntajeGlobal: global,
+
+      nivelConocimiento: nivelConocimiento(conocimiento),
+      nivelSatisfaccion: nivelSatisfaccion(satisfaccion),
+      nivelGlobal: nivelGlobal(global)
+    };
+
+    boton.disabled = true;
+    boton.textContent = "Enviando respuestas...";
+
+    mensaje.style.display = "block";
+    mensaje.className = "";
+    mensaje.textContent = "Enviando sus respuestas. Espere un momento...";
 
     try {
       await fetch(API_URL, {
@@ -1183,83 +851,38 @@ document.getElementById("form").addEventListener(
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
-        body: JSON.stringify(record)
+        body: JSON.stringify(datos)
       });
 
-      message.className = "message success";
-      message.textContent =
-        "Respuesta enviada. Verifique la pestaña Respuestas de Google Sheets.";
+      mensaje.className = "exito";
+      mensaje.textContent =
+        "Las respuestas fueron enviadas correctamente. Gracias por participar.";
 
-      const scores = calculateScores();
-
-      document.getElementById("scoreDisplay").textContent =
-        `${scores.global} / 29`;
-
-      document.getElementById("levelDisplay").textContent =
-        `${getGlobalLevel(scores.global)} · ${getKnowledgeLevel(scores.knowledge)}`;
-
-      document.getElementById("knowledgeDisplay").textContent =
-        `${scores.knowledge} / 14`;
-
-      document.getElementById("satisfactionDisplay").textContent =
-        `${scores.satisfaction} / 15`;
-
-      document.getElementById("globalDisplay").textContent =
-        `${scores.global} / 29`;
-
-      result.style.display = "block";
-
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-      });
+      formulario.reset();
 
     } catch (error) {
-      message.className = "message error";
-      message.textContent =
-        "No se pudo enviar la respuesta. Revise su conexión e inténtelo nuevamente.";
+      console.error("Error de envío:", error);
+
+      mensaje.className = "error";
+      mensaje.textContent =
+        "No se pudo enviar el cuestionario. Inténtelo nuevamente.";
+
     } finally {
-      button.disabled = false;
-      button.textContent = "Enviar cuestionario";
+      boton.disabled = false;
+      boton.textContent = "Enviar cuestionario";
     }
-  }
-);
+  });
 
-document.getElementById("resetBtn").addEventListener(
-  "click",
-  () => {
-    if (confirm("¿Desea limpiar todo el formulario?")) {
-      document.getElementById("form").reset();
 
-      document
-        .getElementById("ocupacionOtro")
-        .classList.add("hidden");
+  /************************************************
+   * CÓDIGO QR
+   ************************************************/
 
-      document.getElementById("ocupacionOtro").required = false;
+  const urlCuestionario = window.location.href;
 
-      document.getElementById("message").className = "message";
-      document.getElementById("message").textContent = "";
-
-      document.getElementById("result").style.display = "none";
-
-      updateProgress();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-  }
-);
-
-renderDemographics();
-renderQuestions();
-
-document.getElementById("qrImage").src =
-  "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-  encodeURIComponent(window.location.href);
-
-updateProgress();
+  document.getElementById("codigoQR").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
+    encodeURIComponent(urlCuestionario);
 </script>
 
 </body>
