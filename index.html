@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -75,7 +76,8 @@
       background: white;
     }
 
-    .pregunta {
+    .pregunta,
+    .question {
       margin: 22px 0;
       padding: 18px;
       border: 1px solid #e2e8f0;
@@ -83,7 +85,8 @@
       background: white;
     }
 
-    .opcion {
+    .opcion,
+    .options-group label {
       display: flex;
       align-items: flex-start;
       gap: 10px;
@@ -96,7 +99,8 @@
       cursor: pointer;
     }
 
-    .opcion:hover {
+    .opcion:hover,
+    .options-group label:hover {
       background: #e0f2fe;
     }
 
@@ -107,13 +111,12 @@
       flex-shrink: 0;
     }
 
-    .nota {
-      padding: 12px;
-      margin: 15px 0;
-      border-radius: 8px;
-      background: #eff6ff;
-      color: #1e40af;
-      line-height: 1.5;
+    .error-message {
+      display: block;
+      color: #b91c1c;
+      font-weight: bold;
+      margin-top: 10px;
+      min-height: 18px;
     }
 
     button {
@@ -190,11 +193,13 @@
         font-size: 20px;
       }
 
-      .pregunta {
+      .pregunta,
+      .question {
         padding: 12px;
       }
     }
   </style>
+
 </head>
 
 <body>
@@ -213,293 +218,694 @@
 
   <form id="formulario">
 
-    <h2>Datos sociodemográficos</h2>
+```
+<h2>Datos sociodemográficos</h2>
 
-    <div class="campo">
-      <label for="siglas">Siglas de sus nombres y apellidos</label>
+<div class="campo">
+  <label for="siglas">Siglas de sus nombres y apellidos</label>
+  <input
+    type="text"
+    id="siglas"
+    name="siglas"
+    placeholder="Ejemplo: GGRP"
+    required
+  >
+</div>
+
+<div class="campo">
+  <label for="estadoCivil">Estado civil</label>
+  <select id="estadoCivil" name="estadoCivil" required>
+    <option value="">Seleccione una opción</option>
+    <option>Soltero</option>
+    <option>Casado</option>
+    <option>Conviviente</option>
+    <option>Viudo</option>
+    <option>Divorciado</option>
+  </select>
+</div>
+
+<div class="campo">
+  <label for="procedencia">Lugar de procedencia</label>
+  <select id="procedencia" name="procedencia" required>
+    <option value="">Seleccione una opción</option>
+    <option>Capital - Lima</option>
+    <option>Provincia</option>
+  </select>
+</div>
+
+<div class="campo">
+  <label for="ocupacion">Ocupación</label>
+  <select id="ocupacion" name="ocupacion" required>
+    <option value="">Seleccione una opción</option>
+    <option>Solo estudia</option>
+    <option>Trabaja y estudia</option>
+    <option>Otros</option>
+  </select>
+</div>
+
+<div class="campo oculto" id="campoOcupacionOtro">
+  <label for="ocupacionOtro">Especifique otra ocupación</label>
+  <input type="text" id="ocupacionOtro" name="ocupacionOtro">
+</div>
+
+<div class="campo">
+  <label for="genero">Género</label>
+  <select id="genero" name="genero" required>
+    <option value="">Seleccione una opción</option>
+    <option>Masculino</option>
+    <option>Femenino</option>
+  </select>
+</div>
+
+<div class="campo">
+  <label for="edad">Edad en años</label>
+  <input
+    type="number"
+    id="edad"
+    name="edad"
+    min="18"
+    max="100"
+    required
+  >
+</div>
+
+<div class="campo">
+  <label for="ciclo">Ciclo actual</label>
+  <input
+    type="number"
+    id="ciclo"
+    name="ciclo"
+    min="3"
+    max="10"
+    required
+  >
+</div>
+
+
+<h2>Sección 1: Conocimiento sobre la luz de fotocurado</h2>
+
+<div class="pregunta">
+  <h3>
+    1. ¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q1" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q1" value="No">
+    No
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    2. ¿Sabe si su unidad de fotocurado tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q2" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q2" value="No">
+    No
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    3. ¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q3" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q3" value="No">
+    No
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    4. ¿Con qué frecuencia utiliza una unidad de fotocurado?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q4" value="Diariamente" required>
+    Diariamente
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q4" value="Semanalmente">
+    Semanalmente
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q4" value="Raramente">
+    Raramente
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q4" value="Nunca">
+    Nunca
+  </label>
+</div>
+
+
+<!-- ==================================================
+     PREGUNTA 5 CORREGIDA
+     ================================================== -->
+
+<div class="question">
+
+  <h3>
+    5. ¿Cuáles de los siguientes pueden ser efectos o consecuencias relacionados con una polimerización inadecuada?
+  </h3>
+
+  <div class="options-group" id="grupo-q5">
+
+    <label>
       <input
-        type="text"
-        id="siglas"
-        name="siglas"
-        placeholder="Ejemplo: GGRP"
-        required
+        type="checkbox"
+        name="q5"
+        value="Bajas propiedades mecánicas"
       >
-    </div>
+      Bajas propiedades mecánicas
+    </label>
 
-    <div class="campo">
-      <label for="estadoCivil">Estado civil</label>
-      <select id="estadoCivil" name="estadoCivil" required>
-        <option value="">Seleccione una opción</option>
-        <option>Soltero</option>
-        <option>Casado</option>
-        <option>Conviviente</option>
-        <option>Viudo</option>
-        <option>Divorciado</option>
-      </select>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Baja estabilidad de color"
+      >
+      Baja estabilidad de color
+    </label>
 
-    <div class="campo">
-      <label for="procedencia">Lugar de procedencia</label>
-      <select id="procedencia" name="procedencia" required>
-        <option value="">Seleccione una opción</option>
-        <option>Capital - Lima</option>
-        <option>Provincia</option>
-      </select>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Mayor colonización bacteriana"
+      >
+      Mayor colonización bacteriana
+    </label>
 
-    <div class="campo">
-      <label for="ocupacion">Ocupación</label>
-      <select id="ocupacion" name="ocupacion" required>
-        <option value="">Seleccione una opción</option>
-        <option>Solo estudia</option>
-        <option>Trabaja y estudia</option>
-        <option>Otros</option>
-      </select>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Reacciones tóxicas"
+      >
+      Reacciones tóxicas
+    </label>
 
-    <div class="campo oculto" id="campoOcupacionOtro">
-      <label for="ocupacionOtro">Especifique otra ocupación</label>
-      <input type="text" id="ocupacionOtro" name="ocupacionOtro">
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Reacciones alérgicas"
+      >
+      Reacciones alérgicas
+    </label>
 
-    <div class="campo">
-      <label for="genero">Género</label>
-      <select id="genero" name="genero" required>
-        <option value="">Seleccione una opción</option>
-        <option>Masculino</option>
-        <option>Femenino</option>
-      </select>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Caries secundaria"
+      >
+      Caries secundaria
+    </label>
 
-    <div class="campo">
-      <label for="edad">Edad en años</label>
-      <input type="number" id="edad" name="edad" min="18" max="100" required>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Filtración marginal"
+      >
+      Filtración marginal
+    </label>
 
-    <div class="campo">
-      <label for="ciclo">Ciclo actual</label>
-      <input type="number" id="ciclo" name="ciclo" min="3" max="10" required>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Alteración de color marginal"
+      >
+      Alteración de color marginal
+    </label>
 
-    <h2>Sección 1: Conocimiento sobre la luz de fotocurado</h2>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="Sensibilidad dental"
+      >
+      Sensibilidad dental
+    </label>
 
-    <div class="pregunta">
-      <h3>1. ¿Conoce el sistema de fotoiniciadores en los materiales activados por luz utilizados en su clínica?</h3>
-      <label class="opcion"><input type="radio" name="q1" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q1" value="No"> No</label>
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        name="q5"
+        value="TODAS LAS ANTERIORES"
+      >
+      TODAS LAS ANTERIORES
+    </label>
 
-    <div class="pregunta">
-      <h3>2. ¿Sabe si su unidad de fotocurado tiene una longitud de onda compatible con los fotoiniciadores del material que utiliza?</h3>
-      <label class="opcion"><input type="radio" name="q2" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q2" value="No"> No</label>
-    </div>
+  </div>
 
-    <div class="pregunta">
-      <h3>3. ¿Cree que una exposición radiante suficiente es un factor crucial para la longevidad de la restauración?</h3>
-      <label class="opcion"><input type="radio" name="q3" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q3" value="No"> No</label>
-    </div>
+  <small id="error-q5" class="error-message"></small>
 
-    <div class="pregunta">
-      <h3>4. ¿Con qué frecuencia utiliza una unidad de fotocurado?</h3>
-      <label class="opcion"><input type="radio" name="q4" value="Diariamente" required> Diariamente</label>
-      <label class="opcion"><input type="radio" name="q4" value="Semanalmente"> Semanalmente</label>
-      <label class="opcion"><input type="radio" name="q4" value="Raramente"> Raramente</label>
-      <label class="opcion"><input type="radio" name="q4" value="Nunca"> Nunca</label>
-    </div>
+</div>
 
-    <div class="pregunta">
-      <h3>
-        5. ¿Cuáles pueden ser las consecuencias de una polimerización inadecuada de los materiales restauradores?
-      </h3>
 
-      <div class="nota">
-        Seleccione una o varias alternativas. También puede seleccionar únicamente
-        “TODAS LAS ANTERIORES”.
-      </div>
+<div class="pregunta">
+  <h3>
+    6. ¿Cuál es la irradiancia mínima recomendada para una polimerización adecuada de composites de 2 mm en 40 segundos?
+  </h3>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Bajas propiedades mecánicas">
-        Bajas propiedades mecánicas
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q6" value="100-300 mW/cm²" required>
+    100-300 mW/cm²
+  </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Baja estabilidad de color">
-        Baja estabilidad de color
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q6" value="300-500 mW/cm²">
+    300-500 mW/cm²
+  </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Mayor colonización bacteriana">
-        Mayor colonización bacteriana
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q6" value="Mayor de 500 mW/cm²">
+    Mayor de 500 mW/cm²
+  </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Reacciones tóxicas">
-        Reacciones tóxicas
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q6" value="No estoy seguro">
+    No estoy seguro
+  </label>
+</div>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Reacciones alérgicas">
-        Reacciones alérgicas
-      </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Caries secundaria">
-        Caries secundaria
-      </label>
+<div class="pregunta">
+  <h3>
+    7. ¿Qué técnica de control de infecciones tiene el menor efecto negativo sobre las puntas de fotocurado?
+  </h3>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Filtración marginal">
-        Filtración marginal
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q7" value="Autoclave" required>
+    Autoclave
+  </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Alteración de color marginal">
-        Alteración de color marginal
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q7" value="Solución desinfectante">
+    Solución desinfectante
+  </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="Sensibilidad dental">
-        Sensibilidad dental
-      </label>
+  <label class="opcion">
+    <input type="radio" name="q7" value="Barrera transparente">
+    Barrera transparente
+  </label>
 
-      <label class="opcion">
-        <input type="checkbox" name="q5" value="TODAS LAS ANTERIORES">
-        TODAS LAS ANTERIORES
-      </label>
-    </div>
+  <label class="opcion">
+    <input type="radio" name="q7" value="No estoy seguro">
+    No estoy seguro
+  </label>
+</div>
 
-    <div class="pregunta">
-      <h3>6. ¿Cuál es la irradiancia mínima recomendada para una polimerización adecuada de composites de 2 mm en 40 segundos?</h3>
-      <label class="opcion"><input type="radio" name="q6" value="100-300 mW/cm²" required> 100-300 mW/cm²</label>
-      <label class="opcion"><input type="radio" name="q6" value="300-500 mW/cm²"> 300-500 mW/cm²</label>
-      <label class="opcion"><input type="radio" name="q6" value="Mayor de 500 mW/cm²"> Mayor de 500 mW/cm²</label>
-      <label class="opcion"><input type="radio" name="q6" value="No estoy seguro"> No estoy seguro</label>
-    </div>
 
-    <div class="pregunta">
-      <h3>7. ¿Qué técnica de control de infecciones tiene el menor efecto negativo sobre las puntas de fotocurado?</h3>
-      <label class="opcion"><input type="radio" name="q7" value="Autoclave" required> Autoclave</label>
-      <label class="opcion"><input type="radio" name="q7" value="Solución desinfectante"> Solución desinfectante</label>
-      <label class="opcion"><input type="radio" name="q7" value="Barrera transparente"> Barrera transparente</label>
-      <label class="opcion"><input type="radio" name="q7" value="No estoy seguro"> No estoy seguro</label>
-    </div>
+<div class="pregunta">
+  <h3>
+    8. ¿Cuáles son sus principales fuentes de información sobre unidades de fotocurado?
+  </h3>
 
-    <div class="pregunta">
-      <h3>8. ¿Cuáles son sus principales fuentes de información sobre unidades de fotocurado?</h3>
-      <label class="opcion"><input type="checkbox" name="q8" value="Libros de texto"> Libros de texto</label>
-      <label class="opcion"><input type="checkbox" name="q8" value="Revistas científicas"> Revistas científicas</label>
-      <label class="opcion"><input type="checkbox" name="q8" value="Conferencias en el currículo de pregrado"> Conferencias en el currículo de pregrado</label>
-      <label class="opcion"><input type="checkbox" name="q8" value="Conferencias en el currículo de posgrado"> Conferencias en el currículo de posgrado</label>
-      <label class="opcion"><input type="checkbox" name="q8" value="Conferencias de educación continua"> Conferencias de educación continua, incluyendo congresos</label>
-      <label class="opcion"><input type="checkbox" name="q8" value="Folletos de fabricantes"> Folletos de fabricantes</label>
-      <label class="opcion"><input type="checkbox" name="q8" value="Internet y redes sociales"> Internet y redes sociales</label>
-    </div>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Libros de texto">
+    Libros de texto
+  </label>
 
-    <h2>Sección 2: Uso clínico de la unidad de fotocurado</h2>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Revistas científicas">
+    Revistas científicas
+  </label>
 
-    <div class="pregunta">
-      <h3>9. ¿Qué tipo de unidad de fotocurado utiliza principalmente?</h3>
-      <label class="opcion"><input type="radio" name="q9" value="QTH" required> QTH</label>
-      <label class="opcion"><input type="radio" name="q9" value="PAC"> PAC</label>
-      <label class="opcion"><input type="radio" name="q9" value="Láser de argón"> Láser de argón</label>
-      <label class="opcion"><input type="radio" name="q9" value="LED"> LED</label>
-      <label class="opcion"><input type="radio" name="q9" value="No estoy seguro"> No estoy seguro</label>
-    </div>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Conferencias en el currículo de pregrado">
+    Conferencias en el currículo de pregrado
+  </label>
 
-    <div class="pregunta">
-      <h3>10. ¿Qué modo de fotocurado utiliza habitualmente?</h3>
-      <label class="opcion"><input type="radio" name="q10" value="Soft start" required> Soft start</label>
-      <label class="opcion"><input type="radio" name="q10" value="Fast cure"> Fast cure</label>
-      <label class="opcion"><input type="radio" name="q10" value="Modo convencional"> Modo convencional</label>
-      <label class="opcion"><input type="radio" name="q10" value="No reviso el modo"> No reviso el modo de fotocurado</label>
-    </div>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Conferencias en el currículo de posgrado">
+    Conferencias en el currículo de posgrado
+  </label>
 
-    <div class="pregunta">
-      <h3>11. ¿Cuál es el tiempo de fotocurado recomendado para un incremento de composite de 2 mm?</h3>
-      <label class="opcion"><input type="radio" name="q11" value="10 segundos por cada 2 mm" required> 10 segundos por cada 2 mm</label>
-      <label class="opcion"><input type="radio" name="q11" value="20 segundos por cada 2 mm"> 20 segundos por cada 2 mm</label>
-      <label class="opcion"><input type="radio" name="q11" value="40 segundos por cada 2 mm"> 40 segundos por cada 2 mm</label>
-      <label class="opcion"><input type="radio" name="q11" value="60 segundos para toda la restauración"> 60 segundos para toda la restauración</label>
-    </div>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Conferencias de educación continua">
+    Conferencias de educación continua, incluyendo congresos
+  </label>
 
-    <div class="pregunta">
-      <h3>12. ¿Cuál debe ser la posición de la punta de la unidad de fotocurado?</h3>
-      <label class="opcion"><input type="radio" name="q12" value="Lo más cerca posible" required> Lo más cerca posible</label>
-      <label class="opcion"><input type="radio" name="q12" value="Hasta 10 mm"> Hasta 10 mm</label>
-      <label class="opcion"><input type="radio" name="q12" value="45 grados"> A 45°</label>
-      <label class="opcion"><input type="radio" name="q12" value="90 grados"> A 90°</label>
-    </div>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Folletos de fabricantes">
+    Folletos de fabricantes
+  </label>
 
-    <div class="pregunta">
-      <h3>13. ¿Cuál de las siguientes acciones permite aumentar la exposición radiante total?</h3>
-      <label class="opcion"><input type="radio" name="q13" value="Colocar la unidad en el refrigerador" required> Colocar la unidad en el refrigerador</label>
-      <label class="opcion"><input type="radio" name="q13" value="Aumentar el tiempo de fotocurado"> Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante</label>
-      <label class="opcion"><input type="radio" name="q13" value="Utilizar un tono más oscuro"> Utilizar un tono más oscuro</label>
-    </div>
+  <label class="opcion">
+    <input type="checkbox" name="q8" value="Internet y redes sociales">
+    Internet y redes sociales
+  </label>
+</div>
 
-    <div class="pregunta">
-      <h3>14. ¿Qué medida protege los ojos de la luz azul emitida durante el fotocurado?</h3>
-      <label class="opcion"><input type="radio" name="q14" value="Escudo incorporado" required> Escudo incorporado en la unidad</label>
-      <label class="opcion"><input type="radio" name="q14" value="Escudo manual"> Escudo manual</label>
-      <label class="opcion"><input type="radio" name="q14" value="Gafas protectoras naranjas"> Gafas protectoras naranjas</label>
-      <label class="opcion"><input type="radio" name="q14" value="Alejar al asistente"> Alejar al asistente</label>
-      <label class="opcion"><input type="radio" name="q14" value="Espejo alejado"> Utilizar un espejo alejado</label>
-    </div>
 
-    <h2>Sección 3: Mantenimiento y control</h2>
+<h2>Sección 2: Uso clínico de la unidad de fotocurado</h2>
 
-    <div class="pregunta">
-      <h3>15. ¿Conoce la vida útil esperada de su unidad de fotocurado?</h3>
-      <label class="opcion"><input type="radio" name="q15" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q15" value="No"> No</label>
-    </div>
 
-    <div class="pregunta">
-      <h3>16. ¿Inspecciona, limpia y revisa la unidad de fotocurado antes de utilizarla?</h3>
-      <label class="opcion"><input type="radio" name="q16" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q16" value="No"> No</label>
-    </div>
+<div class="pregunta">
+  <h3>
+    9. ¿Qué tipo de unidad de fotocurado utiliza principalmente?
+  </h3>
 
-    <div class="pregunta">
-      <h3>17. ¿Realiza el mantenimiento siguiendo las indicaciones del fabricante?</h3>
-      <label class="opcion"><input type="radio" name="q17" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q17" value="No"> No</label>
-    </div>
+  <label class="opcion">
+    <input type="radio" name="q9" value="QTH" required>
+    QTH
+  </label>
 
-    <div class="pregunta">
-      <h3>18. ¿Con qué frecuencia realiza el mantenimiento?</h3>
-      <label class="opcion"><input type="radio" name="q18" value="1 a 3 meses" required> Cada 1 a 3 meses</label>
-      <label class="opcion"><input type="radio" name="q18" value="3 a 6 meses"> Cada 3 a 6 meses</label>
-      <label class="opcion"><input type="radio" name="q18" value="6 a 12 meses"> Cada 6 a 12 meses</label>
-      <label class="opcion"><input type="radio" name="q18" value="12 meses"> Cada 12 meses</label>
-      <label class="opcion"><input type="radio" name="q18" value="No realizo mantenimiento"> No realizo mantenimiento</label>
-    </div>
+  <label class="opcion">
+    <input type="radio" name="q9" value="PAC">
+    PAC
+  </label>
 
-    <div class="pregunta">
-      <h3>19. ¿Utiliza un radiómetro dental para medir la irradiancia?</h3>
-      <label class="opcion"><input type="radio" name="q19" value="Sí" required> Sí</label>
-      <label class="opcion"><input type="radio" name="q19" value="No"> No</label>
-      <label class="opcion"><input type="radio" name="q19" value="No estoy familiarizado"> No estoy familiarizado</label>
-    </div>
+  <label class="opcion">
+    <input type="radio" name="q9" value="Láser de argón">
+    Láser de argón
+  </label>
 
-    <div class="pregunta">
-      <h3>20. ¿Con qué frecuencia revisa la irradiancia?</h3>
-      <label class="opcion"><input type="radio" name="q20" value="1 a 3 meses" required> Cada 1 a 3 meses</label>
-      <label class="opcion"><input type="radio" name="q20" value="3 a 6 meses"> Cada 3 a 6 meses</label>
-      <label class="opcion"><input type="radio" name="q20" value="6 a 12 meses"> Cada 6 a 12 meses</label>
-      <label class="opcion"><input type="radio" name="q20" value="12 meses"> Cada 12 meses</label>
-      <label class="opcion"><input type="radio" name="q20" value="No reviso la irradiancia"> No reviso la irradiancia</label>
-    </div>
+  <label class="opcion">
+    <input type="radio" name="q9" value="LED">
+    LED
+  </label>
 
-    <h2>Sección 4: Satisfacción</h2>
+  <label class="opcion">
+    <input type="radio" name="q9" value="No estoy seguro">
+    No estoy seguro
+  </label>
+</div>
 
-    <div id="satisfaccion"></div>
 
-    <button type="submit" id="btnEnviar">
-      Enviar cuestionario
-    </button>
+<div class="pregunta">
+  <h3>
+    10. ¿Qué modo de fotocurado utiliza habitualmente?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q10" value="Soft start" required>
+    Soft start
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q10" value="Fast cure">
+    Fast cure
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q10" value="Modo convencional">
+    Modo convencional
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q10" value="No reviso el modo">
+    No reviso el modo de fotocurado
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    11. ¿Cuál es el tiempo de fotocurado recomendado para un incremento de composite de 2 mm?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q11" value="10 segundos por cada 2 mm" required>
+    10 segundos por cada 2 mm
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q11" value="20 segundos por cada 2 mm">
+    20 segundos por cada 2 mm
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q11" value="40 segundos por cada 2 mm">
+    40 segundos por cada 2 mm
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q11" value="60 segundos para toda la restauración">
+    60 segundos para toda la restauración
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    12. ¿Cuál debe ser la posición de la punta de la unidad de fotocurado?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q12" value="Lo más cerca posible" required>
+    Lo más cerca posible
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q12" value="Hasta 10 mm">
+    Hasta 10 mm
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q12" value="45 grados">
+    A 45°
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q12" value="90 grados">
+    A 90°
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    13. ¿Cuál de las siguientes acciones permite aumentar la exposición radiante total?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q13" value="Colocar la unidad en el refrigerador" required>
+    Colocar la unidad en el refrigerador
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q13" value="Aumentar el tiempo de fotocurado">
+    Aumentar el tiempo de fotocurado más allá de la recomendación del fabricante
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q13" value="Utilizar un tono más oscuro">
+    Utilizar un tono más oscuro
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    14. ¿Qué medida protege los ojos de la luz azul emitida durante el fotocurado?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q14" value="Escudo incorporado" required>
+    Escudo incorporado en la unidad
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q14" value="Escudo manual">
+    Escudo manual
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q14" value="Gafas protectoras naranjas">
+    Gafas protectoras naranjas
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q14" value="Alejar al asistente">
+    Alejar al asistente
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q14" value="Espejo alejado">
+    Utilizar un espejo alejado
+  </label>
+</div>
+
+
+<h2>Sección 3: Mantenimiento y control</h2>
+
+
+<div class="pregunta">
+  <h3>
+    15. ¿Conoce la vida útil esperada de su unidad de fotocurado?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q15" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q15" value="No">
+    No
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    16. ¿Inspecciona, limpia y revisa la unidad de fotocurado antes de utilizarla?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q16" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q16" value="No">
+    No
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    17. ¿Realiza el mantenimiento siguiendo las indicaciones del fabricante?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q17" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q17" value="No">
+    No
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    18. ¿Con qué frecuencia realiza el mantenimiento?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q18" value="1 a 3 meses" required>
+    Cada 1 a 3 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q18" value="3 a 6 meses">
+    Cada 3 a 6 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q18" value="6 a 12 meses">
+    Cada 6 a 12 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q18" value="12 meses">
+    Cada 12 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q18" value="No realizo mantenimiento">
+    No realizo mantenimiento
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    19. ¿Utiliza un radiómetro dental para medir la irradiancia?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q19" value="Sí" required>
+    Sí
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q19" value="No">
+    No
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q19" value="No estoy familiarizado">
+    No estoy familiarizado
+  </label>
+</div>
+
+
+<div class="pregunta">
+  <h3>
+    20. ¿Con qué frecuencia revisa la irradiancia?
+  </h3>
+
+  <label class="opcion">
+    <input type="radio" name="q20" value="1 a 3 meses" required>
+    Cada 1 a 3 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q20" value="3 a 6 meses">
+    Cada 3 a 6 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q20" value="6 a 12 meses">
+    Cada 6 a 12 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q20" value="12 meses">
+    Cada 12 meses
+  </label>
+
+  <label class="opcion">
+    <input type="radio" name="q20" value="No reviso la irradiancia">
+    No reviso la irradiancia
+  </label>
+</div>
+
+
+<h2>Sección 4: Satisfacción</h2>
+
+<div id="satisfaccion"></div>
+
+
+<button type="submit" id="btnEnviar">
+  Enviar cuestionario
+</button>
+```
 
   </form>
 
@@ -507,24 +913,40 @@
 
   <div class="qr">
     <h2>Compartir cuestionario</h2>
-    <p>Escanee el código QR para abrir este cuestionario.</p>
-    <img id="codigoQR" alt="Código QR del cuestionario">
+
+```
+<p>
+  Escanee el código QR para abrir este cuestionario.
+</p>
+
+<img
+  id="codigoQR"
+  alt="Código QR del cuestionario"
+>
+```
+
   </div>
 
 </div>
 
 <script>
+
   /************************************************
-   * URL ACTUALIZADA DE GOOGLE APPS SCRIPT
+   * URL DE GOOGLE APPS SCRIPT
    ************************************************/
 
   const API_URL =
     "https://script.google.com/macros/s/AKfycbzYWwo6Z4noVPwIp5q5yJ25Jwn6FlFIIFDWhKLXBs30k4ek2IGu7HupzA9KD5tTcfuz/exec";
 
 
-  const formulario = document.getElementById("formulario");
-  const boton = document.getElementById("btnEnviar");
-  const mensaje = document.getElementById("mensaje");
+  const formulario =
+    document.getElementById("formulario");
+
+  const boton =
+    document.getElementById("btnEnviar");
+
+  const mensaje =
+    document.getElementById("mensaje");
 
 
   /************************************************
@@ -532,120 +954,337 @@
    ************************************************/
 
   const preguntasSatisfaccion = [
+
     "21. ¿Qué tan satisfecho(a) está con su unidad de fotocurado?",
+
     "22. ¿Qué tan satisfecho(a) está con sus conocimientos sobre las unidades de fotocurado?",
+
     "23. ¿Qué tan satisfecho(a) está con su práctica clínica relacionada con el fotocurado?",
+
     "24. ¿Qué tan satisfecho(a) está con la formación recibida sobre unidades de fotocurado?",
+
     "25. ¿Qué tan satisfecho(a) está con las actividades de educación continua sobre unidades de fotocurado?"
+
   ];
+
 
   const contenedorSatisfaccion =
     document.getElementById("satisfaccion");
 
-  preguntasSatisfaccion.forEach((pregunta, indice) => {
-    const numero = indice + 21;
 
-    const bloque = document.createElement("div");
-    bloque.className = "pregunta";
+  preguntasSatisfaccion.forEach(
+    (pregunta, indice) => {
 
-    bloque.innerHTML = `
-      <h3>${pregunta}</h3>
+      const numero = indice + 21;
 
-      <label class="opcion">
-        <input type="radio" name="q${numero}" value="Satisfecho(a)" required>
-        Satisfecho(a)
-      </label>
+      const bloque =
+        document.createElement("div");
 
-      <label class="opcion">
-        <input type="radio" name="q${numero}" value="Moderadamente satisfecho(a)">
-        Moderadamente satisfecho(a)
-      </label>
+      bloque.className = "pregunta";
 
-      <label class="opcion">
-        <input type="radio" name="q${numero}" value="Insatisfecho(a)">
-        Insatisfecho(a)
-      </label>
-    `;
+      bloque.innerHTML = `
 
-    contenedorSatisfaccion.appendChild(bloque);
-  });
+        <h3>${pregunta}</h3>
+
+        <label class="opcion">
+
+          <input
+            type="radio"
+            name="q${numero}"
+            value="Satisfecho(a)"
+            required
+          >
+
+          Satisfecho(a)
+
+        </label>
+
+
+        <label class="opcion">
+
+          <input
+            type="radio"
+            name="q${numero}"
+            value="Moderadamente satisfecho(a)"
+          >
+
+          Moderadamente satisfecho(a)
+
+        </label>
+
+
+        <label class="opcion">
+
+          <input
+            type="radio"
+            name="q${numero}"
+            value="Insatisfecho(a)"
+          >
+
+          Insatisfecho(a)
+
+        </label>
+
+      `;
+
+      contenedorSatisfaccion.appendChild(bloque);
+
+    }
+  );
 
 
   /************************************************
    * CAMPO: OTRA OCUPACIÓN
    ************************************************/
 
-  document.getElementById("ocupacion").addEventListener(
-    "change",
-    function() {
-      const campo = document.getElementById("campoOcupacionOtro");
-      const entrada = document.getElementById("ocupacionOtro");
+  document
+    .getElementById("ocupacion")
+    .addEventListener(
+      "change",
+      function() {
 
-      if (this.value === "Otros") {
-        campo.classList.remove("oculto");
-        entrada.required = true;
-      } else {
-        campo.classList.add("oculto");
-        entrada.required = false;
-        entrada.value = "";
+        const campo =
+          document.getElementById(
+            "campoOcupacionOtro"
+          );
+
+        const entrada =
+          document.getElementById(
+            "ocupacionOtro"
+          );
+
+
+        if (this.value === "Otros") {
+
+          campo.classList.remove("oculto");
+
+          entrada.required = true;
+
+        } else {
+
+          campo.classList.add("oculto");
+
+          entrada.required = false;
+
+          entrada.value = "";
+
+        }
+
       }
-    }
-  );
+    );
 
 
   /************************************************
-   * LÓGICA CORREGIDA DE LA PREGUNTA 5
+   * LÓGICA DE LA PREGUNTA 5
+   *
+   * NO SE UTILIZA REQUIRED EN NINGÚN CHECKBOX.
    ************************************************/
 
-  const q5 = document.querySelectorAll('input[name="q5"]');
+  const opcionesQ5 =
+    document.querySelectorAll(
+      'input[name="q5"]'
+    );
 
-  q5.forEach((checkbox) => {
-    checkbox.addEventListener("change", function() {
-      const todas = document.querySelector(
-        'input[name="q5"][value="TODAS LAS ANTERIORES"]'
-      );
 
-      const individuales = document.querySelectorAll(
-        'input[name="q5"]:not([value="TODAS LAS ANTERIORES"])'
-      );
+  opcionesQ5.forEach((opcion) => {
 
-      if (
-        this.value === "TODAS LAS ANTERIORES" &&
-        this.checked
-      ) {
-        individuales.forEach((opcion) => {
-          opcion.checked = false;
-        });
+    opcion.addEventListener(
+      "change",
+      function() {
+
+        const todasLasAnteriores =
+          document.querySelector(
+            'input[name="q5"][value="TODAS LAS ANTERIORES"]'
+          );
+
+
+        const opcionesIndividuales =
+          document.querySelectorAll(
+            'input[name="q5"]:not([value="TODAS LAS ANTERIORES"])'
+          );
+
+
+        /*
+         * Si se selecciona TODAS LAS ANTERIORES,
+         * se desmarcan las nueve individuales.
+         */
+
+        if (
+          this.value ===
+            "TODAS LAS ANTERIORES" &&
+          this.checked
+        ) {
+
+          opcionesIndividuales.forEach(
+            (opcionIndividual) => {
+
+              opcionIndividual.checked = false;
+
+            }
+          );
+
+        }
+
+
+        /*
+         * Si se selecciona cualquier alternativa
+         * individual, se desmarca TODAS LAS ANTERIORES.
+         */
+
+        if (
+          this.value !==
+            "TODAS LAS ANTERIORES" &&
+          this.checked
+        ) {
+
+          todasLasAnteriores.checked = false;
+
+        }
+
       }
+    );
 
-      if (
-        this.value !== "TODAS LAS ANTERIORES" &&
-        this.checked
-      ) {
-        todas.checked = false;
-      }
-    });
   });
 
 
   /************************************************
-   * FUNCIONES PARA OBTENER RESPUESTAS
+   * OBTENER UNA RESPUESTA
    ************************************************/
 
   function obtenerValor(nombre) {
-    const elemento = document.querySelector(
-      `input[name="${nombre}"]:checked,
-       select[name="${nombre}"],
-       input[name="${nombre}"]`
-    );
 
-    return elemento ? elemento.value : "";
+    const elemento =
+      document.querySelector(
+        `input[name="${nombre}"]:checked,
+         select[name="${nombre}"],
+         input[name="${nombre}"]`
+      );
+
+    return elemento
+      ? elemento.value
+      : "";
+
   }
 
+
+  /************************************************
+   * OBTENER VARIAS RESPUESTAS
+   ************************************************/
+
   function obtenerValores(nombre) {
+
     return Array.from(
-      document.querySelectorAll(`input[name="${nombre}"]:checked`)
-    ).map((elemento) => elemento.value);
+      document.querySelectorAll(
+        `input[name="${nombre}"]:checked`
+      )
+    ).map(
+      (elemento) => elemento.value
+    );
+
+  }
+
+
+  /************************************************
+   * VALIDACIÓN DE LA PREGUNTA 5
+   *
+   * SOLO SON VÁLIDAS:
+   *
+   * 1. TODAS LAS ANTERIORES
+   *
+   * O
+   *
+   * 2. LAS NUEVE ALTERNATIVAS INDIVIDUALES
+   ************************************************/
+
+  function validarPregunta5() {
+
+    const seleccionadas =
+      Array.from(
+        document.querySelectorAll(
+          'input[name="q5"]:checked'
+        )
+      ).map(
+        (opcion) => opcion.value
+      );
+
+
+    const opcionTodas =
+      "TODAS LAS ANTERIORES";
+
+
+    const opcionesIndividuales = [
+
+      "Bajas propiedades mecánicas",
+
+      "Baja estabilidad de color",
+
+      "Mayor colonización bacteriana",
+
+      "Reacciones tóxicas",
+
+      "Reacciones alérgicas",
+
+      "Caries secundaria",
+
+      "Filtración marginal",
+
+      "Alteración de color marginal",
+
+      "Sensibilidad dental"
+
+    ];
+
+
+    /*
+     * Primera respuesta válida:
+     * únicamente TODAS LAS ANTERIORES.
+     */
+
+    const seleccionoTodas =
+      seleccionadas.length === 1 &&
+      seleccionadas[0] === opcionTodas;
+
+
+    /*
+     * Segunda respuesta válida:
+     * exactamente las nueve alternativas.
+     */
+
+    const seleccionoLasNueve =
+      seleccionadas.length ===
+        opcionesIndividuales.length &&
+
+      opcionesIndividuales.every(
+        (opcion) =>
+          seleccionadas.includes(opcion)
+      );
+
+
+    const esValida =
+      seleccionoTodas ||
+      seleccionoLasNueve;
+
+
+    const mensajeError =
+      document.getElementById(
+        "error-q5"
+      );
+
+
+    if (!esValida) {
+
+      mensajeError.textContent =
+        "Debe seleccionar una respuesta válida.";
+
+      return false;
+
+    }
+
+
+    mensajeError.textContent = "";
+
+    return true;
+
   }
 
 
@@ -654,40 +1293,65 @@
    ************************************************/
 
   function puntuarPregunta5() {
-    const seleccionadas = obtenerValores("q5");
 
-    const individuales = [
+    const seleccionadas =
+      Array.from(
+        document.querySelectorAll(
+          'input[name="q5"]:checked'
+        )
+      ).map(
+        (opcion) => opcion.value
+      );
+
+
+    const opcionTodas =
+      "TODAS LAS ANTERIORES";
+
+
+    const opcionesIndividuales = [
+
       "Bajas propiedades mecánicas",
+
       "Baja estabilidad de color",
+
       "Mayor colonización bacteriana",
+
       "Reacciones tóxicas",
+
       "Reacciones alérgicas",
+
       "Caries secundaria",
+
       "Filtración marginal",
+
       "Alteración de color marginal",
+
       "Sensibilidad dental"
+
     ];
 
-    // Correcto: seleccionar únicamente TODAS LAS ANTERIORES
-    if (
+
+    const seleccionoTodas =
       seleccionadas.length === 1 &&
-      seleccionadas[0] === "TODAS LAS ANTERIORES"
-    ) {
-      return 1;
-    }
+      seleccionadas[0] === opcionTodas;
 
-    // Correcto: seleccionar exactamente las nueve alternativas
-    if (
+
+    const seleccionoLasNueve =
       seleccionadas.length === 9 &&
-      individuales.every((opcion) =>
-        seleccionadas.includes(opcion)
-      )
-    ) {
-      return 1;
-    }
 
-    // Cualquier otra combinación obtiene cero puntos
-    return 0;
+      opcionesIndividuales.every(
+        (opcion) =>
+          seleccionadas.includes(opcion)
+      );
+
+
+    return (
+      seleccionoTodas ||
+      seleccionoLasNueve
+    )
+      ? 1
+      : 0;
+
   }
 
 
@@ -696,29 +1360,124 @@
    ************************************************/
 
   function puntuarConocimiento() {
+
     let puntaje = 0;
 
-    if (obtenerValor("q1") === "Sí") puntaje++;
-    if (obtenerValor("q2") === "Sí") puntaje++;
-    if (obtenerValor("q3") === "Sí") puntaje++;
-    if (puntuarPregunta5() === 1) puntaje++;
-    if (obtenerValor("q6") === "300-500 mW/cm²") puntaje++;
-    if (obtenerValor("q7") === "Barrera transparente") puntaje++;
 
-    if (obtenerValor("q11") === "20 segundos por cada 2 mm") puntaje++;
-    if (obtenerValor("q12") === "Lo más cerca posible") puntaje++;
+    if (
+      obtenerValor("q1") === "Sí"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q2") === "Sí"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q3") === "Sí"
+    ) {
+      puntaje++;
+    }
+
+
+    /*
+     * Pregunta 5
+     */
+
+    if (
+      puntuarPregunta5() === 1
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q6") ===
+      "300-500 mW/cm²"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q7") ===
+      "Barrera transparente"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q11") ===
+      "20 segundos por cada 2 mm"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q12") ===
+      "Lo más cerca posible"
+    ) {
+      puntaje++;
+    }
+
+
     if (
       obtenerValor("q13") ===
       "Aumentar el tiempo de fotocurado"
-    ) puntaje++;
-    if (obtenerValor("q14") === "Gafas protectoras naranjas") puntaje++;
+    ) {
+      puntaje++;
+    }
 
-    if (obtenerValor("q15") === "Sí") puntaje++;
-    if (obtenerValor("q16") === "Sí") puntaje++;
-    if (obtenerValor("q17") === "Sí") puntaje++;
-    if (obtenerValor("q19") === "Sí") puntaje++;
+
+    if (
+      obtenerValor("q14") ===
+      "Gafas protectoras naranjas"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q15") ===
+      "Sí"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q16") ===
+      "Sí"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q17") ===
+      "Sí"
+    ) {
+      puntaje++;
+    }
+
+
+    if (
+      obtenerValor("q19") ===
+      "Sí"
+    ) {
+      puntaje++;
+    }
+
 
     return puntaje;
+
   }
 
 
@@ -727,20 +1486,38 @@
    ************************************************/
 
   function puntuarSatisfaccion() {
+
     const pesos = {
+
       "Satisfecho(a)": 3,
+
       "Moderadamente satisfecho(a)": 2,
+
       "Insatisfecho(a)": 1
+
     };
+
 
     let puntaje = 0;
 
-    for (let i = 21; i <= 25; i++) {
-      const respuesta = obtenerValor("q" + i);
-      puntaje += pesos[respuesta] || 0;
+
+    for (
+      let i = 21;
+      i <= 25;
+      i++
+    ) {
+
+      const respuesta =
+        obtenerValor("q" + i);
+
+      puntaje +=
+        pesos[respuesta] || 0;
+
     }
 
+
     return puntaje;
+
   }
 
 
@@ -749,21 +1526,47 @@
    ************************************************/
 
   function nivelConocimiento(puntaje) {
-    if (puntaje <= 7) return "Bajo";
-    if (puntaje <= 10) return "Medio";
+
+    if (puntaje <= 7) {
+      return "Bajo";
+    }
+
+    if (puntaje <= 10) {
+      return "Medio";
+    }
+
     return "Alto";
+
   }
+
 
   function nivelSatisfaccion(puntaje) {
-    if (puntaje <= 8) return "Bajo";
-    if (puntaje <= 11) return "Moderado";
+
+    if (puntaje <= 8) {
+      return "Bajo";
+    }
+
+    if (puntaje <= 11) {
+      return "Moderado";
+    }
+
     return "Alto";
+
   }
 
+
   function nivelGlobal(puntaje) {
-    if (puntaje <= 9) return "Bajo";
-    if (puntaje <= 19) return "Medio";
+
+    if (puntaje <= 9) {
+      return "Bajo";
+    }
+
+    if (puntaje <= 19) {
+      return "Medio";
+    }
+
     return "Alto";
+
   }
 
 
@@ -771,118 +1574,387 @@
    * ENVÍO DEL CUESTIONARIO
    ************************************************/
 
-  formulario.addEventListener("submit", async function(evento) {
-    evento.preventDefault();
+  formulario.addEventListener(
+    "submit",
+    async function(evento) {
 
-    const respuestasQ5 = obtenerValores("q5");
+      evento.preventDefault();
 
-    if (respuestasQ5.length === 0) {
-      alert("Debe responder la pregunta 5.");
-      return;
-    }
 
-    if (!formulario.checkValidity()) {
-      formulario.reportValidity();
-      return;
-    }
+      /*
+       * PRIMERA VALIDACIÓN:
+       * Pregunta 5 como grupo.
+       */
 
-    const conocimiento = puntuarConocimiento();
-    const satisfaccion = puntuarSatisfaccion();
-    const global = conocimiento + satisfaccion;
+      if (!validarPregunta5()) {
 
-    const datos = {
-      fechaHora: new Date().toISOString(),
+        return;
 
-      siglas: document.getElementById("siglas").value.trim(),
-      estadoCivil: document.getElementById("estadoCivil").value,
-      procedencia: document.getElementById("procedencia").value,
-      ocupacion: document.getElementById("ocupacion").value,
-      ocupacionOtro: document.getElementById("ocupacionOtro").value.trim(),
-      genero: document.getElementById("genero").value,
-      edad: document.getElementById("edad").value,
-      ciclo: document.getElementById("ciclo").value,
+      }
 
-      q1: obtenerValor("q1"),
-      q2: obtenerValor("q2"),
-      q3: obtenerValor("q3"),
-      q4: obtenerValor("q4"),
-      q5: respuestasQ5.join(" | "),
-      q6: obtenerValor("q6"),
-      q7: obtenerValor("q7"),
-      q8: obtenerValores("q8").join(" | "),
-      q9: obtenerValor("q9"),
-      q10: obtenerValor("q10"),
-      q11: obtenerValor("q11"),
-      q12: obtenerValor("q12"),
-      q13: obtenerValor("q13"),
-      q14: obtenerValor("q14"),
-      q15: obtenerValor("q15"),
-      q16: obtenerValor("q16"),
-      q17: obtenerValor("q17"),
-      q18: obtenerValor("q18"),
-      q19: obtenerValor("q19"),
-      q20: obtenerValor("q20"),
-      q21: obtenerValor("q21"),
-      q22: obtenerValor("q22"),
-      q23: obtenerValor("q23"),
-      q24: obtenerValor("q24"),
-      q25: obtenerValor("q25"),
 
-      conocimientoCompetencia: conocimiento,
-      satisfaccion: satisfaccion,
-      puntajeGlobal: global,
+      /*
+       * SEGUNDA VALIDACIÓN:
+       * Campos obligatorios generales.
+       */
 
-      nivelConocimiento: nivelConocimiento(conocimiento),
-      nivelSatisfaccion: nivelSatisfaccion(satisfaccion),
-      nivelGlobal: nivelGlobal(global)
-    };
+      if (
+        !formulario.checkValidity()
+      ) {
 
-    boton.disabled = true;
-    boton.textContent = "Enviando respuestas...";
+        formulario.reportValidity();
 
-    mensaje.style.display = "block";
-    mensaje.className = "";
-    mensaje.textContent = "Enviando sus respuestas. Espere un momento...";
+        return;
 
-    try {
-      await fetch(API_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(datos)
-      });
+      }
 
-      mensaje.className = "exito";
+
+      /*
+       * Puntuación específica de Q5.
+       */
+
+      const puntajeQ5 =
+        puntuarPregunta5();
+
+
+      /*
+       * Puntuaciones generales.
+       */
+
+      const conocimiento =
+        puntuarConocimiento();
+
+
+      const satisfaccion =
+        puntuarSatisfaccion();
+
+
+      const global =
+        conocimiento +
+        satisfaccion;
+
+
+      /************************************************
+       * DATOS QUE SERÁN ENVIADOS A GOOGLE APPS SCRIPT
+       ************************************************/
+
+      const datos = {
+
+        fechaHora:
+          new Date().toISOString(),
+
+
+        siglas:
+          document
+            .getElementById("siglas")
+            .value
+            .trim(),
+
+
+        estadoCivil:
+          document
+            .getElementById("estadoCivil")
+            .value,
+
+
+        procedencia:
+          document
+            .getElementById("procedencia")
+            .value,
+
+
+        ocupacion:
+          document
+            .getElementById("ocupacion")
+            .value,
+
+
+        ocupacionOtro:
+          document
+            .getElementById("ocupacionOtro")
+            .value
+            .trim(),
+
+
+        genero:
+          document
+            .getElementById("genero")
+            .value,
+
+
+        edad:
+          document
+            .getElementById("edad")
+            .value,
+
+
+        ciclo:
+          document
+            .getElementById("ciclo")
+            .value,
+
+
+        q1:
+          obtenerValor("q1"),
+
+
+        q2:
+          obtenerValor("q2"),
+
+
+        q3:
+          obtenerValor("q3"),
+
+
+        q4:
+          obtenerValor("q4"),
+
+
+        q5:
+          obtenerValores("q5")
+            .join(" | "),
+
+
+        q6:
+          obtenerValor("q6"),
+
+
+        q7:
+          obtenerValor("q7"),
+
+
+        q8:
+          obtenerValores("q8")
+            .join(" | "),
+
+
+        q9:
+          obtenerValor("q9"),
+
+
+        q10:
+          obtenerValor("q10"),
+
+
+        q11:
+          obtenerValor("q11"),
+
+
+        q12:
+          obtenerValor("q12"),
+
+
+        q13:
+          obtenerValor("q13"),
+
+
+        q14:
+          obtenerValor("q14"),
+
+
+        q15:
+          obtenerValor("q15"),
+
+
+        q16:
+          obtenerValor("q16"),
+
+
+        q17:
+          obtenerValor("q17"),
+
+
+        q18:
+          obtenerValor("q18"),
+
+
+        q19:
+          obtenerValor("q19"),
+
+
+        q20:
+          obtenerValor("q20"),
+
+
+        q21:
+          obtenerValor("q21"),
+
+
+        q22:
+          obtenerValor("q22"),
+
+
+        q23:
+          obtenerValor("q23"),
+
+
+        q24:
+          obtenerValor("q24"),
+
+
+        q25:
+          obtenerValor("q25"),
+
+
+        /*
+         * Puntaje específico de Q5.
+         */
+
+        puntajeQ5:
+          puntajeQ5,
+
+
+        /*
+         * Puntajes generales.
+         */
+
+        conocimientoCompetencia:
+          conocimiento,
+
+
+        satisfaccion:
+          satisfaccion,
+
+
+        puntajeGlobal:
+          global,
+
+
+        /*
+         * Niveles.
+         */
+
+        nivelConocimiento:
+          nivelConocimiento(
+            conocimiento
+          ),
+
+
+        nivelSatisfaccion:
+          nivelSatisfaccion(
+            satisfaccion
+          ),
+
+
+        nivelGlobal:
+          nivelGlobal(
+            global
+          )
+
+      };
+
+
+      /************************************************
+       * BLOQUEAR BOTÓN
+       ************************************************/
+
+      boton.disabled = true;
+
+      boton.textContent =
+        "Enviando respuestas...";
+
+
+      mensaje.style.display =
+        "block";
+
+      mensaje.className = "";
+
       mensaje.textContent =
-        "Las respuestas fueron enviadas correctamente. Gracias por participar.";
+        "Enviando sus respuestas. Espere un momento...";
 
-      formulario.reset();
 
-    } catch (error) {
-      console.error("Error de envío:", error);
+      /************************************************
+       * ENVÍO A GOOGLE APPS SCRIPT
+       ************************************************/
 
-      mensaje.className = "error";
-      mensaje.textContent =
-        "No se pudo enviar el cuestionario. Inténtelo nuevamente.";
+      try {
 
-    } finally {
-      boton.disabled = false;
-      boton.textContent = "Enviar cuestionario";
+        await fetch(
+          API_URL,
+          {
+
+            method: "POST",
+
+            mode: "no-cors",
+
+            headers: {
+
+              "Content-Type":
+                "text/plain;charset=utf-8"
+
+            },
+
+            body:
+              JSON.stringify(datos)
+
+          }
+        );
+
+
+        mensaje.className =
+          "exito";
+
+
+        mensaje.textContent =
+          "Las respuestas fueron enviadas correctamente. Gracias por participar.";
+
+
+        formulario.reset();
+
+
+        /*
+         * Limpiar mensaje de error de Q5
+         */
+
+        document
+          .getElementById("error-q5")
+          .textContent = "";
+
+
+      } catch (error) {
+
+        console.error(
+          "Error de envío:",
+          error
+        );
+
+
+        mensaje.className =
+          "error";
+
+
+        mensaje.textContent =
+          "No se pudo enviar el cuestionario. Inténtelo nuevamente.";
+
+      } finally {
+
+        boton.disabled = false;
+
+        boton.textContent =
+          "Enviar cuestionario";
+
+      }
+
     }
-  });
+  );
 
 
   /************************************************
    * CÓDIGO QR
    ************************************************/
 
-  const urlCuestionario = window.location.href;
+  const urlCuestionario =
+    window.location.href;
 
-  document.getElementById("codigoQR").src =
-    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
-    encodeURIComponent(urlCuestionario);
+
+  document
+    .getElementById("codigoQR")
+    .src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
+      encodeURIComponent(
+        urlCuestionario
+      );
+
 </script>
 
 </body>
