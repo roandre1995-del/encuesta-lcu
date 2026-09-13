@@ -1211,61 +1211,19 @@
       );
 
 
-    const opcionTodas =
-      "TODAS LAS ANTERIORES";
-
-
-    const opcionesIndividuales = [
-
-      "Bajas propiedades mecánicas",
-
-      "Baja estabilidad de color",
-
-      "Mayor colonización bacteriana",
-
-      "Reacciones tóxicas",
-
-      "Reacciones alérgicas",
-
-      "Caries secundaria",
-
-      "Filtración marginal",
-
-      "Alteración de color marginal",
-
-      "Sensibilidad dental"
-
-    ];
-
-
     /*
-     * Primera respuesta válida:
-     * únicamente TODAS LAS ANTERIORES.
+     * ÚNICO REQUISITO PARA PODER ENVIAR EL FORMULARIO:
+     * que haya marcado al menos una opción.
+     *
+     * NO se exige que la combinación sea la "correcta"
+     * (las 9 individuales, o solo "TODAS LAS ANTERIORES").
+     * Esa evaluación de qué tan correcta es la respuesta
+     * se hace aparte, en puntuarPregunta5(), y afecta el
+     * puntaje, no si puede enviar el cuestionario.
      */
-
-    const seleccionoTodas =
-      seleccionadas.length === 1 &&
-      seleccionadas[0] === opcionTodas;
-
-
-    /*
-     * Segunda respuesta válida:
-     * exactamente las nueve alternativas.
-     */
-
-    const seleccionoLasNueve =
-      seleccionadas.length ===
-        opcionesIndividuales.length &&
-
-      opcionesIndividuales.every(
-        (opcion) =>
-          seleccionadas.includes(opcion)
-      );
-
 
     const esValida =
-      seleccionoTodas ||
-      seleccionoLasNueve;
+      seleccionadas.length > 0;
 
 
     const mensajeError =
@@ -1277,7 +1235,7 @@
     if (!esValida) {
 
       mensajeError.textContent =
-        "Debe seleccionar una respuesta válida.";
+        "Debe seleccionar al menos una opción.";
 
       return false;
 
