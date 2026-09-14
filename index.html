@@ -1373,6 +1373,21 @@
     }
 
 
+    return puntaje;
+
+  }
+
+
+  /************************************************
+   * PUNTUACIÓN DE COMPETENCIA (uso clínico y
+   * mantenimiento, Secciones 2 y 3)
+   ************************************************/
+
+  function puntuarCompetencia() {
+
+    let puntaje = 0;
+
+
     if (
       obtenerValor("q11") ===
       "20 segundos por cada 2 mm"
@@ -1553,12 +1568,17 @@
         puntuarConocimiento();
 
 
+      const competencia =
+        puntuarCompetencia();
+
+
       const satisfaccion =
         puntuarSatisfaccion();
 
 
       const global =
         conocimiento +
+        competencia +
         satisfaccion;
 
 
@@ -1740,8 +1760,12 @@
          * muestra, no aquí.
          */
 
-        conocimientoCompetencia:
+        conocimiento:
           conocimiento,
+
+
+        competencia:
+          competencia,
 
 
         satisfaccion:
