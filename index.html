@@ -1799,30 +1799,50 @@
 
       /************************************************
        * ENVÍO A GOOGLE APPS SCRIPT
+       *
+       * NOTA: ya no se usa mode: "no-cors". Con "no-cors" el
+       * navegador nunca puede leer la respuesta del servidor,
+       * así que el formulario mostraba "enviado correctamente"
+       * incluso si Apps Script fallaba por detrás (por ejemplo,
+       * por una implementación desactualizada o sin permisos).
+       * El Content-Type sigue siendo "text/plain" a propósito,
+       * para evitar que el navegador dispare una solicitud
+       * "preflight" (OPTIONS) que Apps Script no sabe responder.
        ************************************************/
 
       try {
 
-        await fetch(
-          API_URL,
-          {
+        const respuestaFetch =
+          await fetch(
+            API_URL,
+            {
 
-            method: "POST",
+              method: "POST",
 
-            mode: "no-cors",
+              headers: {
 
-            headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
 
-              "Content-Type":
-                "text/plain;charset=utf-8"
+              },
 
-            },
+              body:
+                JSON.stringify(datos)
 
-            body:
-              JSON.stringify(datos)
+            }
+          );
 
-          }
-        );
+        const resultado =
+          await respuestaFetch.json();
+
+        if (resultado.estado !== "correcto") {
+
+          throw new Error(
+            resultado.mensaje ||
+            "El servidor rechazó la respuesta."
+          );
+
+        }
 
 
         mensaje.className =
@@ -1858,7 +1878,9 @@
 
 
         mensaje.textContent =
-          "No se pudo enviar el cuestionario. Inténtelo nuevamente.";
+          "No se pudo enviar el cuestionario (" +
+          error.message +
+          "). Inténtelo nuevamente.";
 
       } finally {
 
