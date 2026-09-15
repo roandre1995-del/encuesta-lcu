@@ -1156,16 +1156,37 @@
 
   function obtenerValor(nombre) {
 
-    const elemento =
+    /*
+     * CORREGIDO: antes este selector combinado (input:checked,
+     * select, input SIN :checked en una sola lista separada por
+     * comas) hacía que querySelector devolviera el primer
+     * elemento del DOM que coincidiera con CUALQUIERA de los
+     * tres, sin respetar el orden de prioridad. Como el tercer
+     * selector (input sin :checked) coincide con cualquier radio
+     * del grupo, siempre devolvía la primera opción de la lista,
+     * estuviera marcada o no. Ahora se revisa cada caso en orden
+     * real de prioridad.
+     */
+
+    const marcado =
       document.querySelector(
-        `input[name="${nombre}"]:checked,
-         select[name="${nombre}"],
-         input[name="${nombre}"]`
+        `input[name="${nombre}"]:checked`
       );
 
-    return elemento
-      ? elemento.value
-      : "";
+    if (marcado) {
+      return marcado.value;
+    }
+
+    const seleccionado =
+      document.querySelector(
+        `select[name="${nombre}"]`
+      );
+
+    if (seleccionado) {
+      return seleccionado.value;
+    }
+
+    return "";
 
   }
 
